@@ -15,6 +15,15 @@ interface Data {
       }
     ];
   };
+  FarcasterChannels: {
+    FarcasterChannel: [
+      {
+        name: string;
+        imageUrl: string;
+        url: string;
+      }
+    ];
+  };
 }
 
 interface QueryResponse {
@@ -84,3 +93,4 @@ export default async function handler(
     }
   }
 }
+
