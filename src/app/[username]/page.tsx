@@ -11,7 +11,7 @@ interface userData {
   username: string;
   display_name: string;
 }
-const page = () => {
+const Page = () => {
   const [userData, setUserData] = useState<userData>({
     bio: "",
     pfp_url: "",
@@ -27,7 +27,7 @@ const page = () => {
 
   const fname = username?.split("/")[1];
 
-  useMemo(() => {
+  useEffect(() => {
     const fetchUserBasicData = async () => {
       setLoading(true);
       try {
@@ -103,4 +103,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
