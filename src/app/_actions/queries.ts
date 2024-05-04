@@ -83,4 +83,18 @@ export const fetchActiveChannels = async (fid: string) => {
   console.log("data", data);
 };
 
+export const getTopNFTs = async (address: string) => {
+  console.log("address", address);
+  const nftResponse = await fetch(
+    `https://api.simplehash.com/api/v0/nfts/owners_v2?chains=base&wallet_addresses=${address}&order_by=floor_price__desc&limit=4`,
+    {
+      method: "GET",
+      headers: {
+        "X-API-KEY": process.env.SIMPLEHASH_API_KEY!,
+      },
+    }
+  );
 
+  const { nfts } = await nftResponse.json();
+  return nfts;
+};
