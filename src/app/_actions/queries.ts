@@ -25,6 +25,21 @@ export const getUserData = async (fname: string) => {
         url
       }
     }
+    Wallet(
+      input: {blockchain: base, identity: "fc_fname:${fname}"}
+    ) {
+      tokenTransfers(input: {order: {blockTimestamp: ASC}, limit: 1}) {
+        transactionHash
+        blockTimestamp
+      }
+    }
+    FarcasterChannelParticipants(
+      input: {filter: {participant: {_eq: "fc_fname:${fname}"}, channelActions: {_eq: cast}}, blockchain: ALL, limit: 1, order: {lastActionTimestamp: ASC}}
+    ) {
+      FarcasterChannelParticipant {
+        lastCastedTimestamp
+      }
+    }
   }`;
 
   const resp = await fetch("https://api.airstack.xyz/gql", {
