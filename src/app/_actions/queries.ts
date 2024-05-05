@@ -196,8 +196,18 @@ export const fetchTopCasts = async (fid: string) => {
     }
   );
 
-  const data = await apiResponse.json();
-  return JSON.stringify(data);
+  const { casts } = await apiResponse.json();
+  const topCast = casts[0];
+  console.log("topCast", topCast);
+  return {
+    text: topCast.text,
+    display_name: topCast.display_name,
+    username: topCast.username,
+    pfp_url: topCast.pfp_url,
+    likes_count: topCast.reactions.likes_count,
+    recasts_count: topCast.reactions.recasts_count,
+    timestamp: topCast.timestamp,
+  };
 };
 
 export const getTxnCount = async (address: string) => {

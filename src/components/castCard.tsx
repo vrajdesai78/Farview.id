@@ -24,7 +24,7 @@ const CastCard = ({
 
   return (
     // <div className=" rounded-xl flex items-center w-full justify-center">
-    <div className='p-4 rounded-xl border border-[#382a3d] bg-[#E3E8EF] w-full max-w-xl'>
+    <div className='p-4 rounded-xl border h-[200px] border-[#382a3d] bg-[#E3E8EF] w-full max-w-xl'>
       <div className='flex justify-between'>
         <div className='flex items-center'>
           {/* profile img */}
@@ -48,7 +48,7 @@ const CastCard = ({
         />
       </div>
       <div className='max-w-full w-full flex items-start justify-center'>
-        <p className='text-slate-800 block text-xl w-full  mt-3 max-w-full whitespace-break-spaces'>
+        <p className='text-slate-800 block text-xl w-full mt-3 max-w-full whitespace-break-spaces text-ellipsis'>
           {castText}
         </p>
       </div>

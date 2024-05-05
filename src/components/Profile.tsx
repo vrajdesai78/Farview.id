@@ -1,9 +1,6 @@
 "use client";
 
 import React, { FC, useEffect, useState } from "react";
-import CastCard from "./castCard";
-import { fetchTopCasts } from "@/app/_actions/queries";
-import AccountCard from "./AccountCard";
 import Navbar from "./Navbar";
 import Tag from "./Tag";
 import ProfileHero from "./ProfileHero";
@@ -12,7 +9,7 @@ import TopFollowers from "./TopFollowers";
 import TopCast from "./TopCast";
 import OwnNfts from "./OwnNfts";
 import ReachOut from "./ReachOut";
-import { TActiveChannels, TNFTs, TTopFollowers } from "@/types/types";
+import { TActiveChannels, TCast, TNFTs, TTopFollowers } from "@/types/types";
 
 interface TUserData {
   bio: string;
@@ -32,7 +29,20 @@ interface ProfileProps {
   nfts: TNFTs[];
   activeChannels: TActiveChannels[];
   topFollowers: TTopFollowers[];
+  topCast: TCast;
 }
+
+const dummyTopCast = {
+  topCast: {
+    text: "Sample Cast",
+    display_name: "new",
+    username: "check",
+    pfp_url: "https://i.imgur.com/WvmWLia.jpg",
+    likes_count: 100,
+    recasts_count: 20,
+    timestamp: new Date().toISOString(),
+  } as TCast,
+};
 
 const Profile: FC<ProfileProps> = ({
   userData,
@@ -40,6 +50,7 @@ const Profile: FC<ProfileProps> = ({
   nfts,
   activeChannels,
   topFollowers,
+  topCast,
 }) => {
   const [loading, setLoading] = useState(true);
 
@@ -95,13 +106,13 @@ const Profile: FC<ProfileProps> = ({
                 <TopChannels topChannels={activeChannels} />
                 {/* top cast for large dekstop screens */}
                 <div className='md:block hidden w-[348px]'>
-                  <TopCast />
+                  <TopCast topCast={dummyTopCast.topCast} />
                 </div>
                 <TopFollowers topFollowers={topFollowers} />
               </div>
               {/* top cast for small screens */}
               <div className='md:hidden block  w-full'>
-                <TopCast />
+                <TopCast topCast={dummyTopCast.topCast} />
               </div>
             </div>
             <div className='w-full flex items-center justify-between md:flex-row flex-col md:justify-center gap-3 '>

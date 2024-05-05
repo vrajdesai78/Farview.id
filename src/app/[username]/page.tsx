@@ -42,6 +42,7 @@ const Page = async ({ params }: { params: { username: string } }) => {
       nfts={nfts}
       activeChannels={activeChannels}
       topFollowers={topFollowers}
+      topCast={topCasts}
     />
   );
 };
