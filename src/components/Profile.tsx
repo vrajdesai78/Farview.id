@@ -11,7 +11,7 @@ import TopChannels from "./TopChannel/TopChannels";
 import TopFollowers from "./TopFollowers";
 import TopCast from "./TopCast";
 
-interface userData {
+interface TUserData {
   bio: string;
   pfp_url: string;
   follower_count: number;
@@ -21,23 +21,11 @@ interface userData {
 }
 
 interface ProfileProps {
-  username: string;
+  userData: TUserData;
   fid: string;
 }
 
-const Profile: FC<ProfileProps> = ({ username, fid }) => {
-  const [userData, setUserData] = useState<userData>({
-    bio: `“The Purple Guy” Founder, builder, and  Brand Designer. 
-    Obsessed with /design  Content Creator 
-    & Full time Dad.`,
-    pfp_url:
-      "https://imagedelivery.net/BXluQx4ige9GuW0Ia56BHw/6f618f59-2290-4350-100a-4b5d10abef00/original",
-    display_name: "Akhil BVS",
-    follower_count: 258,
-    following_count: 76,
-    username: "akhil_bvs",
-  });
-
+const Profile: FC<ProfileProps> = ({ userData, fid }) => {
   const [topCasts, setTopCasts] = useState([]);
   const [mostEngagedAccounts, setMostEngagedAccounts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -63,7 +51,7 @@ const Profile: FC<ProfileProps> = ({ username, fid }) => {
         setLoading(false);
       }
     };
-    if (username) {
+    if (userData.username) {
       fetchUserBasicData();
     } else {
       console.log("fname required");
@@ -87,12 +75,12 @@ const Profile: FC<ProfileProps> = ({ username, fid }) => {
   ];
 
   return (
-    <div className="w-full min-h-screen flex items-center justify-start flex-col py-12 px-6  bg-[#F8FAFC] ">
-      <div className="w-full flex flex-col items-center justify-start gap-6 max-w-[1200px]">
+    <div className='w-full min-h-screen flex items-center justify-start flex-col py-12 px-6  bg-[#F8FAFC] '>
+      <div className='w-full flex flex-col items-center justify-start gap-6 max-w-[1200px]'>
         <Navbar />
 
         {loading ? (
-          <h1 className="text-black/90 font-bold text-2xl">Loading...</h1>
+          <h1 className='text-black/90 font-bold text-2xl'>Loading...</h1>
         ) : (
           <>
             <ProfileHero
@@ -107,21 +95,21 @@ const Profile: FC<ProfileProps> = ({ username, fid }) => {
             />
 
             {/* famous tags */}
-            <div className="w-full flex items-center justify-center gap-3 flex-wrap">
+            <div className='w-full flex items-center justify-center gap-3 flex-wrap'>
               {tags.map((tag: any, id: number) => (
                 <Tag icon={tag.icon} title={tag.title} key={id} />
               ))}
             </div>
 
-            <div className="w-full flex items-center justify-center gap-3 flex-wrap">
+            <div className='w-full flex items-center justify-center gap-3 flex-wrap'>
               <TopChannels />
               <TopCast />
               <TopFollowers />
             </div>
 
             {/* cast */}
-            <div className="w-full flex-col flex items-center justify-start gap-4">
-              <h1 className="text-white/90 font-bold text-2xl font-mono">
+            <div className='w-full flex-col flex items-center justify-start gap-4'>
+              <h1 className='text-white/90 font-bold text-2xl font-mono'>
                 Your Top Casts
               </h1>
 
@@ -140,12 +128,12 @@ const Profile: FC<ProfileProps> = ({ username, fid }) => {
             </div>
 
             {/* most engaged accounts */}
-            <div className="w-full flex-col flex items-center justify-start gap-4">
-              <h1 className="text-white/90 font-bold text-2xl font-mono">
+            <div className='w-full flex-col flex items-center justify-start gap-4'>
+              <h1 className='text-white/90 font-bold text-2xl font-mono'>
                 Fav bulders
               </h1>
 
-              <div className="w-full grid-cols-3 grid items-start justify-center  gap-4">
+              <div className='w-full grid-cols-3 grid items-start justify-center  gap-4'>
                 {mostEngagedAccounts.map((account: any, id: number) => (
                   <AccountCard
                     key={id}
