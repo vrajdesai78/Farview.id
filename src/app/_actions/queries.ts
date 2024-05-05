@@ -94,8 +94,25 @@ export const fetchActiveChannels = async (fid: string) => {
   );
 
   const data = await apiResponse.json();
+  console.log("active Channels", data);
+  return JSON.stringify(data)
+};
 
-  console.log("data", data);
+export const fetchMostEngagedPeople = async (fid: string) => {
+
+  const apiResponse = await fetch(
+    `https://api.neynar.com/v2/farcaster/followers/relevant?target_fid=${fid}&viewer_fid=244416`,
+    {
+      method: "GET",
+      headers: {
+        api_key: process.env.NEYNAR_API_KEY!,
+      },
+    }
+  );
+
+  const data = await apiResponse.json();
+  console.log("Most Engaged Users", data);
+  return JSON.stringify(data)
 };
 
 export const getTopNFTs = async (address: string) => {
@@ -113,3 +130,21 @@ export const getTopNFTs = async (address: string) => {
   const { nfts } = await nftResponse.json();
   return nfts;
 };
+export const fetchTopCasts = async (fid: string) => {
+  const apiResponse = await fetch(
+    `https://api.neynar.com/v2/farcaster/feed/user/${fid}/popular`,
+    {
+      method: "GET",
+      headers: {
+        api_key: process.env.NEYNAR_API_KEY!,
+      },
+    }
+  );
+
+  const data = await apiResponse.json();
+  console.log("Top Casts", data);
+  return JSON.stringify(data)
+};
+
+
+

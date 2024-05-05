@@ -2,6 +2,8 @@ import Profile from "@/components/Profile";
 import {
   fetchActiveChannels,
   getTopNFTs,
+  fetchMostEngagedPeople,
+  fetchTopCasts,
   getUserData,
 } from "../_actions/queries";
 
@@ -17,9 +19,24 @@ const Page = async ({ params }: { params: { username: string } }) => {
   const activeChannels = await fetchActiveChannels(
     profileData.Socials.Social[0].userId
   );
-  console.log("profile", profileData);
-  console.log("activeChannels", activeChannels);
-  return <Profile username={params.username} />;
+  // const activeChannels = await fetchActiveChannels(
+  //   profileData.Socials.Social[0].userId
+  // );
+  // const mostEngagedPeople = await fetchMostEngagedPeople(
+  //   profileData.Socials.Social[0].userId
+  // );
+  // const topCasts = await fetchTopCasts(profileData.Socials.Social[0].userId);
+
+  // console.log("profile", profileData);
+  // console.log("activeChannels", activeChannels);
+  // console.log("Most Engaged people", mostEngagedPeople);
+  // console.log("topCasts", topCasts);
+  return (
+    <Profile
+      username={params.username}
+      fid={profileData.Socials.Social[0].userId}
+    />
+  );
 };
 
 export default Page;

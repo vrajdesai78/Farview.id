@@ -1,6 +1,15 @@
 "use client";
 
 import React, { FC, useEffect, useState } from "react";
+import CastCard from "./castCard";
+import { fetchMostEngagedPeople, fetchTopCasts } from "@/app/_actions/queries";
+import AccountCard from "./AccountCard";
+import Navbar from "./Navbar";
+import Tag from "./Tag";
+import ProfileHero from "./ProfileHero";
+import TopChannels from "./TopChannel/TopChannels";
+import TopFollowers from "./TopFollowers";
+import TopCast from "./TopCast";
 
 interface userData {
   bio: string;
@@ -13,27 +22,41 @@ interface userData {
 
 interface ProfileProps {
   username: string;
+  fid: string;
 }
 
-const Profile: FC<ProfileProps> = ({ username }) => {
+const Profile: FC<ProfileProps> = ({ username, fid }) => {
   const [userData, setUserData] = useState<userData>({
-    bio: "",
-    pfp_url: "",
-    display_name: "",
-    follower_count: 0,
-    following_count: 0,
-    username: "",
+    bio: `“The Purple Guy” Founder, builder, and  Brand Designer. 
+    Obsessed with /design  Content Creator 
+    & Full time Dad.`,
+    pfp_url:
+      "https://imagedelivery.net/BXluQx4ige9GuW0Ia56BHw/6f618f59-2290-4350-100a-4b5d10abef00/original",
+    display_name: "Akhil BVS",
+    follower_count: 258,
+    following_count: 76,
+    username: "akhil_bvs",
   });
 
+  const [topCasts, setTopCasts] = useState([]);
+  const [mostEngagedAccounts, setMostEngagedAccounts] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchUserBasicData = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/getUser?fname=${username}`);
-        const data = await res.json();
-        setUserData(data);
+        // NOTE: facing 500 error in basic data fetch- Cannot read properties of null (reading 'Socials')
+        // const res = await fetch(`/api/getUser?fname=${username}`);
+        // const data = await res.json();
+        const topCasts = await fetchTopCasts(fid);
+        const casts = JSON.parse(topCasts).casts;
+        const mostEngagedPeople = await fetchMostEngagedPeople(fid);
+        const people =
+          JSON.parse(mostEngagedPeople).top_relevant_followers_hydrated;
+        setMostEngagedAccounts(people);
+        setTopCasts(casts.slice(0, 3));
+        // setUserData(data);
         setLoading(false);
       } catch (err) {
         console.error(err);
@@ -47,58 +70,96 @@ const Profile: FC<ProfileProps> = ({ username }) => {
     }
   }, []);
 
+  // dummy tags
+  const tags = [
+    {
+      title: "500+ txns on Base",
+      icon: "/base.svg",
+    },
+    {
+      title: "Joined FC on 4th May, 21",
+      icon: "/calendar.svg",
+    },
+    {
+      title: "500 Days since first Cast",
+      icon: "/clock.svg",
+    },
+  ];
+
   return (
-    <div className='w-full min-h-screen flex items-center justify-start flex-col py-20 px-4 sm:px-8 lg:px-10 gap-10 bg-black'>
-      {loading ? (
-        <h1 className='text-white/90 font-bold text-2xl font-mono'>
-          Loading...
-        </h1>
-      ) : (
-        <>
-          {/* profile img */}
-          <img
-            src={userData.pfp_url}
-            alt=''
-            className='w-28 h-28 sm:w-36 sm:h-36 rounded-full object-cover'
-          />
+    <div className="w-full min-h-screen flex items-center justify-start flex-col py-12 px-6  bg-[#F8FAFC] ">
+      <div className="w-full flex flex-col items-center justify-start gap-6 max-w-[1200px]">
+        <Navbar />
 
-          <div className='flex items-center justify-start w-full flex-col gap-4 '>
-            <div className='flex items-center justify-start w-full flex-col gap-1'>
-              {/* display name */}
-              <h1 className='text-white/90 font-bold text-2xl font-mono'>
-                {userData.display_name}
-              </h1>
-              {/* username */}
-              <span className='text-white/40 font-normal text-xs font-mono'>
-                {userData.username.length > 0 && "@"}
-                {userData.username}
-              </span>
+        {loading ? (
+          <h1 className="text-black/90 font-bold text-2xl">Loading...</h1>
+        ) : (
+          <>
+            <ProfileHero
+              username={userData.username}
+              bio={userData.bio}
+              display_name={userData.display_name}
+              follower_count={userData.follower_count}
+              following_count={userData.following_count}
+              loading={loading}
+              pfp_url={userData.pfp_url}
+              key={"profile-hero"}
+            />
+
+            {/* famous tags */}
+            <div className="w-full flex items-center justify-center gap-3 flex-wrap">
+              {tags.map((tag: any, id: number) => (
+                <Tag icon={tag.icon} title={tag.title} key={id} />
+              ))}
             </div>
-            {/* bio */}
-            <p className='text-white/70 font-medium text-lg font-mono'>
-              {userData.bio}
-            </p>
 
-            {!loading && (
-              <div className='flex items-center justify-center w-full  gap-4'>
-                {/* follower count */}
-                <button className='bg-white p-2 rounded-lg flex items-center justify-center'>
-                  <span className='text-sm text-black font-semibold'>
-                    Followers: {userData.follower_count}
-                  </span>
-                </button>
+            <div className="w-full flex items-center justify-center gap-3 flex-wrap">
+              <TopChannels />
+              <TopCast />
+              <TopFollowers />
+            </div>
 
-                {/* following count */}
-                <button className='bg-white p-2 rounded-lg flex items-center justify-center'>
-                  <span className='text-sm text-black font-semibold'>
-                    Following: {userData.following_count}
-                  </span>
-                </button>
+            {/* cast */}
+            <div className="w-full flex-col flex items-center justify-start gap-4">
+              <h1 className="text-white/90 font-bold text-2xl font-mono">
+                Your Top Casts
+              </h1>
+
+              {topCasts.map((cast: any, id: number) => (
+                <CastCard
+                  key={id}
+                  castText={cast.text}
+                  displayName={userData.display_name}
+                  username={userData.username}
+                  pfpImg={userData.pfp_url}
+                  likesCount={cast.reactions.likes_count}
+                  recastCount={cast.reactions.recasts_count}
+                  timestamp={cast.timestamp}
+                />
+              ))}
+            </div>
+
+            {/* most engaged accounts */}
+            <div className="w-full flex-col flex items-center justify-start gap-4">
+              <h1 className="text-white/90 font-bold text-2xl font-mono">
+                Fav bulders
+              </h1>
+
+              <div className="w-full grid-cols-3 grid items-start justify-center  gap-4">
+                {mostEngagedAccounts.map((account: any, id: number) => (
+                  <AccountCard
+                    key={id}
+                    displayName={account.user.display_name}
+                    username={account.user.username}
+                    pfpImg={account.user.pfp_url}
+                    bio={account.user.profile.bio.text}
+                  />
+                ))}
               </div>
-            )}
-          </div>
-        </>
-      )}
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 };

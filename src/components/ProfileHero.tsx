@@ -1,0 +1,69 @@
+import React from "react";
+
+interface HeroProps {
+  pfp_url: string;
+  display_name: string;
+  username: string;
+  bio: string;
+  loading: boolean;
+  follower_count: number;
+  following_count: number;
+}
+const ProfileHero = ({
+  bio,
+  display_name,
+  follower_count,
+  following_count,
+  loading,
+  pfp_url,
+  username,
+}: HeroProps) => {
+  return (
+    <div className="flex items-center justify-start w-full flex-col gap-2 ">
+      {/* profile img */}
+      <img
+        src={pfp_url}
+        alt=""
+        className="w-16 h-16 rounded-full object-cover"
+      />
+      <div className="flex items-center justify-center w-full gap-1">
+        {/* display name */}
+        <h1 className="text-2xl font-semibold text-[#030816] ">
+          {display_name}
+        </h1>
+        {/* username */}
+        <span className="text-[#677489] font-normal text-lg ">
+          {username.length > 0 && "@"}
+          {username}
+        </span>
+      </div>
+      {/* bio */}
+      <p className="text-[#677489] font-normal text-lg text-center max-w-[484px] ">
+        {bio}
+      </p>
+
+      {!loading && (
+        <div className="flex items-center justify-center w-full  gap-4">
+          {/* follower count */}
+
+          <span className="text-lg text-[#677489] font-normal">
+            Followers
+            <span className="text-[#7F5FC6] font-semibold ml-2">
+              {follower_count}
+            </span>
+          </span>
+
+          {/* following count */}
+          <span className="text-lg text-[#677489] font-normal">
+            Following
+            <span className="text-[#7F5FC6] font-semibold ml-2">
+              {following_count}
+            </span>
+          </span>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default ProfileHero;
