@@ -23,8 +23,8 @@ const TopFollowers = () => {
       <div className="flex-col justify-start items-start gap-6 inline-flex w-full">
         {TopFollowers.map((channel: any, id: number) => (
           <TopChannel
-            channelIcon={channel.channelIcon}
-            channelName={`@${channel.channelName}`}
+            channelIcon={channel.icon}
+            channelName={`@${channel.name}`}
             key={id}
           />
         ))}
