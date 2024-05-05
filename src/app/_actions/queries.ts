@@ -1,5 +1,7 @@
 "use server";
 
+import { CovalentClient } from "@covalenthq/client-sdk";
+
 export const getUserData = async (fname: string) => {
   const query = `query MyQuery {
     Socials(
@@ -146,4 +148,16 @@ export const fetchTopCasts = async (fid: string) => {
   const data = await apiResponse.json();
   // console.log("Top Casts", data);
   return JSON.stringify(data);
+};
+
+export const getTxnCount = async (address: string) => {
+  const client = new CovalentClient(process.env.COVALENT_API_KEY!);
+  const resp = await client.TransactionService.getTransactionSummary(
+    "base-mainnet",
+    address
+  );
+  if (resp.data && resp.data.items && resp.data.items.length > 0) {
+    return resp.data.items[0].total_count;
+  }
+  return null;
 };

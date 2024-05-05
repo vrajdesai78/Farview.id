@@ -18,6 +18,9 @@ interface TUserData {
   following_count: number;
   username: string;
   display_name: string;
+  firstTxn: string;
+  daysSinceFirstTxn: number;
+  txnCount: number | null;
 }
 
 interface ProfileProps {
