@@ -32,13 +32,13 @@ const ProfileHero = ({
           {display_name}
         </h1>
         {/* username */}
-        <span className="text-[#677489] font-normal text-lg ">
+        <span className="text-primary-grey font-normal text-lg ">
           {username.length > 0 && "@"}
           {username}
         </span>
       </div>
       {/* bio */}
-      <p className="text-[#677489] font-normal text-lg text-center max-w-[484px] ">
+      <p className="text-primary-grey font-normal text-lg text-center max-w-full sm:max-w-[484px] ">
         {bio}
       </p>
 
@@ -46,17 +46,17 @@ const ProfileHero = ({
         <div className="flex items-center justify-center w-full  gap-4">
           {/* follower count */}
 
-          <span className="text-lg text-[#677489] font-normal">
+          <span className="text-lg text-primary-grey font-normal">
             Followers
-            <span className="text-[#7F5FC6] font-semibold ml-2">
+            <span className="text-primary-violet font-semibold ml-2">
               {follower_count}
             </span>
           </span>
 
           {/* following count */}
-          <span className="text-lg text-[#677489] font-normal">
+          <span className="text-lg text-primary-grey font-normal">
             Following
-            <span className="text-[#7F5FC6] font-semibold ml-2">
+            <span className="text-primary-violet font-semibold ml-2">
               {following_count}
             </span>
           </span>

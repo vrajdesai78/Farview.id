@@ -7,9 +7,9 @@ export interface TopChannelProps {
 
 const TopChannel = ({ channelIcon, channelName }: TopChannelProps) => {
   return (
-    <div className="justify-center items-center gap-2 inline-flex">
+    <div className="justify-center items-center gap-2 flex lg:flex-row flex-col">
       <img className="w-9 h-9 rounded-full" src={channelIcon} />
-      <div className="text-violet-500 text-base font-semibold leading-tight">
+      <div className=" lg:text-primary-violet text-primary-grey text-sm lg:text-base font-semibold leading-tight">
         {channelName}
       </div>
     </div>
