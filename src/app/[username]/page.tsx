@@ -8,32 +8,39 @@ import {
 } from "../_actions/queries";
 
 const Page = async ({ params }: { params: { username: string } }) => {
-  console.log("params", params.username);
-
   const profileData = await getUserData(params.username);
 
-  const nfts = await getTopNFTs(
-    profileData.Socials.Social[0].userAssociatedAddresses[1]
+  const [nfts, activeChannels, mostEngagedPeople, topCasts] = await Promise.all(
+    [
+      getTopNFTs(profileData.Socials.Social[0].userAssociatedAddresses[1]),
+      fetchActiveChannels(profileData.Socials.Social[0].userId),
+      fetchMostEngagedPeople(profileData.Socials.Social[0].userId),
+      fetchTopCasts(profileData.Socials.Social[0].userId),
+    ]
   );
 
-  const activeChannels = await fetchActiveChannels(
-    profileData.Socials.Social[0].userId
-  );
-  // const activeChannels = await fetchActiveChannels(
-  //   profileData.Socials.Social[0].userId
-  // );
-  // const mostEngagedPeople = await fetchMostEngagedPeople(
-  //   profileData.Socials.Social[0].userId
-  // );
-  // const topCasts = await fetchTopCasts(profileData.Socials.Social[0].userId);
+  const firstCastDate = new Date(
+    profileData.Socials.Social[0].userCreatedAtBlockTimestamp
+  ).toISOString();
 
-  // console.log("profile", profileData);
-  // console.log("activeChannels", activeChannels);
-  // console.log("Most Engaged people", mostEngagedPeople);
-  // console.log("topCasts", topCasts);
+  // calculate days since first cast
+  const today = new Date().toISOString();
+  const diff = new Date(today).getTime() - new Date(firstCastDate).getTime();
+  const daysSinceFirstCast = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+  console.log("days since first cast", daysSinceFirstCast);
+  console.log("firstCastDate", firstCastDate);
+
   return (
     <Profile
-      username={params.username}
+      userData={{
+        bio: profileData.Socials.Social[0].profileBio,
+        pfp_url: profileData.Socials.Social[0].profileImage,
+        follower_count: profileData.Socials.Social[0].followerCount,
+        following_count: profileData.Socials.Social[0].followingCount,
+        username: profileData.Socials.Social[0].profileName,
+        display_name: profileData.Socials.Social[0].profileDisplayName,
+      }}
       fid={profileData.Socials.Social[0].userId}
     />
   );

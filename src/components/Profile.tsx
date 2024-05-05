@@ -13,7 +13,7 @@ import TopCast from "./TopCast";
 import OwnNfts from "./OwnNfts";
 import ReachOut from "./ReachOut";
 
-interface userData {
+interface TUserData {
   bio: string;
   pfp_url: string;
   follower_count: number;
@@ -23,23 +23,11 @@ interface userData {
 }
 
 interface ProfileProps {
-  username: string;
+  userData: TUserData;
   fid: string;
 }
 
-const Profile: FC<ProfileProps> = ({ username, fid }) => {
-  const [userData, setUserData] = useState<userData>({
-    bio: `“The Purple Guy” Founder, builder, and  Brand Designer. 
-    Obsessed with /design  Content Creator 
-    & Full time Dad.`,
-    pfp_url:
-      "https://imagedelivery.net/BXluQx4ige9GuW0Ia56BHw/6f618f59-2290-4350-100a-4b5d10abef00/original",
-    display_name: "Akhil BVS",
-    follower_count: 258,
-    following_count: 76,
-    username: "akhil_bvs",
-  });
-
+const Profile: FC<ProfileProps> = ({ userData, fid }) => {
   const [topCasts, setTopCasts] = useState([]);
   const [mostEngagedAccounts, setMostEngagedAccounts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -65,7 +53,7 @@ const Profile: FC<ProfileProps> = ({ username, fid }) => {
         setLoading(false);
       }
     };
-    if (username) {
+    if (userData.username) {
       fetchUserBasicData();
     } else {
       console.log("fname required");
@@ -159,7 +147,7 @@ const Profile: FC<ProfileProps> = ({ username, fid }) => {
                 Fav bulders
               </h1>
 
-              <div className="w-full grid-cols-3 grid items-start justify-center  gap-4">
+              <div className='w-full grid-cols-3 grid items-start justify-center  gap-4'>
                 {mostEngagedAccounts.map((account: any, id: number) => (
                   <AccountCard
                     key={id}
