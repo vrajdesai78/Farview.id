@@ -1,5 +1,5 @@
 import React from "react";
-import Grid from "../Grid";
+import Grid from "../Grid/Grid";
 import TopChannel, { TopChannelProps } from "./TopChannel";
 
 const TopChannels = () => {
@@ -20,7 +20,7 @@ const TopChannels = () => {
 
   return (
     <Grid heading="Top Caster">
-      <div className="flex-col justify-start items-start gap-6 inline-flex w-full">
+      <div className="flex-col justify-start items-center lg:items-start gap-6 inline-flex w-full">
         {topChannels.map((channel: any, id: number) => (
           <TopChannel
             channelIcon={channel.icon}

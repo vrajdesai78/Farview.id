@@ -10,6 +10,8 @@ import ProfileHero from "./ProfileHero";
 import TopChannels from "./TopChannel/TopChannels";
 import TopFollowers from "./TopFollowers";
 import TopCast from "./TopCast";
+import OwnNfts from "./OwnNfts";
+import ReachOut from "./ReachOut";
 
 interface userData {
   bio: string;
@@ -113,14 +115,26 @@ const Profile: FC<ProfileProps> = ({ username, fid }) => {
               ))}
             </div>
 
-            <div className="w-full flex items-center justify-center gap-3 flex-wrap">
-              <TopChannels />
-              <TopCast />
-              <TopFollowers />
+            <div className="w-full flex items-center justify-start gap-3  flex-col">
+              <div className="w-full flex items-center justify-between md:justify-center gap-3 ">
+                <TopChannels />
+                {/* top cast for large dekstop screens */}
+                <div className="md:block hidden w-[348px]">
+                  <TopCast />
+                </div>
+                <TopFollowers />
+              </div>
+              {/* top cast for small screens */}
+              <div className="md:hidden block  w-full">
+                <TopCast />
+              </div>
             </div>
-
+            <div className="w-full flex items-center justify-between md:flex-row flex-col md:justify-center gap-3 ">
+              <OwnNfts />
+              <ReachOut />
+            </div>
             {/* cast */}
-            <div className="w-full flex-col flex items-center justify-start gap-4">
+            {/* <div className="w-full flex-col flex items-center justify-start gap-4">
               <h1 className="text-white/90 font-bold text-2xl font-mono">
                 Your Top Casts
               </h1>
@@ -137,10 +151,10 @@ const Profile: FC<ProfileProps> = ({ username, fid }) => {
                   timestamp={cast.timestamp}
                 />
               ))}
-            </div>
+            </div> */}
 
             {/* most engaged accounts */}
-            <div className="w-full flex-col flex items-center justify-start gap-4">
+            {/* <div className="w-full flex-col flex items-center justify-start gap-4">
               <h1 className="text-white/90 font-bold text-2xl font-mono">
                 Fav bulders
               </h1>
@@ -156,6 +170,15 @@ const Profile: FC<ProfileProps> = ({ username, fid }) => {
                   />
                 ))}
               </div>
+            </div> */}
+
+            <div className="text-center">
+              <span className="text-slate-500 text-sm font-normal ">
+                Create your own via{" "}
+              </span>
+              <span className="text-violet-500 text-sm font-semibold ">
+                Farento.
+              </span>
             </div>
           </>
         )}
