@@ -6,6 +6,7 @@ export const getUserData = async (fname: string) => {
       input: {filter: {dappName: {_eq: farcaster}, identity: {_eq: "fc_fname:${fname}"}}, blockchain: ethereum}
     ) {
       Social {
+        userCreatedAtBlockTimestamp
         userAssociatedAddresses
         profileBio
         profileImage
@@ -33,13 +34,6 @@ export const getUserData = async (fname: string) => {
         blockTimestamp
       }
     }
-    FarcasterChannelParticipants(
-      input: {filter: {participant: {_eq: "fc_fname:${fname}"}, channelActions: {_eq: cast}}, blockchain: ALL, limit: 1, order: {lastActionTimestamp: ASC}}
-    ) {
-      FarcasterChannelParticipant {
-        lastCastedTimestamp
-      }
-    }
   }`;
 
   const resp = await fetch("https://api.airstack.xyz/gql", {
@@ -56,6 +50,7 @@ export const getUserData = async (fname: string) => {
       Socials: {
         Social: [
           {
+            userCreatedAtBlockTimestamp: string;
             userAssociatedAddresses: string[];
             profileBio: string;
             profileImage: string;
@@ -73,6 +68,14 @@ export const getUserData = async (fname: string) => {
             name: string;
             imageUrl: string;
             url: string;
+          }
+        ];
+      };
+      Wallet: {
+        tokenTransfers: [
+          {
+            transactionHash: string;
+            blockTimestamp: string;
           }
         ];
       };
@@ -94,12 +97,11 @@ export const fetchActiveChannels = async (fid: string) => {
   );
 
   const data = await apiResponse.json();
-  console.log("active Channels", data);
-  return JSON.stringify(data)
+  // console.log("active Channels", data);
+  return JSON.stringify(data);
 };
 
 export const fetchMostEngagedPeople = async (fid: string) => {
-
   const apiResponse = await fetch(
     `https://api.neynar.com/v2/farcaster/followers/relevant?target_fid=${fid}&viewer_fid=244416`,
     {
@@ -111,12 +113,12 @@ export const fetchMostEngagedPeople = async (fid: string) => {
   );
 
   const data = await apiResponse.json();
-  console.log("Most Engaged Users", data);
-  return JSON.stringify(data)
+  // console.log("Most Engaged Users", data);
+  return JSON.stringify(data);
 };
 
 export const getTopNFTs = async (address: string) => {
-  console.log("address", address);
+  // console.log("address", address);
   const nftResponse = await fetch(
     `https://api.simplehash.com/api/v0/nfts/owners_v2?chains=base&wallet_addresses=${address}&order_by=floor_price__desc&limit=4`,
     {
@@ -142,9 +144,6 @@ export const fetchTopCasts = async (fid: string) => {
   );
 
   const data = await apiResponse.json();
-  console.log("Top Casts", data);
-  return JSON.stringify(data)
+  // console.log("Top Casts", data);
+  return JSON.stringify(data);
 };
-
-
-
