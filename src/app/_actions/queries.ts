@@ -36,6 +36,16 @@ export const getUserData = async (fname: string) => {
         blockTimestamp
       }
     }
+    FarcasterChannelParticipants(
+      input: {filter: {participant: {_eq: "fc_fname:vrajdesai"}}, blockchain: ALL, limit: 3, order: {lastActionTimestamp: DESC}}
+    ) {
+      FarcasterChannelParticipant {
+        channelName
+        channel {
+          imageUrl
+        }
+      }
+    }
   }`;
 
   const resp = await fetch("https://api.airstack.xyz/gql", {
@@ -81,6 +91,16 @@ export const getUserData = async (fname: string) => {
           }
         ];
       };
+      FarcasterChannelParticipants: {
+        FarcasterChannelParticipant: [
+          {
+            channelName: string;
+            channel: {
+              imageUrl: string;
+            };
+          }
+        ];
+      };
     };
   };
 
@@ -89,7 +109,7 @@ export const getUserData = async (fname: string) => {
 
 export const fetchActiveChannels = async (fid: string) => {
   const apiResponse = await fetch(
-    "https://api.neynar.com/v2/farcaster/channel/user?fid=3&limit=3",
+    `https://api.neynar.com/v2/farcaster/channel/user?fid=${fid}&limit=3`,
     {
       method: "GET",
       headers: {
@@ -99,13 +119,18 @@ export const fetchActiveChannels = async (fid: string) => {
   );
 
   const data = await apiResponse.json();
-  // console.log("active Channels", data);
-  return JSON.stringify(data);
+
+  const channels = data.channels.map((channel: any) => ({
+    url: channel.url,
+    name: channel.name,
+    imageUrl: channel.image_url,
+  }));
+  return channels;
 };
 
-export const fetchMostEngagedPeople = async (fid: string) => {
+export const fetchTopFollowers = async (fid: string) => {
   const apiResponse = await fetch(
-    `https://api.neynar.com/v2/farcaster/followers/relevant?target_fid=${fid}&viewer_fid=244416`,
+    `https://api.neynar.com/v2/farcaster/followers?fid=${fid}&sort_type=algorithmic&limit=3`,
     {
       method: "GET",
       headers: {
@@ -115,14 +140,21 @@ export const fetchMostEngagedPeople = async (fid: string) => {
   );
 
   const data = await apiResponse.json();
-  // console.log("Most Engaged Users", data);
-  return JSON.stringify(data);
+  const followers: {
+    name: string;
+    pfp: string;
+  }[] = data.users.map((user: any) => {
+    return {
+      name: user.user.username,
+      pfp: user.user.pfp_url,
+    };
+  });
+  return followers;
 };
 
 export const getTopNFTs = async (address: string) => {
-  // console.log("address", address);
   const nftResponse = await fetch(
-    `https://api.simplehash.com/api/v0/nfts/owners_v2?chains=base&wallet_addresses=${address}&order_by=floor_price__desc&limit=4`,
+    `https://api.simplehash.com/api/v0/nfts/owners_v2?chains=base&wallet_addresses=${address}&order_by=floor_price__desc&limit=10`,
     {
       method: "GET",
       headers: {
@@ -131,7 +163,26 @@ export const getTopNFTs = async (address: string) => {
     }
   );
 
-  const { nfts } = await nftResponse.json();
+  const data = await nftResponse.json();
+  const uniqueNames = new Set();
+  const nfts: {
+    imageUrl: string;
+    name: string;
+  }[] = [];
+
+  for (const nft of data.nfts) {
+    if (!uniqueNames.has(nft.contract?.name)) {
+      uniqueNames.add(nft.contract?.name);
+      nfts.push({
+        imageUrl: nft.previews?.image_medium_url,
+        name: nft.contract?.name,
+      });
+
+      if (nfts.length === 3) {
+        break;
+      }
+    }
+  }
   return nfts;
 };
 export const fetchTopCasts = async (fid: string) => {
@@ -146,7 +197,6 @@ export const fetchTopCasts = async (fid: string) => {
   );
 
   const data = await apiResponse.json();
-  // console.log("Top Casts", data);
   return JSON.stringify(data);
 };
 

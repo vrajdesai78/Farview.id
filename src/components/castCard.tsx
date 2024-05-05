@@ -24,14 +24,14 @@ const CastCard = ({
 
   return (
     // <div className=" rounded-xl flex items-center w-full justify-center">
-    <div className='p-4 rounded-xl border border-[#382a3d] bg-[#16101e] w-full max-w-xl'>
+    <div className='p-4 rounded-xl border border-[#382a3d] bg-[#E3E8EF] w-full max-w-xl'>
       <div className='flex justify-between'>
         <div className='flex items-center'>
           {/* profile img */}
           <img className='h-11 w-11 rounded-full object-cover' src={pfpImg} />
           <div className='ml-1.5 text-sm leading-tight'>
             {/* display name */}
-            <span className='text-[#f4f4f5] font-bold block '>
+            <span className='text-slate-500 font-bold block '>
               {displayName}
             </span>
             {/* username */}
@@ -48,7 +48,7 @@ const CastCard = ({
         />
       </div>
       <div className='max-w-full w-full flex items-start justify-center'>
-        <p className='text-white block text-xl w-full  mt-3 max-w-full whitespace-break-spaces'>
+        <p className='text-slate-800 block text-xl w-full  mt-3 max-w-full whitespace-break-spaces'>
           {castText}
         </p>
       </div>

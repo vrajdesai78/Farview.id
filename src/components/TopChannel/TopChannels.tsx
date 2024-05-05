@@ -1,29 +1,19 @@
-import React from "react";
+import React, { FC } from "react";
 import Grid from "../Grid/Grid";
-import TopChannel, { TopChannelProps } from "./TopChannel";
+import TopChannel from "./TopChannel";
+import { TActiveChannels } from "@/types/types";
 
-const TopChannels = () => {
-  const topChannels = [
-    {
-      name: "fbi",
-      icon: "/fbiChannel.svg",
-    },
-    {
-      name: "higher",
-      icon: "/higherChannel.svg",
-    },
-    {
-      name: "degen",
-      icon: "/degenChannel.svg",
-    },
-  ];
+interface TopChannelsProps {
+  topChannels: TActiveChannels[];
+}
 
+const TopChannels: FC<TopChannelsProps> = ({ topChannels }) => {
   return (
-    <Grid heading="Top Caster">
-      <div className="flex-col justify-start items-center lg:items-start gap-6 inline-flex w-full">
-        {topChannels.map((channel: any, id: number) => (
+    <Grid heading='Active Caster'>
+      <div className='flex-col justify-start items-center lg:items-start gap-6 inline-flex w-full'>
+        {topChannels.map((channel: TActiveChannels, id: number) => (
           <TopChannel
-            channelIcon={channel.icon}
+            channelIcon={channel.imageUrl}
             channelName={`/ ${channel.name}`}
             key={id}
           />

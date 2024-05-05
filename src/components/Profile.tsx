@@ -2,7 +2,7 @@
 
 import React, { FC, useEffect, useState } from "react";
 import CastCard from "./castCard";
-import { fetchMostEngagedPeople, fetchTopCasts } from "@/app/_actions/queries";
+import { fetchTopCasts } from "@/app/_actions/queries";
 import AccountCard from "./AccountCard";
 import Navbar from "./Navbar";
 import Tag from "./Tag";
@@ -12,6 +12,7 @@ import TopFollowers from "./TopFollowers";
 import TopCast from "./TopCast";
 import OwnNfts from "./OwnNfts";
 import ReachOut from "./ReachOut";
+import { TActiveChannels, TNFTs, TTopFollowers } from "@/types/types";
 
 interface TUserData {
   bio: string;
@@ -28,64 +29,47 @@ interface TUserData {
 interface ProfileProps {
   userData: TUserData;
   fid: string;
+  nfts: TNFTs[];
+  activeChannels: TActiveChannels[];
+  topFollowers: TTopFollowers[];
 }
 
-const Profile: FC<ProfileProps> = ({ userData, fid }) => {
-  const [topCasts, setTopCasts] = useState([]);
-  const [mostEngagedAccounts, setMostEngagedAccounts] = useState([]);
-  const [loading, setLoading] = useState(false);
+const Profile: FC<ProfileProps> = ({
+  userData,
+  fid,
+  nfts,
+  activeChannels,
+  topFollowers,
+}) => {
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchUserBasicData = async () => {
-      setLoading(true);
-      try {
-        // NOTE: facing 500 error in basic data fetch- Cannot read properties of null (reading 'Socials')
-        // const res = await fetch(`/api/getUser?fname=${username}`);
-        // const data = await res.json();
-        const topCasts = await fetchTopCasts(fid);
-        const casts = JSON.parse(topCasts).casts;
-        const mostEngagedPeople = await fetchMostEngagedPeople(fid);
-        const people =
-          JSON.parse(mostEngagedPeople).top_relevant_followers_hydrated;
-        setMostEngagedAccounts(people);
-        setTopCasts(casts.slice(0, 3));
-        // setUserData(data);
-        setLoading(false);
-      } catch (err) {
-        console.error(err);
-        setLoading(false);
-      }
-    };
-    if (userData.username) {
-      fetchUserBasicData();
-    } else {
-      console.log("fname required");
-    }
+    setLoading(false);
   }, []);
 
   // dummy tags
   const tags = [
     {
-      title: "500+ txns on Base",
+      title: `${userData.txnCount}+ txns on Base`,
       icon: "/base.svg",
     },
     {
-      title: "Joined FC on 4th May, 21",
+      title: `First txn (Base) ${userData.firstTxn}`,
       icon: "/calendar.svg",
     },
     {
-      title: "500 Days since first Cast",
+      title: `${userData.daysSinceFirstTxn} Days since first txn (Base)`,
       icon: "/clock.svg",
     },
   ];
 
   return (
-    <div className="w-full min-h-screen flex items-center justify-start flex-col py-12 px-6  bg-[#F8FAFC] ">
-      <div className="w-full flex flex-col items-center justify-start gap-6 max-w-[1200px]">
+    <div className='w-full min-h-screen flex items-center justify-start flex-col py-12 px-6  bg-[#F8FAFC] '>
+      <div className='w-full flex flex-col items-center justify-start gap-6 max-w-[1200px]'>
         <Navbar />
 
         {loading ? (
-          <h1 className="text-black/90 font-bold text-2xl">Loading...</h1>
+          <h1 className='text-black/90 font-bold text-2xl'>Loading...</h1>
         ) : (
           <>
             <ProfileHero
@@ -100,28 +84,28 @@ const Profile: FC<ProfileProps> = ({ userData, fid }) => {
             />
 
             {/* famous tags */}
-            <div className="w-full flex items-center justify-center gap-3 flex-wrap">
+            <div className='w-full flex items-center justify-center gap-3 flex-wrap'>
               {tags.map((tag: any, id: number) => (
                 <Tag icon={tag.icon} title={tag.title} key={id} />
               ))}
             </div>
 
-            <div className="w-full flex items-center justify-start gap-3  flex-col">
-              <div className="w-full flex items-center justify-between md:justify-center gap-3 ">
-                <TopChannels />
+            <div className='w-full flex items-center justify-start gap-3  flex-col'>
+              <div className='w-full flex items-center justify-between md:justify-center gap-3 '>
+                <TopChannels topChannels={activeChannels} />
                 {/* top cast for large dekstop screens */}
-                <div className="md:block hidden w-[348px]">
+                <div className='md:block hidden w-[348px]'>
                   <TopCast />
                 </div>
-                <TopFollowers />
+                <TopFollowers topFollowers={topFollowers} />
               </div>
               {/* top cast for small screens */}
-              <div className="md:hidden block  w-full">
+              <div className='md:hidden block  w-full'>
                 <TopCast />
               </div>
             </div>
-            <div className="w-full flex items-center justify-between md:flex-row flex-col md:justify-center gap-3 ">
-              <OwnNfts />
+            <div className='w-full flex items-center justify-between md:flex-row flex-col md:justify-center gap-3 '>
+              <OwnNfts nfts={nfts} />
               <ReachOut />
             </div>
             {/* cast */}
@@ -151,7 +135,7 @@ const Profile: FC<ProfileProps> = ({ userData, fid }) => {
               </h1>
 
               <div className='w-full grid-cols-3 grid items-start justify-center  gap-4'>
-                {mostEngagedAccounts.map((account: any, id: number) => (
+                {/* {mostEngagedAccounts.map((account: any, id: number) => (
                   <AccountCard
                     key={id}
                     displayName={account.user.display_name}
@@ -159,15 +143,15 @@ const Profile: FC<ProfileProps> = ({ userData, fid }) => {
                     pfpImg={account.user.pfp_url}
                     bio={account.user.profile.bio.text}
                   />
-                ))}
-              </div>
-            </div> */}
+                ))} */}
+            {/* </div>
+            </div> * */}
 
-            <div className="text-center">
-              <span className="text-slate-500 text-sm font-normal ">
+            <div className='text-center'>
+              <span className='text-slate-500 text-sm font-normal '>
                 Create your own via{" "}
               </span>
-              <span className="text-violet-500 text-sm font-semibold ">
+              <span className='text-violet-500 text-sm font-semibold '>
                 Farento.
               </span>
             </div>
