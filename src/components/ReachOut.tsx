@@ -25,17 +25,21 @@ const ReachOut = () => {
     },
   ];
   return (
-    <Grid heading='Follow & Reach out'>
-      <div className='w-full flex items-center justify-center gap-8 lg:gap-12'>
+    <Grid heading="Follow & Reach out">
+      <div className="w-full flex items-center justify-center gap-8 lg:gap-12 absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2">
         {links.map((link: any, id: number) => {
           return (
             <a
-              className='flex items-center justify-center'
+              className="flex items-center justify-center"
               href={link.url}
               key={id}
-              target='_blank'
+              target="_blank"
             >
-              <img src={link.icon} alt='' className='w-8 h-8 rounded-lg' />
+              <img
+                src={link.icon}
+                alt=""
+                className="md:w-8 w-5 md:h-8 h-5 rounded-lg"
+              />
             </a>
           );
         })}

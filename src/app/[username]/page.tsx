@@ -21,7 +21,10 @@ const Page = async ({ params }: { params: { username: string } }) => {
       getTxnCount(profileData.Socials.Social[0].userAssociatedAddresses[1]),
     ]);
 
-  const date = new Date(profileData.Wallet.tokenTransfers[0].blockTimestamp);
+  let date = new Date();
+  if (profileData.Wallet.tokenTransfers[0]) {
+    date = new Date(profileData.Wallet.tokenTransfers[0].blockTimestamp);
+  }
 
   const { formattedDateWithSuffix, diffDays } = getFormattedDate(date);
   getFormattedDate;
@@ -41,7 +44,7 @@ const Page = async ({ params }: { params: { username: string } }) => {
       fid={profileData.Socials.Social[0].userId}
       nfts={nfts}
       activeChannels={activeChannels}
-      topFollowers={topFollowers}
+      topFollowers={topFollowers!}
       topCast={topCasts}
     />
   );

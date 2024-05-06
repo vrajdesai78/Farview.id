@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import Grid from "./Grid/Grid";
 import TopChannel from "./TopChannel/TopChannel";
 import { TTopFollowers } from "@/types/types";
+import ShortenName from "../../utils/nameShortner";
 
 interface TopFollowersProps {
   topFollowers: TTopFollowers[];
@@ -9,12 +10,12 @@ interface TopFollowersProps {
 
 const TopFollowers: FC<TopFollowersProps> = ({ topFollowers }) => {
   return (
-    <Grid heading='Top Followers'>
-      <div className='flex-col justify-start items-center md:items-start gap-6 inline-flex w-full'>
+    <Grid heading="Top Followers">
+      <div className="flex-col justify-start items-center lg:items-start gap-6 inline-flex w-full">
         {topFollowers.map((channel: TTopFollowers, id: number) => (
           <TopChannel
             channelIcon={channel.pfp}
-            channelName={`@${channel.name}`}
+            channelName={`@${ShortenName(channel.name, 8)}`}
             key={id}
           />
         ))}

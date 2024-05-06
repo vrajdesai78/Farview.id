@@ -129,8 +129,10 @@ export const fetchActiveChannels = async (fid: string) => {
 };
 
 export const fetchTopFollowers = async (fid: string) => {
+
+
   const apiResponse = await fetch(
-    `https://api.neynar.com/v2/farcaster/followers?fid=${fid}&sort_type=algorithmic&limit=3`,
+    `https://api.neynar.com/v2/farcaster/followers/relevant?target_fid=${fid}&sort_type=algorithmic&limit=3&viewer_fid=479`,
     {
       method: "GET",
       headers: {
@@ -140,16 +142,18 @@ export const fetchTopFollowers = async (fid: string) => {
   );
 
   const data = await apiResponse.json();
+
   const followers: {
     name: string;
     pfp: string;
-  }[] = data.users.map((user: any) => {
+  }[] = data.top_relevant_followers_hydrated.map((user: any) => {
     return {
       name: user.user.username,
       pfp: user.user.pfp_url,
     };
   });
   return followers;
+
 };
 
 export const getTopNFTs = async (address: string) => {
@@ -198,7 +202,6 @@ export const fetchTopCasts = async (fid: string) => {
 
   const { casts } = await apiResponse.json();
   const topCast = casts[0];
-  console.log("topCast", topCast);
   return {
     text: topCast.text,
     display_name: topCast.display_name,
