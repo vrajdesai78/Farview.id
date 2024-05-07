@@ -11,7 +11,7 @@ import OwnNfts from "./OwnNfts";
 import ReachOut from "./ReachOut";
 import { TActiveChannels, TCast, TNFTs, TTopFollowers } from "@/types/types";
 
-interface TUserData {
+export interface TUserData {
   bio: string;
   pfp_url: string;
   follower_count: number;
@@ -107,13 +107,13 @@ const Profile: FC<ProfileProps> = ({
                 <TopChannels topChannels={activeChannels} />
                 {/* top cast for large dekstop screens */}
                 <div className="md:block hidden w-[348px]">
-                  <TopCast topCast={dummyTopCast.topCast} />
+                  <TopCast userDetails={userData} topCast={topCast} />
                 </div>
                 <TopFollowers topFollowers={topFollowers} />
               </div>
               {/* top cast for small screens */}
               <div className="md:hidden block  w-full">
-                <TopCast topCast={dummyTopCast.topCast} />
+                <TopCast userDetails={userData} topCast={topCast} />
               </div>
             </div>
             <div className="w-full md:max-w-[700px] lg:max-w-[800px] flex items-center justify-between md:flex-row flex-col md:justify-between gap-3 ">

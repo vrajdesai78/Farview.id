@@ -16,10 +16,8 @@ export interface TTopFollowers {
 
 export interface TCast {
   text: string;
-  display_name: string;
-  username: string;
-  pfp_url: string;
   likes_count: number;
   recasts_count: number;
   timestamp: string;
+  message?: string;
 }

@@ -200,7 +200,12 @@ export const fetchTopCasts = async (fid: string) => {
     }
   );
 
-  const { casts } = await apiResponse.json();
+  const { casts, message } = await apiResponse.json();
+  if (!casts) {
+    return {
+      message
+    }
+  }
   const topCast = casts[0];
   return {
     text: topCast.text,
