@@ -8,7 +8,7 @@ interface GridProps {
 const Grid = ({ heading, children }: GridProps) => {
   return (
     <div
-      className={`bg-white border relative border-[#E3E8EF] rounded-3xl flex flex-col  items-center ${
+      className={`bg-white border relative border-slate-300 rounded-3xl flex flex-col  items-center ${
         !heading.includes("Top Base NFTs")
           ? !heading.includes("Tokens")
             ? "md:h-[326px] lg:h-[287px] p-8"

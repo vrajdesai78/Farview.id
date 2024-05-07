@@ -12,7 +12,7 @@ interface TopCastProps {
 const TopCast: FC<TopCastProps> = ({ topCast, userDetails }) => {
   return (
     <Grid heading='Top Cast'>
-      <div className='flex items-center rounded-xl justify-center w-full  bg-[#E3E8EF] h-[180px] '>
+      <div className='flex items-center rounded-xl justify-center w-full h-[180px] '>
         {topCast.message ? (
           <span className=' text-[10px] md:text-xs  text-primary-grey font-normal'>
             {topCast.message}

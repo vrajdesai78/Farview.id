@@ -29,7 +29,7 @@ const CastCard = ({
   return (
     // <div className=" rounded-xl flex items-center w-full justify-center">
     <Link
-      className='p-4 rounded-xl !pb-2 border h-[200px] border-[#382a3d] bg-[#E3E8EF] w-full max-w-xl flex flex-col items-start justify-between'
+      className='p-4 rounded-xl !pb-2 border h-[200px] border-slate-300 w-full max-w-xl flex flex-col items-start justify-between'
       href={url}
       target='_blank'
     >

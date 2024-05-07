@@ -30,7 +30,7 @@ export default function Home() {
             </span>
             <div className='flex items-center justify-center gap-3 mt-4 w-full'>
               <div
-                className='max-w-sm flex gap-2 items-center border-gray-300 border bg-white px-3 py-2 md:px-4 md:py-3 rounded-2xl'
+                className='max-w-sm flex gap-2 items-center border-slate-300 border bg-white px-3 py-2 md:px-4 md:py-3 rounded-2xl'
                 style={{
                   boxShadow: "2px 2px 5px 1px rgba(0,0,0,.5)",
                 }}
