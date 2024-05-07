@@ -1,5 +1,6 @@
 "use server";
 
+import { TCast } from "@/types/types";
 import { CovalentClient } from "@covalenthq/client-sdk";
 
 export const getUserData = async (fname: string) => {
@@ -23,9 +24,9 @@ export const getUserData = async (fname: string) => {
       input: {blockchain: ALL, filter: {hostIdentity: {_eq: "fc_fname:${fname}"}}, order: {followerCount: DESC}, limit: 3}
     ) {
       FarcasterChannel {
-        name
         imageUrl
         url
+        channelId
       }
     }
     Wallet(
@@ -77,9 +78,9 @@ export const getUserData = async (fname: string) => {
       FarcasterChannels: {
         FarcasterChannel: [
           {
-            name: string;
             imageUrl: string;
             url: string;
+            channelId: string;
           }
         ];
       };
@@ -122,15 +123,13 @@ export const fetchActiveChannels = async (fid: string) => {
 
   const channels = data.channels.map((channel: any) => ({
     url: channel.url,
-    name: channel.name,
+    name: channel.id,
     imageUrl: channel.image_url,
   }));
   return channels;
 };
 
 export const fetchTopFollowers = async (fid: string) => {
-
-
   const apiResponse = await fetch(
     `https://api.neynar.com/v2/farcaster/followers/relevant?target_fid=${fid}&sort_type=algorithmic&limit=3&viewer_fid=479`,
     {
@@ -153,7 +152,6 @@ export const fetchTopFollowers = async (fid: string) => {
     };
   });
   return followers;
-
 };
 
 export const getTopNFTs = async (address: string) => {
@@ -203,19 +201,17 @@ export const fetchTopCasts = async (fid: string) => {
   const { casts, message } = await apiResponse.json();
   if (!casts) {
     return {
-      message
-    }
+      message,
+    };
   }
   const topCast = casts[0];
   return {
     text: topCast.text,
-    display_name: topCast.display_name,
-    username: topCast.username,
-    pfp_url: topCast.pfp_url,
     likes_count: topCast.reactions.likes_count,
     recasts_count: topCast.reactions.recasts_count,
     timestamp: topCast.timestamp,
-  };
+    url: `https://warpcast.com/${topCast.author.username}/${topCast.hash}`,
+  } as TCast;
 };
 
 export const getTxnCount = async (address: string) => {

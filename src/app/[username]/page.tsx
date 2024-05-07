@@ -8,6 +8,7 @@ import {
   fetchTopFollowers,
 } from "../_actions/queries";
 import { getFormattedDate } from "@/lib/utils";
+import { TCast } from "@/types/types";
 
 const Page = async ({ params }: { params: { username: string } }) => {
   const profileData = await getUserData(params.username);
@@ -45,7 +46,7 @@ const Page = async ({ params }: { params: { username: string } }) => {
       nfts={nfts}
       activeChannels={activeChannels}
       topFollowers={topFollowers!}
-      topCast={topCasts}
+      topCast={topCasts as TCast}
     />
   );
 };

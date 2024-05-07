@@ -20,4 +20,5 @@ export interface TCast {
   recasts_count: number;
   timestamp: string;
   message?: string;
+  url: string;
 }

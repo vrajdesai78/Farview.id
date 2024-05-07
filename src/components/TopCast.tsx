@@ -13,10 +13,10 @@ const TopCast: FC<TopCastProps> = ({ topCast, userDetails }) => {
   console.log(topCast);
 
   return (
-    <Grid heading="Top Cast">
-      <div className="flex items-center rounded-xl justify-center w-full  bg-[#E3E8EF] h-[180px] ">
+    <Grid heading='Top Cast'>
+      <div className='flex items-center rounded-xl justify-center w-full  bg-[#E3E8EF] h-[180px] '>
         {topCast.message ? (
-          <span className=" text-[10px] md:text-xs  text-primary-grey font-normal">
+          <span className=' text-[10px] md:text-xs  text-primary-grey font-normal'>
             {topCast.message}
           </span>
         ) : (
@@ -28,6 +28,7 @@ const TopCast: FC<TopCastProps> = ({ topCast, userDetails }) => {
             likesCount={topCast.likes_count}
             recastCount={topCast.recasts_count}
             timestamp={topCast.timestamp}
+            url={topCast.url}
           />
         )}
       </div>

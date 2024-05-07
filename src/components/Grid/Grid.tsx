@@ -9,7 +9,7 @@ const Grid = ({ heading, children }: GridProps) => {
   return (
     <div
       className={`bg-white border relative border-[#E3E8EF] rounded-3xl flex flex-col  items-center ${
-        !heading.includes("Owns")
+        !heading.includes("Top NFTs")
           ? !heading.includes("Reach")
             ? "md:h-[326px] lg:h-[287px] p-8"
             : "h-[188px] w-full  p-8"
@@ -28,7 +28,7 @@ const Grid = ({ heading, children }: GridProps) => {
     >
       {children}
 
-      <span className="text-center text-slate-500 text-sm lg:text-base font-normal tracking-tight">
+      <span className='text-center text-slate-500 text-sm lg:text-base font-normal tracking-tight'>
         {heading}
       </span>
     </div>
