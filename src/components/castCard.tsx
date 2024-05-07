@@ -56,7 +56,7 @@ const CastCard = ({
         />
       </div>
       <div className='max-w-full w-full flex items-start justify-center'>
-        <p className='text-slate-800 block text-xs w-full mt-1 max-w-full whitespace-break-spaces text-ellipsis'>
+        <p className='text-slate-800 block text-xs w-full mt-1 max-w-full whitespace-break-spaces overflow-hidden'>
           {ShortenName(castText, 80)}
         </p>
       </div>

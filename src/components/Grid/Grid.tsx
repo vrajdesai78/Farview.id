@@ -12,7 +12,7 @@ const Grid = ({ heading, children }: GridProps) => {
         !heading.includes("Top Base NFTs")
           ? !heading.includes("Tokens")
             ? "md:h-[326px] lg:h-[287px] p-8"
-            : "h-[188px] w-full  p-8"
+            : "h-[188px] w-full p-8"
           : "md:h-[188px] lg:w-[calc(60%)] md:w-auto w-full md:p-8 p-4 justify-end"
       } ${
         heading.includes("Caster") || heading.includes("Follower")

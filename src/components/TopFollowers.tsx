@@ -11,7 +11,7 @@ interface TopFollowersProps {
 const TopFollowers: FC<TopFollowersProps> = ({ topFollowers }) => {
   return (
     <Grid heading='Top Followers'>
-      <div className='flex-col justify-start items-center lg:items-start gap-6 inline-flex w-full'>
+      <div className='flex-col justify-start items-center lg:items-start gap-6 inline-flex w-full h-full'>
         {topFollowers.map((channel: TTopFollowers, id: number) => (
           <TopChannel
             channelIcon={channel.pfp}

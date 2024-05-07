@@ -14,28 +14,36 @@ const ReachOut = ({ TokenBalance }: TokenBalances) => {
           </div>
         ) : (
           <>
-            {TokenBalance.map(({ token, formattedAmount }, id: number) => {
-              return (
-                <div
-                  className='flex flex-col items-center justify-start gap-2.5'
-                  key={id}
-                >
-                  <img
-                    src={`${token.symbol}.png`}
-                    alt=''
-                    className='sm:w-16 w-12 sm:h-16 h-12 rounded-full'
-                  />
-                  <span className=' text-[10px] md:text-xs  text-primary-grey font-normal'>
-                    {Number(formattedAmount) >= 1000
-                      ? `${(Number(formattedAmount) / 1000).toFixed(2)}k`
-                      : Number(formattedAmount) % 1 !== 0
-                      ? Number(formattedAmount).toFixed(2)
-                      : formattedAmount}{" "}
-                    {token.symbol}
-                  </span>
-                </div>
-              );
-            })}
+            {TokenBalance ? (
+              TokenBalance.map(({ token, formattedAmount }, id: number) => {
+                return (
+                  <div
+                    className='flex flex-col items-center justify-start gap-2.5'
+                    key={id}
+                  >
+                    <img
+                      src={`${token.symbol}.png`}
+                      alt=''
+                      className='sm:w-16 w-12 sm:h-16 h-12 rounded-full'
+                    />
+                    <span className=' text-[10px] md:text-xs  text-primary-grey font-normal'>
+                      {Number(formattedAmount) >= 1000
+                        ? `${(Number(formattedAmount) / 1000).toFixed(2)}k`
+                        : Number(formattedAmount) % 1 !== 0
+                        ? Number(formattedAmount).toFixed(2)
+                        : formattedAmount}{" "}
+                      {token.symbol}
+                    </span>
+                  </div>
+                );
+              })
+            ) : (
+              <div className='flex flex-col items-center justify-center gap-2'>
+                <span className='text text-center text-primary-grey font-normal'>
+                  No Tokens Found
+                </span>
+              </div>
+            )}
           </>
         )}
       </div>
