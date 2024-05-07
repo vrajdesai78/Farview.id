@@ -71,7 +71,7 @@ const Profile: FC<ProfileProps> = ({
   ];
 
   return (
-    <div className='w-full min-h-screen flex items-center justify-start flex-col py-12 px-6  bg-[#F8FAFC] '>
+    <div className='w-full min-h-screen flex items-center justify-start flex-col py-8 px-3  bg-[#F8FAFC] '>
       <div className='w-full flex flex-col items-center justify-start gap-6 max-w-[1200px]'>
         <Navbar />
 
