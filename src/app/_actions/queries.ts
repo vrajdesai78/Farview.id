@@ -182,6 +182,25 @@ export const fetchTopFollowers = async (fid: string) => {
   return followers;
 };
 
+export const getFollowingFollowers = async (fname: string) => {
+  const apiResponse = await fetch(
+    `https://api.neynar.com/v2/farcaster/user/search?q=${fname}&limit=1`,
+    {
+      method: "GET",
+      headers: {
+        api_key: process.env.NEYNAR_API_KEY!,
+      },
+    }
+  );
+
+  const { result } = await apiResponse.json();
+  console.log(result);
+  return {
+    followers: result.users[0].follower_count,
+    followings: result.users[0].following_count,
+  };
+};
+
 export const getTopNFTs = async (address: string) => {
   const nftResponse = await fetch(
     `https://api.simplehash.com/api/v0/nfts/owners_v2?chains=base&wallet_addresses=${address}&order_by=floor_price__desc&limit=10`,

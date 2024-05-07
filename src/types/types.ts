@@ -29,6 +29,5 @@ export interface TokenBalances {
       symbol: string;
     };
     formattedAmount: string;
-
   }[]
 };

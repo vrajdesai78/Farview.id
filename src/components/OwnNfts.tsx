@@ -9,7 +9,7 @@ interface OwnNFTsProps {
 
 const OwnNfts: FC<OwnNFTsProps> = ({ nfts }) => {
   return (
-    <Grid heading='Top NFTs'>
+    <Grid heading='Top Base NFTs'>
       <div className=' justify-center items-center gap-6 inline-flex w-full'>
         {nfts.length === 0 ? (
           <div className='flex flex-col items-center justify-center gap-2'>
@@ -33,7 +33,7 @@ const OwnNfts: FC<OwnNFTsProps> = ({ nfts }) => {
                 {/* nft icon */}
                 <span className=' text-[10px] md:text-xs  text-primary-grey font-normal'>
                   {/* ALLOW ONLY 15 CHARACTERS FOR NFT NAME ELSE ...... */}
-                  {ShortenName(nft.name, 5)}
+                  {ShortenName(nft.name, 15)}
                 </span>
               </div>
             ))}
