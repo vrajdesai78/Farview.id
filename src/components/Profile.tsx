@@ -58,17 +58,19 @@ const Profile: FC<ProfileProps> = ({
   const tags = [
     {
       title: `${userData.txnCount}+ txns on Base`,
-      icon: "/base.svg",
+      icon: "/images/base.svg",
     },
     {
       title: `First txn (Base) ${userData.firstTxn}`,
-      icon: "/calendar.svg",
+      icon: "/images/calendar.svg",
     },
     {
       title: `${userData.daysSinceFirstTxn} Days since first txn (Base)`,
-      icon: "/clock.svg",
+      icon: "/images/clock.svg",
     },
   ];
+
+  console.log("userData", userData);
 
   return (
     <div className='w-full min-h-screen flex items-center justify-start flex-col py-8 px-3  bg-[#F8FAFC] '>

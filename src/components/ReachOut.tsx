@@ -22,7 +22,7 @@ const ReachOut = ({ TokenBalance }: TokenBalances) => {
                     key={id}
                   >
                     <img
-                      src={`${token.symbol}.png`}
+                      src={`/images/${token.symbol}.png`}
                       alt=''
                       className='sm:w-16 w-12 sm:h-16 h-12 rounded-full'
                     />
