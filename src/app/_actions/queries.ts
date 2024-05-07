@@ -194,7 +194,6 @@ export const getFollowingFollowers = async (fname: string) => {
   );
 
   const { result } = await apiResponse.json();
-  console.log(result);
   return {
     followers: result.users[0].follower_count,
     followings: result.users[0].following_count,

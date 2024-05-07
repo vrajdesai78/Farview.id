@@ -9,7 +9,6 @@ interface TopFollowersProps {
 }
 
 const TopFollowers: FC<TopFollowersProps> = ({ topFollowers }) => {
-  console.log("topFollowers", topFollowers);
   return (
     <Grid heading='Top Followers'>
       <div className='flex-col justify-start items-center lg:items-start gap-6 inline-flex w-full'>

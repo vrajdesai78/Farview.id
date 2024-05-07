@@ -10,8 +10,6 @@ interface TopCastProps {
 }
 
 const TopCast: FC<TopCastProps> = ({ topCast, userDetails }) => {
-  console.log(topCast);
-
   return (
     <Grid heading='Top Cast'>
       <div className='flex items-center rounded-xl justify-center w-full  bg-[#E3E8EF] h-[180px] '>
