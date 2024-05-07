@@ -9,7 +9,13 @@ import TopFollowers from "./TopFollowers";
 import TopCast from "./TopCast";
 import OwnNfts from "./OwnNfts";
 import ReachOut from "./ReachOut";
-import { TActiveChannels, TCast, TNFTs, TTopFollowers } from "@/types/types";
+import {
+  TActiveChannels,
+  TCast,
+  TNFTs,
+  TTopFollowers,
+  TokenBalances,
+} from "@/types/types";
 
 export interface TUserData {
   bio: string;
@@ -30,6 +36,7 @@ interface ProfileProps {
   activeChannels: TActiveChannels[];
   topFollowers: TTopFollowers[];
   topCast: TCast;
+  Tokens: TokenBalances;
 }
 
 const Profile: FC<ProfileProps> = ({
@@ -39,6 +46,7 @@ const Profile: FC<ProfileProps> = ({
   activeChannels,
   topFollowers,
   topCast,
+  Tokens,
 }) => {
   const [loading, setLoading] = useState(true);
 
@@ -63,12 +71,12 @@ const Profile: FC<ProfileProps> = ({
   ];
 
   return (
-    <div className='w-full min-h-screen flex items-center justify-start flex-col py-12 px-6  bg-[#F8FAFC] '>
-      <div className='w-full flex flex-col items-center justify-start gap-6 max-w-[1200px]'>
+    <div className="w-full min-h-screen flex items-center justify-start flex-col py-12 px-6  bg-[#F8FAFC] ">
+      <div className="w-full flex flex-col items-center justify-start gap-6 max-w-[1200px]">
         <Navbar />
 
         {loading ? (
-          <h1 className='text-black/90 font-bold text-2xl'>Loading...</h1>
+          <h1 className="text-black/90 font-bold text-2xl">Loading...</h1>
         ) : (
           <>
             <ProfileHero
@@ -84,37 +92,37 @@ const Profile: FC<ProfileProps> = ({
 
             {/* famous tags */}
             {userData.txnCount && (
-              <div className='w-full flex items-center justify-center gap-3 flex-wrap'>
+              <div className="w-full flex items-center justify-center gap-3 flex-wrap">
                 {tags.map((tag: any, id: number) => (
                   <Tag icon={tag.icon} title={tag.title} key={id} />
                 ))}
               </div>
             )}
-            <div className='w-full flex items-center justify-start gap-3  flex-col'>
-              <div className='w-full flex items-center justify-between md:justify-center gap-3 '>
+            <div className="w-full flex items-center justify-start gap-3  flex-col">
+              <div className="w-full flex items-center justify-between md:justify-center gap-3 ">
                 <TopChannels topChannels={activeChannels} />
                 {/* top cast for large dekstop screens */}
-                <div className='md:block hidden w-[348px]'>
+                <div className="md:block hidden w-[348px]">
                   <TopCast userDetails={userData} topCast={topCast} />
                 </div>
                 <TopFollowers topFollowers={topFollowers} />
               </div>
               {/* top cast for small screens */}
-              <div className='md:hidden block  w-full'>
+              <div className="md:hidden block  w-full">
                 <TopCast userDetails={userData} topCast={topCast} />
               </div>
             </div>
-            <div className='w-full md:max-w-[700px] lg:max-w-[800px] flex items-center justify-between md:flex-row flex-col md:justify-between gap-3 '>
+            <div className="w-full md:max-w-[700px] lg:max-w-[800px] flex items-center justify-between md:flex-row flex-col md:justify-between gap-3 ">
               <OwnNfts nfts={nfts} />
-              <div className='lg:w-[484px] md:w-[400px] w-full'>
-                <ReachOut />
+              <div className="lg:w-[484px] md:w-[400px] w-full">
+                <ReachOut TokenBalance={Tokens.TokenBalance} />
               </div>
             </div>
-            <div className='text-center'>
-              <span className='text-slate-500 text-sm font-normal '>
+            <div className="text-center">
+              <span className="text-slate-500 text-sm font-normal ">
                 Create your own via{" "}
               </span>
-              <span className='text-primary-violet text-sm font-semibold '>
+              <span className="text-primary-violet text-sm font-semibold ">
                 Farento.
               </span>
             </div>

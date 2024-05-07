@@ -1,7 +1,9 @@
 import React from "react";
 import Grid from "./Grid/Grid";
+import ShortenName from "../../utils/nameShortner";
+import { TokenBalances } from "@/types/types";
 
-const ReachOut = () => {
+const ReachOut = ({ TokenBalance }: TokenBalances) => {
   const links = [
     {
       icon: "/twitter.svg",
@@ -25,24 +27,46 @@ const ReachOut = () => {
     },
   ];
   return (
-    <Grid heading="Follow & Reach out">
-      <div className="w-full flex items-center justify-center gap-8 lg:gap-12 absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2">
-        {links.map((link: any, id: number) => {
-          return (
-            <a
-              className="flex items-center justify-center"
-              href={link.url}
-              key={id}
-              target="_blank"
-            >
-              <img
-                src={link.icon}
-                alt=""
-                className="md:w-8 w-5 md:h-8 h-5 rounded-lg"
-              />
-            </a>
-          );
-        })}
+    <Grid heading="Tokens">
+      <div className=" justify-center items-center gap-6 inline-flex w-full">
+        {TokenBalance && TokenBalance.length === 0 ? (
+          <div className="flex flex-col items-center justify-center gap-2">
+            <span className="text-xs  text-primary-grey font-normal">
+              There is no wallet connected to this Farcaster ID
+            </span>
+          </div>
+        ) : (
+          <>
+            {TokenBalance.map(({ token, formattedAmount }, id: number) => {
+              const tokenIcon =
+                token.symbol === "DEGEN"
+                  ? "/degenIcon.svg"
+                  : token.symbol === "ENJOY"
+                  ? "/enjoyIcon.svg"
+                  : "/hamIcon.svg";
+              return (
+                <div
+                  className="flex flex-col items-center justify-start gap-2.5"
+                  key={id}
+                >
+                  {/* nft img */}
+                  <img
+                    src={tokenIcon}
+                    alt=""
+                    className="sm:w-16 w-12 sm:h-16 h-12 "
+                  />
+                  {/* nft icon */}
+                  <span className=" text-[10px] md:text-xs  text-primary-grey font-normal">
+                    {token.symbol}=$
+                    {Number(formattedAmount) >= 1000
+                      ? `${(Number(formattedAmount) / 1000).toFixed(2)}`
+                      : Number(formattedAmount).toFixed(2)}
+                  </span>
+                </div>
+              );
+            })}
+          </>
+        )}
       </div>
     </Grid>
   );

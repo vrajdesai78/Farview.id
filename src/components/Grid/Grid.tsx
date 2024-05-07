@@ -10,7 +10,7 @@ const Grid = ({ heading, children }: GridProps) => {
     <div
       className={`bg-white border relative border-[#E3E8EF] rounded-3xl flex flex-col  items-center ${
         !heading.includes("Top NFTs")
-          ? !heading.includes("Reach")
+          ? !heading.includes("Tokens")
             ? "md:h-[326px] lg:h-[287px] p-8"
             : "h-[188px] w-full  p-8"
           : "md:h-[188px] lg:w-[calc(100%-484px)] md:w-auto w-full md:p-8 p-4 justify-end"
@@ -28,7 +28,7 @@ const Grid = ({ heading, children }: GridProps) => {
     >
       {children}
 
-      <span className='text-center text-slate-500 text-sm lg:text-base font-normal tracking-tight'>
+      <span className="text-center text-slate-500 text-sm lg:text-base font-normal tracking-tight">
         {heading}
       </span>
     </div>

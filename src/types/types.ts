@@ -22,3 +22,13 @@ export interface TCast {
   message?: string;
   url: string;
 }
+
+export interface TokenBalances {
+  TokenBalance: {
+    token: {
+      symbol: string;
+    };
+    formattedAmount: string;
+
+  }[]
+};
