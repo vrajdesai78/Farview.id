@@ -150,7 +150,7 @@ export const fetchActiveChannels = async (fid: string) => {
   const data = await apiResponse.json();
 
   const channels = data.channels.map((channel: any) => ({
-    url: channel.url,
+    url: `https://warpcast.com/~/channel/${channel.id}`,
     name: channel.id,
     imageUrl: channel.image_url,
   }));
@@ -216,6 +216,7 @@ export const getTopNFTs = async (address: string) => {
   const nfts: {
     imageUrl: string;
     name: string;
+    nftUrl: string;
   }[] = [];
 
   for (const nft of data.nfts) {
@@ -224,6 +225,7 @@ export const getTopNFTs = async (address: string) => {
       nfts.push({
         imageUrl: nft.previews?.image_medium_url,
         name: nft.contract?.name,
+        nftUrl: nft.collection.marketplace_pages[0].nft_url,
       });
 
       if (nfts.length === 3) {
@@ -270,4 +272,19 @@ export const getTxnCount = async (address: string) => {
     return resp.data.items[0].total_count;
   }
   return null;
+};
+
+export const getFarcasterName = async (fname: string) => {
+  const apiResponse = await fetch(
+    `https://api.neynar.com/v2/farcaster/user/search?q=${fname}&limit=1`,
+    {
+      method: "GET",
+      headers: {
+        api_key: process.env.NEYNAR_API_KEY!,
+      },
+    }
+  );
+
+  const { result } = await apiResponse.json();
+  return result.users[0].display_name;
 };

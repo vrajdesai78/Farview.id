@@ -7,10 +7,24 @@ import {
   getTxnCount,
   fetchTopFollowers,
   getFollowingFollowers,
+  getFarcasterName,
 } from "../_actions/queries";
 import { getFormattedDate } from "@/lib/utils";
 import { TCast, TokenBalances } from "@/types/types";
 import { redirect } from "next/navigation";
+import { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { username: string };
+}): Promise<Metadata> {
+  const name = await getFarcasterName(params.username);
+  return {
+    title: `${name}'s Profile`,
+    description: `Check out ${name}'s profile on Farento!`,
+  };
+}
 
 const Page = async ({ params }: { params: { username: string } }) => {
   try {

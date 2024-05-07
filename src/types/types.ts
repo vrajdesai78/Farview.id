@@ -1,6 +1,7 @@
 export interface TNFTs {
   name: string;
   imageUrl: string;
+  nftUrl: string;
 }
 
 export interface TActiveChannels {
@@ -29,5 +30,5 @@ export interface TokenBalances {
       symbol: string;
     };
     formattedAmount: string;
-  }[]
-};
+  }[];
+}

@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import Grid from "./Grid/Grid";
 import { TNFTs } from "@/types/types";
 import ShortenName from "../../utils/nameShortner";
+import Link from "next/link";
 
 interface OwnNFTsProps {
   nfts: TNFTs[];
@@ -20,9 +21,11 @@ const OwnNfts: FC<OwnNFTsProps> = ({ nfts }) => {
         ) : (
           <>
             {nfts.map((nft: TNFTs, id: number) => (
-              <div
+              <Link
                 className='flex flex-col items-center justify-start gap-2.5'
                 key={id}
+                href={nft.nftUrl}
+                target='_blank'
               >
                 {/* nft img */}
                 <img
@@ -35,7 +38,7 @@ const OwnNfts: FC<OwnNFTsProps> = ({ nfts }) => {
                   {/* ALLOW ONLY 15 CHARACTERS FOR NFT NAME ELSE ...... */}
                   {ShortenName(nft.name, 15)}
                 </span>
-              </div>
+              </Link>
             ))}
           </>
         )}
