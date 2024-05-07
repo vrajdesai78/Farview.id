@@ -47,6 +47,20 @@ export const getUserData = async (fname: string) => {
         }
       }
     }
+    TokenBalances(
+      input: {filter: {owner: {_eq: "fc_fname:${fname}"}, tokenType: {_in: [ERC20, ERC721]}, tokenAddress: {_in: ["0x4ed4e862860bed51a9570b96d89af5e1b0efefed", "0x0578d8A44db98B23BF096A382e016e29a5Ce0ffe", "0x5B5dee44552546ECEA05EDeA01DCD7Be7aa6144A"]}}, blockchain: base}
+    ) {
+      TokenBalance {
+        token {
+          symbol
+        }
+        formattedAmount
+      }
+      pageInfo {
+        nextCursor
+        prevCursor
+      }
+    }
   }`;
 
   const resp = await fetch("https://api.airstack.xyz/gql", {
@@ -101,6 +115,20 @@ export const getUserData = async (fname: string) => {
             };
           }
         ];
+      };
+      TokenBalances: {
+        TokenBalance: [
+          {
+            token: {
+              symbol: string;
+            };
+            formattedAmount: string;
+          }
+        ];
+        pageInfo: {
+          nextCursor: string;
+          prevCursor: string;
+        };
       };
     };
   };
