@@ -14,8 +14,11 @@ const OwnNfts: FC<OwnNFTsProps> = ({ nfts }) => {
       <div className=' justify-center items-center gap-6 inline-flex w-full'>
         {nfts.length === 0 ? (
           <div className='flex flex-col items-center justify-center gap-2'>
-            <span className='text-xs  text-primary-grey font-normal'>
-              There is no wallet connected to this Farcaster ID
+            <span className='text-lg text-primary-grey font-normal'>
+              No NFTs on Base yet
+            </span>
+            <span className='text-primary-grey'>
+              (Check your FC connected wallet)
             </span>
           </div>
         ) : (
