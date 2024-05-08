@@ -1,11 +1,17 @@
-import { getTopNFTs, getUserData } from "@/app/_actions/queries";
+import {
+  fetchActiveChannels,
+  getTopNFTs,
+  getTxnCount,
+  getUserData,
+} from "@/app/_actions/queries";
 import OwnNfts from "@/components/OwnNfts";
-import { TNFTs } from "@/types/types";
+import { TActiveChannels, TNFTs } from "@/types/types";
 import { useHtmlContext } from "next/dist/shared/lib/html-context.shared-runtime";
 import Link from "next/link";
 import { ImageResponse } from "next/og";
 import { NextRequest } from "next/server";
 import ShortenName from "../../../utils/nameShortner";
+import { getFormattedDate } from "@/lib/utils";
 
 export const runtime = "edge";
 
@@ -13,169 +19,222 @@ export default async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
 
-    // getting username
-    const usernameQuery = searchParams.get("username");
-    const username = decodeURIComponent(usernameQuery!).toLowerCase();
+    // // getting username
+    // const usernameQuery = searchParams.get("username");
+    // const username = decodeURIComponent(usernameQuery!).toLowerCase();
 
-    console.log(username);
+    // console.log(username);
 
-    const profileData = await getUserData(username!);
+    // const profileData = await getUserData(username!);
 
     // getting pfp
-    const pfp = profileData.Socials.Social[0].profileImage;
+    // const pfp = profileData.Socials.Social[0].profileImage;
 
     // getting bio
-    const bio = profileData.Socials.Social[0].profileBio;
+    // const bio = profileData.Socials.Social[0].profileBio;
 
     // follower and following count
-    const follower_count = profileData.Socials.Social[0].followerCount;
-    const following_count = profileData.Socials.Social[0].followingCount;
+    // const follower_count = profileData.Socials.Social[0].followerCount;
+    // const following_count = profileData.Socials.Social[0].followingCount;
 
-    const nfts = await getTopNFTs(
+    // const nfts = await getTopNFTs(
+    //   profileData.Socials.Social[0].userAssociatedAddresses[1]
+    // );
+
+    const fname = searchParams.get("fname");
+
+    if (!fname) {
+      throw new Error("No fname provided");
+    }
+
+    const profileData = await getUserData(fname);
+    const txnCount = await getTxnCount(
       profileData.Socials.Social[0].userAssociatedAddresses[1]
     );
+
+    let date = new Date();
+    if (profileData.Wallet.tokenTransfers[0]) {
+      date = new Date(profileData.Wallet.tokenTransfers[0].blockTimestamp);
+    }
+
+    const { formattedDateWithSuffix, diffDays } = getFormattedDate(date);
+
+    const tags = [
+      {
+        title: `${txnCount}+ txns on Base`,
+        icon: "💸",
+      },
+      {
+        title: `First txn on Base - ${formattedDateWithSuffix}`,
+        icon: "🥇",
+      },
+      {
+        title: `${diffDays} D since First Base txn`,
+        icon: "⌛️",
+      },
+    ];
+
+    const activeChannels = await fetchActiveChannels(
+      profileData.Socials.Social[0].userId
+    );
+
+    const follower_count = profileData.Socials.Social[0].followerCount;
+    const following_count = profileData.Socials.Social[0].followingCount;
 
     return new ImageResponse(
       (
         <div
-          tw=' w-full h-full p-10 pt-20  relative flex flex-col items-center justify-start bg-black'
-          style={{ gap: "5px" }}
+          style={{
+            gap: "12px",
+          }}
+          tw="flex  flex-col items-center justify-start p-8 py-10 w-full h-full bg-[#7F5FC6]"
         >
-          <div tw=' w-full  relative flex items-center justify-between'>
+          {/* info and channels */}
+          <div tw="w-full flex justify-between items-center">
+            {/* user info */}
             <div
-              tw=' w-1/2 h-full  relative flex flex-col items-start justify-start max-w-1/2 '
               style={{
-                gap: "10px",
+                gap: "16px",
               }}
+              tw="flex flex-col "
             >
               <div
                 style={{
-                  borderRadius: "9999px",
+                  gap: "16px",
                 }}
-                tw='w-20 h-20  flex items-center justify-center'
+                tw="flex "
               >
                 <img
-                  src={pfp!}
-                  alt='Profile Image'
                   style={{
                     objectFit: "cover",
                   }}
-                  tw='w-full h-full '
+                  tw="h-12 w-12 rounded-full "
+                  src={profileData.Socials.Social[0].profileImage}
                 />
+                <div
+                  style={{
+                    gap: "2px",
+                  }}
+                  tw="flex flex-col text-white "
+                >
+                  <span tw="font-bold text-base">@{fname}</span>
+                  <div
+                    style={{
+                      gap: "6px",
+                    }}
+                    tw="flex   font-semibold text-sm"
+                  >
+                    <span>
+                      Followers:{" "}
+                      {follower_count >= 1000
+                        ? `${Number(follower_count / 1000).toFixed(2)}k`
+                        : follower_count}
+                    </span>
+                    <span>
+                      Following:{" "}
+                      {following_count >= 1000
+                        ? `${Number(following_count / 1000).toFixed(2)}k`
+                        : following_count}
+                    </span>
+                  </div>
+                </div>
               </div>
-              <h1
+              <div
                 style={{
-                  margin: "0px",
-                  fontWeight: 900,
+                  gap: "8px",
                 }}
-                tw='font-mono text-lg  text-white'
+                tw="flex-col flex items-start justify-start "
               >
-                @{username}
-              </h1>
+                {tags.map(({ icon, title }: any, id: number) => (
+                  <div
+                    style={{
+                      gap: "10px",
+                    }}
+                    tw="px-4 py-3 flex bg-[#6440B4] rounded-full border border-[#543696] justify-center items-center flex"
+                  >
+                    <div tw="rounded-3xl justify-center items-center flex font-normal">
+                      {/* tag icon */}
+                      <span tw="text-sm">{icon}</span>
+                    </div>
 
-              <p
-                style={{
-                  margin: "0px",
-                  fontWeight: 400,
-                  color: "rgba(255,255,255, 60)",
-                }}
-                tw='font-mono text-xs font-normal '
-              >
-                {ShortenName(bio, 100)}
-              </p>
+                    {/* tag title */}
+                    <span tw="text-center text-white text-sm font-normal tracking-tight">
+                      {title}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
 
+            {/* active channels */}
             <div
-              style={{
-                gap: "20px",
-              }}
-              tw=' w-1/2 h-full  relative flex flex-col items-center justify-start  max-w-1/2'
+              tw={`bg-[#6440B4] border relative border-[#543696] rounded-3xl flex flex-col  items-center w-[188px]  gap-6 justify-between h-[230px] p-6`}
             >
-              <span tw='text-lg text-white font-normal'>
-                Followers
-                <span tw='text-[#7F5FC6] font-semibold ml-2'>
-                  {follower_count >= 1000
-                    ? `${Number(follower_count / 1000).toFixed(2)}k`
-                    : follower_count}
-                </span>
-              </span>
+              <div
+                style={{
+                  gap: "20px",
+                  flexDirection: "column",
+                  flexWrap: "wrap",
+                  display: "flex",
+                }}
+                tw=" justify-start items-start w-full"
+              >
+                {activeChannels.length === 0 ? (
+                  <span tw=" text-[10px] md:text-xs  text-primary-grey font-normal max-w-[100px] text-center ">
+                    This user is not active in any channels
+                  </span>
+                ) : (
+                  <div
+                    style={{
+                      flexDirection: "column",
+                      display: "flex",
+                      alignItems: "flex-start",
+                      justifyContent: "flex-start",
+                      gap: 16,
+                    }}
+                  >
+                    {activeChannels.map(
+                      ({ name, imageUrl }: TActiveChannels, id: number) => (
+                        <div
+                          style={{
+                            gap: "8px",
+                          }}
+                          tw="justify-start items-center gap-2 flex flex-row "
+                        >
+                          {/* not using Next Image here bcq we are getting pfp url hosted on different domain i.imgur.com and next doesn't allow this */}
+                          <img
+                            tw="rounded-full max-w-9 max-h-9 object-cover"
+                            height={36}
+                            width={36}
+                            alt="icon"
+                            // loader={() => channelIcon}
+                            src={imageUrl}
+                          />
+                          <div tw=" text-white flex text-base font-semibold leading-tight">
+                            /{name}
+                          </div>
+                        </div>
+                      )
+                    )}
+                  </div>
+                )}
+              </div>
 
-              {/* following count */}
-              <span tw='text-lg text-white font-normal'>
-                Following
-                <span tw='text-[#7F5FC6] font-semibold ml-2'>
-                  {following_count >= 1000
-                    ? `${Number(following_count / 1000).toFixed(2)}k`
-                    : following_count}
-                </span>
+              <span tw="text-center text-white text-xs font-normal tracking-tight">
+                {"Active Caster"}
               </span>
             </div>
           </div>
-          <div
-            tw='flex w-full items-start justify-center flex-col  '
-            style={{
-              gap: "10px",
-            }}
-          >
-            <h1
-              style={{
-                margin: 0,
-                color: "white",
-              }}
-              tw='text-lg'
-            >
-              TOP NFTs :
-            </h1>
-            <div
-              tw=' flex justify-start items-center w-full'
-              style={{
-                gap: 40,
-              }}
-            >
-              {nfts.length === 0 ? (
-                <div tw='flex flex-col items-center justify-center gap-2'>
-                  <span tw='text-lg font-normal text-[rgba(255,255,255,0.8)]'>
-                    No NFTs on Base yet
-                  </span>
-                  <span tw='text-[rgba(255,255,255,0.8)]'>
-                    (Check your FC connected wallet)
-                  </span>
-                </div>
-              ) : (
-                <>
-                  {nfts.map((nft: TNFTs, id: number) => (
-                    <Link
-                      tw='flex flex-col items-center justify-start '
-                      key={id}
-                      style={{
-                        marginLeft: 10,
-                        gap: 10,
-                      }}
-                      href={nft.nftUrl}
-                      target='_blank'
-                    >
-                      {/* nft img */}
-                      <img
-                        src={nft.imageUrl}
-                        alt=''
-                        tw='w-16 h-16 rounded-2xl'
-                      />
-                      {/* nft icon */}
-                      <span tw=' text-[10px] md:text-xs  text-[rgba(255,255,255,0.8)]  font-normal'>
-                        {/* ALLOW ONLY 15 CHARACTERS FOR NFT NAME ELSE ...... */}
-                        {ShortenName(nft.name, 15)}
-                      </span>
-                    </Link>
-                  ))}
-                </>
-              )}
-            </div>{" "}
+
+          <div tw="text-center flex text-white">
+            <span tw="text-sm font-normal ">Frame via</span>{" "}
+            <span tw="text-sm font-semibold ml-1">Farview.id</span>
           </div>
         </div>
       ),
       {
-        width: 512,
-        height: 512,
+        width: 570,
+        height: 320,
       }
     );
   } catch (e: any) {
