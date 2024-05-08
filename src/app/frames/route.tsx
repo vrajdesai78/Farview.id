@@ -71,15 +71,15 @@ const handleRequest = frames(async (ctx) => {
 
   const tags = [
     {
-      title: `${txnCount}+ txns on Base`,
+      title: `${txnCount ?? 0}+ txns on Base`,
       icon: "💸",
     },
     {
-      title: `First txn on Base - ${formattedDateWithSuffix}`,
+      title: `First txn on Base - ${formattedDateWithSuffix ?? 0}`,
       icon: "🥇",
     },
     {
-      title: `${diffDays} D since First Base txn`,
+      title: `${diffDays ?? 0} D since First Base txn`,
       icon: "⌛️",
     },
   ];
