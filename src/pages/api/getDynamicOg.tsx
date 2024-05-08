@@ -87,42 +87,42 @@ export default async function GET(request: NextRequest) {
           style={{
             gap: "12px",
           }}
-          tw="flex  flex-col items-center justify-start p-8 py-10 w-full h-full bg-[#7F5FC6]"
+          tw='flex  flex-col items-center justify-start p-8 py-10 w-full h-full bg-[#7F5FC6]'
         >
           {/* info and channels */}
-          <div tw="w-full flex justify-between items-center">
+          <div tw='w-full flex justify-between items-center'>
             {/* user info */}
             <div
               style={{
                 gap: "16px",
               }}
-              tw="flex flex-col "
+              tw='flex flex-col '
             >
               <div
                 style={{
                   gap: "16px",
                 }}
-                tw="flex "
+                tw='flex '
               >
                 <img
                   style={{
                     objectFit: "cover",
                   }}
-                  tw="h-12 w-12 rounded-full "
+                  tw='h-12 w-12 rounded-full '
                   src={profileData.Socials.Social[0].profileImage}
                 />
                 <div
                   style={{
                     gap: "2px",
                   }}
-                  tw="flex flex-col text-white "
+                  tw='flex flex-col text-white '
                 >
-                  <span tw="font-bold text-base">@{fname}</span>
+                  <span tw='font-bold text-base'>@{fname}</span>
                   <div
                     style={{
                       gap: "6px",
                     }}
-                    tw="flex   font-semibold text-sm"
+                    tw='flex   font-semibold text-sm'
                   >
                     <span>
                       Followers:{" "}
@@ -143,22 +143,23 @@ export default async function GET(request: NextRequest) {
                 style={{
                   gap: "8px",
                 }}
-                tw="flex-col flex items-start justify-start "
+                tw='flex-col flex items-start justify-start '
               >
                 {tags.map(({ icon, title }: any, id: number) => (
                   <div
                     style={{
                       gap: "10px",
                     }}
-                    tw="px-4 py-3 flex bg-[#6440B4] rounded-full border border-[#543696] justify-center items-center flex"
+                    key={id}
+                    tw='px-4 py-3 flex bg-[#6440B4] rounded-full border border-[#543696] justify-center items-center flex'
                   >
-                    <div tw="rounded-3xl justify-center items-center flex font-normal">
+                    <div tw='rounded-3xl justify-center items-center flex font-normal'>
                       {/* tag icon */}
-                      <span tw="text-sm">{icon}</span>
+                      <span tw='text-sm'>{icon}</span>
                     </div>
 
                     {/* tag title */}
-                    <span tw="text-center text-white text-sm font-normal tracking-tight">
+                    <span tw='text-center text-white text-sm font-normal tracking-tight'>
                       {title}
                     </span>
                   </div>
@@ -177,10 +178,10 @@ export default async function GET(request: NextRequest) {
                   flexWrap: "wrap",
                   display: "flex",
                 }}
-                tw=" justify-start items-start w-full"
+                tw=' justify-start items-start w-full'
               >
                 {activeChannels.length === 0 ? (
-                  <span tw=" text-[10px] md:text-xs  text-primary-grey font-normal max-w-[100px] text-center ">
+                  <span tw=' text-[10px] md:text-xs  text-primary-grey font-normal max-w-[100px] text-center '>
                     This user is not active in any channels
                   </span>
                 ) : (
@@ -199,18 +200,19 @@ export default async function GET(request: NextRequest) {
                           style={{
                             gap: "8px",
                           }}
-                          tw="justify-start items-center gap-2 flex flex-row "
+                          key={id}
+                          tw='justify-start items-center gap-2 flex flex-row '
                         >
                           {/* not using Next Image here bcq we are getting pfp url hosted on different domain i.imgur.com and next doesn't allow this */}
                           <img
-                            tw="rounded-full max-w-9 max-h-9 object-cover"
+                            tw='rounded-full max-w-9 max-h-9 object-cover'
                             height={36}
                             width={36}
-                            alt="icon"
+                            alt='icon'
                             // loader={() => channelIcon}
                             src={imageUrl}
                           />
-                          <div tw=" text-white flex text-base font-semibold leading-tight">
+                          <div tw=' text-white flex text-base font-semibold leading-tight'>
                             /{name}
                           </div>
                         </div>
@@ -220,15 +222,15 @@ export default async function GET(request: NextRequest) {
                 )}
               </div>
 
-              <span tw="text-center text-white text-xs font-normal tracking-tight">
+              <span tw='text-center text-white text-xs font-normal tracking-tight'>
                 {"Active Caster"}
               </span>
             </div>
           </div>
 
-          <div tw="text-center flex text-white">
-            <span tw="text-sm font-normal ">Frame via</span>{" "}
-            <span tw="text-sm font-semibold ml-1">Farview.id</span>
+          <div tw='text-center flex text-white'>
+            <span tw='text-sm font-normal '>Frame via</span>{" "}
+            <span tw='text-sm font-semibold ml-1'>Farview.id</span>
           </div>
         </div>
       ),

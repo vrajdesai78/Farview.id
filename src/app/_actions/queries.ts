@@ -326,3 +326,38 @@ export const addUser = async (fname: string) => {
     console.error(e);
   }
 };
+
+export const getFarcasterDetails = async (fid: string) => {
+  const query = `query MyQuery {
+    Socials(
+      input: {filter: {dappName: {_eq: farcaster}, identity: {_eq: "fc_fid:${fid}"}}, blockchain: ethereum}
+    ) {
+      Social {
+        profileName
+      }
+    }
+  }`;
+
+  const resp = await fetch("https://api.airstack.xyz/gql", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: process.env.AIRSTACK_API_KEY!,
+    },
+    body: JSON.stringify({ query }),
+  });
+
+  const { data } = (await resp.json()) as {
+    data: {
+      Socials: {
+        Social: [
+          {
+            profileName: string;
+          }
+        ];
+      };
+    };
+  };
+
+  return data;
+};
