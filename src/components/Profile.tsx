@@ -123,7 +123,7 @@ const Profile: FC<ProfileProps> = ({
                 Made with 💜 by{" "}
               </span>
               <span className='text-primary-violet text-sm font-semibold '>
-                Farento.
+                Farview.
               </span>
             </div>
           </>

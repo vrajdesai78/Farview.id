@@ -23,7 +23,7 @@ export async function generateMetadata({
   const { name, pfp } = await getFarcasterName(params.username);
   return {
     title: `${name}'s Profile`,
-    description: `Check out ${name}'s profile on Farento!`,
+    description: `Check out ${name}'s profile on Farview!`,
     openGraph: {
       images: [
         {

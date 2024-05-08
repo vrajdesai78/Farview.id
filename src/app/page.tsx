@@ -23,7 +23,7 @@ export default function Home() {
         <div className='w-full flex flex-col items-center justify-start gap-6 max-w-[1200px]'>
           <div className='flex flex-col items-center justify-center gap-2'>
             <span className='text-[2rem] md:text-[2rem] lg:text-[2.5rem] text-black font-semibold'>
-              Welcome to Farento 👋
+              Welcome to Farview 👋
             </span>
             <span className='text-[1rem] md:text-[1rem] text-black'>
               Search any Farcaster username below
