@@ -3,6 +3,8 @@ import { createFrames } from "frames.js/next";
 import {
   fetchActiveChannels,
   getFarcasterDetails,
+  getFarcasterName,
+  getFollowingFollowers,
   getTxnCount,
   getUserData,
 } from "../_actions/queries";
@@ -86,8 +88,8 @@ const handleRequest = frames(async (ctx) => {
     profileData.Socials.Social[0].userId
   );
 
-  const follower_count = profileData.Socials.Social[0].followerCount;
-  const following_count = profileData.Socials.Social[0].followingCount;
+  const { followers: follower_count, followings: following_count } =
+    await getFollowingFollowers(fname ?? name);
 
   return {
     image: (
