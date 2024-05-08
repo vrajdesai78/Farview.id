@@ -10,7 +10,7 @@ const Tag = ({ icon, title }: TagProps) => {
     <div className='px-4 py-3 bg-white rounded-full border border-slate-300 justify-center items-center gap-2.5 inline-flex'>
       <div className='rounded-3xl justify-center items-center flex'>
         {/* tag icon */}
-        <img className='w-7 h-7' src={icon} />
+        <span className='text-xl'>{icon}</span>
       </div>
 
       {/* tag title */}

@@ -307,8 +307,6 @@ export const addUser = async (fname: string) => {
       .select("*")
       .eq("fname", fname);
 
-    console.log(data);
-
     if (data && data.length > 0) {
       await client
         .from("Analytics")

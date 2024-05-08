@@ -50,7 +50,7 @@ const ProfileHero = ({
             Followers
             <span className='text-primary-violet font-semibold ml-2'>
               {follower_count >= 1000
-                ? `${Number(follower_count / 1000).toFixed(2)}`
+                ? `${Number(follower_count / 1000).toFixed(2)}k`
                 : follower_count}
             </span>
           </span>
@@ -60,7 +60,7 @@ const ProfileHero = ({
             Following
             <span className='text-primary-violet font-semibold ml-2'>
               {following_count >= 1000
-                ? `${Number(following_count / 1000).toFixed(2)}`
+                ? `${Number(following_count / 1000).toFixed(2)}k`
                 : following_count}
             </span>
           </span>

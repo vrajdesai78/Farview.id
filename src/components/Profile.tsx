@@ -58,15 +58,15 @@ const Profile: FC<ProfileProps> = ({
   const tags = [
     {
       title: `${userData.txnCount}+ txns on Base`,
-      icon: "/images/base.png",
+      icon: "💸",
     },
     {
-      title: `First txn (Base) ${userData.firstTxn}`,
-      icon: "/images/calendar.svg",
+      title: `First txn on Base - ${userData.firstTxn}`,
+      icon: "🥇",
     },
     {
-      title: `${userData.daysSinceFirstTxn} Days since first txn (Base)`,
-      icon: "/images/clock.svg",
+      title: `${userData.daysSinceFirstTxn} D since First Base txn`,
+      icon: "⌛️",
     },
   ];
 
