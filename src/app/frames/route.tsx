@@ -13,6 +13,16 @@ import { farcasterHubContext } from "frames.js/middleware";
 
 export const runtime = "edge";
 
+const soraRegular = fetch(
+  new URL("../../../public/fonts/Sora-Regular.ttf", import.meta.url)
+).then((res) => res.arrayBuffer());
+const soraSemiBold = fetch(
+  new URL("../../../public/fonts/Sora-SemiBold.ttf", import.meta.url)
+).then((res) => res.arrayBuffer());
+const soraBold = fetch(
+  new URL("../../../public/fonts/Sora-Bold.ttf", import.meta.url)
+).then((res) => res.arrayBuffer());
+
 const frames = createFrames({
   middleware: [
     farcasterHubContext({
@@ -26,21 +36,11 @@ const frames = createFrames({
   ],
 });
 const handleRequest = frames(async (ctx) => {
-  const soraRegular = fetch(
-    new URL("../../../public/fonts/Sora-Regular.ttf", import.meta.url)
-  ).then((res) => res.arrayBuffer());
-  const soraMedium = fetch(
-    new URL("../../../public/fonts/Sora-Medium.ttf", import.meta.url)
-  ).then((res) => res.arrayBuffer());
-  const soraSemiBold = fetch(
-    new URL("../../../public/fonts/Sora-SemiBold.ttf", import.meta.url)
-  ).then((res) => res.arrayBuffer());
-  const soraBold = fetch(
-    new URL("../../../public/fonts/Sora-Bold.ttf", import.meta.url)
-  ).then((res) => res.arrayBuffer());
-
-  const [soraRegularFont, soraMediumFont, soraSemiBoldFont, soraBoldFont] =
-    await Promise.all([soraRegular, soraMedium, soraSemiBold, soraBold]);
+  const [soraRegularFont, soraSemiBoldFont, soraBoldFont] = await Promise.all([
+    soraRegular,
+    soraSemiBold,
+    soraBold,
+  ]);
 
   const { searchParams } = new URL(ctx.url);
   const fname = searchParams.get("fname");
@@ -277,11 +277,6 @@ const handleRequest = frames(async (ctx) => {
           name: "Sora",
           weight: 400,
           data: soraRegularFont,
-        },
-        {
-          name: "Sora",
-          weight: 500,
-          data: soraMediumFont,
         },
         {
           name: "Sora",
