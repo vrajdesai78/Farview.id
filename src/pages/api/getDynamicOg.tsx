@@ -10,7 +10,23 @@ import { getFormattedDate } from "@/lib/utils";
 
 export const runtime = "edge";
 
+const soraRegular = fetch(
+  new URL("../../../public/fonts/Sora-Regular.ttf", import.meta.url)
+).then((res) => res.arrayBuffer());
+const soraSemiBold = fetch(
+  new URL("../../../public/fonts/Sora-SemiBold.ttf", import.meta.url)
+).then((res) => res.arrayBuffer());
+const soraBold = fetch(
+  new URL("../../../public/fonts/Sora-Bold.ttf", import.meta.url)
+).then((res) => res.arrayBuffer());
+
 export default async function GET(request: NextRequest) {
+  const [soraRegularFont, soraSemiBoldFont, soraBoldFont] = await Promise.all([
+    soraRegular,
+    soraSemiBold,
+    soraBold,
+  ]);
+
   try {
     const { searchParams } = new URL(request.url);
 
@@ -210,6 +226,23 @@ export default async function GET(request: NextRequest) {
       {
         width: 570,
         height: 320,
+        fonts: [
+          {
+            name: "Sora",
+            weight: 400,
+            data: soraRegularFont,
+          },
+          {
+            name: "Sora",
+            weight: 600,
+            data: soraSemiBoldFont,
+          },
+          {
+            name: "Sora",
+            weight: 700,
+            data: soraBoldFont,
+          },
+        ],
       }
     );
   } catch (e: any) {
