@@ -9,6 +9,11 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Farview",
   description: "Better FC Pages",
+  openGraph: {
+    images: {
+      url: `https://i.ibb.co/L9SGsyH/OGImg.png`,
+    },
+  },
 };
 
 export default function RootLayout({
@@ -17,7 +22,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en'>
+    <html lang="en">
       <body className={inter.className}>
         {children}
         <Analytics />
