@@ -127,7 +127,7 @@ const handleRequest = frames(async (ctx) => {
                 }}
                 tw='flex flex-col text-white '
               >
-                <span tw='font-bold text-base'>@{fname}</span>
+                <span tw='font-bold text-base'>@{fname ?? name}</span>
                 <div
                   style={{
                     gap: "6px",
