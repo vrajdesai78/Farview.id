@@ -16,6 +16,7 @@ import {
   TTopFollowers,
   TokenBalances,
 } from "@/types/types";
+import Link from "next/link";
 
 export interface TUserData {
   bio: string;
@@ -109,11 +110,21 @@ const Profile: FC<ProfileProps> = ({
           </div>
           <div className='text-center'>
             <span className='text-slate-500 text-sm font-normal '>
-              Made with 💜 by{" "}
+              Made with 💜 by
             </span>
-            <span className='text-primary-violet text-sm font-semibold '>
-              Farview.
+            <span className='text-primary-violet text-sm font-semibold ml-1'>
+              Farview
             </span>
+            <span className='text-slate-500 text-sm font-normal ml-1'>
+              | From the House of
+            </span>
+            <Link
+              className='text-primary-violet text-sm font-semibold ml-1'
+              href='https://warpcast.com/~/channel/fbi'
+              target='_blank'
+            >
+              FBI
+            </Link>
           </div>
         </>
       </div>
