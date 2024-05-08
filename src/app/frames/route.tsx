@@ -135,7 +135,7 @@ const handleRequest = frames(async (ctx) => {
               }}
               tw='flex-col flex items-start justify-start '
             >
-              {tags.map(({ icon, title }: any, id: number) => (
+              {tags?.map(({ icon, title }: any, id: number) => (
                 <div
                   style={{
                     gap: "10px",

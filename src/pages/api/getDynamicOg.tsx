@@ -169,7 +169,7 @@ export default async function GET(request: NextRequest) {
                 }}
                 tw=' justify-start items-start w-full'
               >
-                {activeChannels.length === 0 ? (
+                {activeChannels?.length === 0 ? (
                   <span tw=' text-[10px] md:text-xs  text-primary-grey font-normal max-w-[100px] text-center '>
                     This user is not active in any channels
                   </span>
@@ -183,7 +183,7 @@ export default async function GET(request: NextRequest) {
                       gap: 16,
                     }}
                   >
-                    {activeChannels.map(
+                    {activeChannels?.map(
                       ({ name, imageUrl }: TActiveChannels, id: number) => (
                         <div
                           style={{

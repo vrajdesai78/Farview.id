@@ -150,7 +150,7 @@ export const fetchActiveChannels = async (fid: string) => {
 
   const data = await apiResponse.json();
 
-  const channels = data.channels.map((channel: any) => ({
+  const channels = data?.channels?.map((channel: any) => ({
     url: `https://warpcast.com/~/channel/${channel.id}`,
     name: channel.id,
     imageUrl: channel.image_url,
@@ -174,7 +174,7 @@ export const fetchTopFollowers = async (fid: string) => {
   const followers: {
     name: string;
     pfp: string;
-  }[] = data.top_relevant_followers_hydrated.map((user: any) => {
+  }[] = data.top_relevant_followers_hydrated?.map((user: any) => {
     return {
       name: user.user.username,
       pfp: user.user.pfp_url,
