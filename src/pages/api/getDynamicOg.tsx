@@ -213,7 +213,6 @@ export default async function GET(request: NextRequest) {
       }
     );
   } catch (e: any) {
-    console.log(`${e.message} error`);
     return new Response(`Failed to generate the image`, {
       status: 500,
     });

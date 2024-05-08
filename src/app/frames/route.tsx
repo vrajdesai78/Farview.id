@@ -3,7 +3,6 @@ import { createFrames } from "frames.js/next";
 import {
   fetchActiveChannels,
   getFarcasterDetails,
-  getFarcasterName,
   getFollowingFollowers,
   getTxnCount,
   getUserData,
@@ -12,18 +11,6 @@ import { getFormattedDate } from "@/lib/utils";
 import { TActiveChannels } from "@/types/types";
 import ShortenName from "../../../utils/nameShortner";
 import { farcasterHubContext } from "frames.js/middleware";
-
-export const runtime = "edge";
-
-const soraRegular = fetch(
-  new URL("../../../public/fonts/Sora-Regular.ttf", import.meta.url)
-).then((res) => res.arrayBuffer());
-const soraSemiBold = fetch(
-  new URL("../../../public/fonts/Sora-SemiBold.ttf", import.meta.url)
-).then((res) => res.arrayBuffer());
-const soraBold = fetch(
-  new URL("../../../public/fonts/Sora-Bold.ttf", import.meta.url)
-).then((res) => res.arrayBuffer());
 
 const frames = createFrames({
   middleware: [
@@ -38,12 +25,6 @@ const frames = createFrames({
   ],
 });
 const handleRequest = frames(async (ctx) => {
-  const [soraRegularFont, soraSemiBoldFont, soraBoldFont] = await Promise.all([
-    soraRegular,
-    soraSemiBold,
-    soraBold,
-  ]);
-
   const { searchParams } = new URL(ctx.url);
   const fname = searchParams.get("fname");
   let name = "";
@@ -53,8 +34,7 @@ const handleRequest = frames(async (ctx) => {
         ctx.message.requesterFid.toString()
       );
       name = data.Socials.Social[0].profileName;
-      console.log("Name", name);
-    }
+\    }
   }
 
   const profileData = await getUserData(fname ?? name);
@@ -274,23 +254,6 @@ const handleRequest = frames(async (ctx) => {
       aspectRatio: "1.91:1",
       width: 570,
       height: 320,
-      fonts: [
-        {
-          name: "Sora",
-          weight: 400,
-          data: soraRegularFont,
-        },
-        {
-          name: "Sora",
-          weight: 600,
-          data: soraSemiBoldFont,
-        },
-        {
-          name: "Sora",
-          weight: 700,
-          data: soraBoldFont,
-        },
-      ],
     },
   };
 });

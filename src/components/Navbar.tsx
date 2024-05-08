@@ -4,8 +4,6 @@ import React from "react";
 
 const Navbar = () => {
   const pathname = usePathname();
-  console.log(pathname);
-
   return (
     <div
       className={`w-full flex items-center px-6 max-w-[1200px] ${
