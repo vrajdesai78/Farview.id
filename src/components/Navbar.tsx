@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
-import toast from "react-hot-toast";
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -14,23 +13,23 @@ const Navbar = () => {
       }`}
     >
       {/* Farview */}
-      <Link href={"/"} className="text-2xl font-semibold text-[#030816]">
+      <Link href={"/"} className='text-2xl font-semibold text-[#030816]'>
         Farview.id
       </Link>
 
       {/* share */}
       {pathname !== "/" && (
-        <a className="w-24 h-11 px-6 py-3 bg-white rounded-full border border-slate-200 justify-center items-center gap-2.5 inline-flex">
+        <div className='w-24 h-11 px-6 py-3 bg-white rounded-full border border-slate-200 justify-center items-center gap-2.5 inline-flex'>
           <Link
-            className="text-center text-slate-500 text-base font-normal tracking-tight"
+            className='text-center text-slate-500 text-base font-normal tracking-tight'
             href={`https://warpcast.com/~/compose?embeds[]=https://www.farview.id/frames?fname=${pathname?.slice(
               1
             )}`}
-            target="_blank"
+            target='_blank'
           >
             Share
           </Link>
-        </a>
+        </div>
       )}
     </div>
   );

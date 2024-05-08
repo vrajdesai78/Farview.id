@@ -1,16 +1,11 @@
 import {
   fetchActiveChannels,
-  getTopNFTs,
   getTxnCount,
   getUserData,
 } from "@/app/_actions/queries";
-import OwnNfts from "@/components/OwnNfts";
-import { TActiveChannels, TNFTs } from "@/types/types";
-import { useHtmlContext } from "next/dist/shared/lib/html-context.shared-runtime";
-import Link from "next/link";
+import { TActiveChannels } from "@/types/types";
 import { ImageResponse } from "next/og";
 import { NextRequest } from "next/server";
-import ShortenName from "../../../utils/nameShortner";
 import { getFormattedDate } from "@/lib/utils";
 
 export const runtime = "edge";
@@ -18,28 +13,6 @@ export const runtime = "edge";
 export default async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-
-    // // getting username
-    // const usernameQuery = searchParams.get("username");
-    // const username = decodeURIComponent(usernameQuery!).toLowerCase();
-
-    // console.log(username);
-
-    // const profileData = await getUserData(username!);
-
-    // getting pfp
-    // const pfp = profileData.Socials.Social[0].profileImage;
-
-    // getting bio
-    // const bio = profileData.Socials.Social[0].profileBio;
-
-    // follower and following count
-    // const follower_count = profileData.Socials.Social[0].followerCount;
-    // const following_count = profileData.Socials.Social[0].followingCount;
-
-    // const nfts = await getTopNFTs(
-    //   profileData.Socials.Social[0].userAssociatedAddresses[1]
-    // );
 
     const fname = searchParams.get("fname");
 
