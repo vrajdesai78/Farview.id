@@ -27,7 +27,7 @@ export async function generateMetadata({
     openGraph: {
       images: [
         {
-          url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/getDynamicOg?username=${params.username}`,
+          url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/getDynamicOg?fname=${params.username}`,
         },
       ],
     },
@@ -43,7 +43,7 @@ export async function generateMetadata({
     ],
     other: {
       "fc:frame": "vNext",
-      "fc:frame:image": `${process.env.NEXT_PUBLIC_BASE_URL}/api/getDynamicOg?username=${params.username}`,
+      "fc:frame:image": `${process.env.NEXT_PUBLIC_BASE_URL}/api/getDynamicOg?fname=${params.username}`,
       "fc:frame:image:aspect_ratio": "1:1",
     },
   };
