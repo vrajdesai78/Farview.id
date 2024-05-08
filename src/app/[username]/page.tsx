@@ -20,10 +20,32 @@ export async function generateMetadata({
 }: {
   params: { username: string };
 }): Promise<Metadata> {
-  const name = await getFarcasterName(params.username);
+  const { name, pfp } = await getFarcasterName(params.username);
   return {
     title: `${name}'s Profile`,
     description: `Check out ${name}'s profile on Farento!`,
+    openGraph: {
+      images: [
+        {
+          url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/getDynamicOg?username=${params.username}`,
+        },
+      ],
+    },
+    icons: [
+      {
+        rel: "icon",
+        url: pfp,
+      },
+      {
+        rel: "favicon",
+        url: pfp,
+      },
+    ],
+    other: {
+      "fc:frame": "vNext",
+      "fc:frame:image": `${process.env.NEXT_PUBLIC_BASE_URL}/api/getDynamicOg?username=${params.username}`,
+      "fc:frame:image:aspect_ratio": "1:1",
+    },
   };
 }
 

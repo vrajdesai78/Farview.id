@@ -10,14 +10,14 @@ interface OwnNFTsProps {
 
 const OwnNfts: FC<OwnNFTsProps> = ({ nfts }) => {
   return (
-    <Grid heading='Top Base NFTs'>
-      <div className=' justify-center items-center gap-6 inline-flex w-full'>
+    <Grid heading="Top Base NFTs">
+      <div className=" justify-center items-center gap-6 flex w-full">
         {nfts.length === 0 ? (
-          <div className='flex flex-col items-center justify-center gap-2'>
-            <span className='text-lg text-primary-grey font-normal'>
+          <div className="flex flex-col items-center justify-center gap-2">
+            <span className="text-lg text-primary-grey font-normal">
               No NFTs on Base yet
             </span>
-            <span className='text-primary-grey'>
+            <span className="text-primary-grey">
               (Check your FC connected wallet)
             </span>
           </div>
@@ -25,19 +25,19 @@ const OwnNfts: FC<OwnNFTsProps> = ({ nfts }) => {
           <>
             {nfts.map((nft: TNFTs, id: number) => (
               <Link
-                className='flex flex-col items-center justify-start gap-2.5'
+                className="flex flex-col items-center justify-start gap-2.5"
                 key={id}
                 href={nft.nftUrl}
-                target='_blank'
+                target="_blank"
               >
                 {/* nft img */}
                 <img
                   src={nft.imageUrl}
-                  alt=''
-                  className='w-16 h-16 rounded-2xl'
+                  alt=""
+                  className="w-16 h-16 rounded-2xl"
                 />
                 {/* nft icon */}
-                <span className=' text-[10px] md:text-xs  text-primary-grey font-normal'>
+                <span className=" text-[10px] md:text-xs  text-primary-grey font-normal">
                   {/* ALLOW ONLY 15 CHARACTERS FOR NFT NAME ELSE ...... */}
                   {ShortenName(nft.name, 15)}
                 </span>

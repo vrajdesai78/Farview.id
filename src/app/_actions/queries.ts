@@ -160,7 +160,7 @@ export const fetchActiveChannels = async (fid: string) => {
 
 export const fetchTopFollowers = async (fid: string) => {
   const apiResponse = await fetch(
-    `https://api.neynar.com/v2/farcaster/followers/relevant?target_fid=${fid}&sort_type=algorithmic&limit=3&viewer_fid=479`,
+    `https://api.neynar.com/v2/farcaster/followers/relevant?target_fid=${fid}&sort_type=algorithmic&limit=3&viewer_fid=${fid}`,
     {
       method: "GET",
       headers: {
@@ -287,7 +287,10 @@ export const getFarcasterName = async (fname: string) => {
   );
 
   const { result } = await apiResponse.json();
-  return result.users[0].display_name;
+  return {
+    name: result.users[0].display_name,
+    pfp: result.users[0].pfp_url
+  };
 };
 
 export const addUser = async (fname: string) => {
