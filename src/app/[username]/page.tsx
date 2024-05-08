@@ -8,6 +8,7 @@ import {
   fetchTopFollowers,
   getFollowingFollowers,
   getFarcasterName,
+  addUser,
 } from "../_actions/queries";
 import { getFormattedDate } from "@/lib/utils";
 import { TCast, TokenBalances } from "@/types/types";
@@ -37,6 +38,7 @@ const Page = async ({ params }: { params: { username: string } }) => {
       topCasts,
       txnCount,
       followingFollowers,
+      addUserForAnalytics,
     ] = await Promise.all([
       getTopNFTs(profileData.Socials.Social[0].userAssociatedAddresses[1]),
       fetchActiveChannels(profileData.Socials.Social[0].userId),
@@ -44,6 +46,7 @@ const Page = async ({ params }: { params: { username: string } }) => {
       fetchTopCasts(profileData.Socials.Social[0].userId),
       getTxnCount(profileData.Socials.Social[0].userAssociatedAddresses[1]),
       getFollowingFollowers(profileData.Socials.Social[0].profileName),
+      addUser(profileData.Socials.Social[0].profileName),
     ]);
 
     let date = new Date();

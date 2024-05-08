@@ -2,6 +2,7 @@
 
 import { TCast } from "@/types/types";
 import { CovalentClient } from "@covalenthq/client-sdk";
+import { SupabaseClient } from "@supabase/supabase-js";
 
 export const getUserData = async (fname: string) => {
   const query = `query MyQuery {
@@ -287,4 +288,39 @@ export const getFarcasterName = async (fname: string) => {
 
   const { result } = await apiResponse.json();
   return result.users[0].display_name;
+};
+
+export const addUser = async (fname: string) => {
+  try {
+    const supabaseUrl = process.env.SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_KEY;
+
+    if (!supabaseUrl || !supabaseKey)
+      throw new Error("Connection to SUPABASE Database failed", {
+        cause: "Missing SUPABASE_URL or SUPABASE_KEY",
+      });
+
+    const client = new SupabaseClient(supabaseUrl!, supabaseKey!);
+
+    const { data } = await client
+      .from("Analytics")
+      .select("*")
+      .eq("fname", fname);
+
+    console.log(data);
+
+    if (data && data.length > 0) {
+      await client
+        .from("Analytics")
+        .update({ visits: data[0].visits + 1 })
+        .eq("fname", fname);
+    } else {
+      await client.from("Analytics").insert({
+        fname: fname,
+        visits: 1,
+      });
+    }
+  } catch (e) {
+    console.error(e);
+  }
 };

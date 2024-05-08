@@ -56,14 +56,14 @@ export default function Home() {
                     <path
                       d='M15.9236 26.9167C22.3195 26.9167 27.5043 21.8426 27.5043 15.5833C27.5043 9.32411 22.3195 4.25 15.9236 4.25C9.52767 4.25 4.34277 9.32411 4.34277 15.5833C4.34277 21.8426 9.52767 26.9167 15.9236 26.9167Z'
                       stroke='black'
-                      stroke-width='2'
+                      strokeWidth='2'
                       stroke-linecap='round'
                       stroke-linejoin='round'
                     />
                     <path
                       d='M30.3996 29.7504L24.1025 23.5879'
                       stroke='black'
-                      stroke-width='2'
+                      strokeWidth='2'
                       stroke-linecap='round'
                       stroke-linejoin='round'
                     />
