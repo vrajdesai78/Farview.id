@@ -288,7 +288,7 @@ export const getFarcasterName = async (fname: string) => {
 
   const { result } = await apiResponse.json();
   return {
-    name: result.users[0].display_name,
+    name: result.users[0]?.display_name,
     pfp: result.users[0].pfp_url,
     address: result.users[0].verified_addresses.eth_addresses[0],
   };

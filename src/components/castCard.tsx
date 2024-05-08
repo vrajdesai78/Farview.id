@@ -2,6 +2,7 @@ import React, { use } from "react";
 import { getFormattedTime } from "../../utils/getFormattedTime";
 import ShortenName from "../../utils/nameShortner";
 import Link from "next/link";
+import Image from "next/image";
 
 interface cardProps {
   pfpImg: string;
@@ -36,7 +37,15 @@ const CastCard = ({
       <div className='flex justify-between w-full'>
         <div className='flex items-center'>
           {/* profile img */}
-          <img className='h-8 w-8 rounded-full object-cover' src={pfpImg} />
+          <Image
+            className='h-8 w-8 rounded-full object-cover'
+            alt='profile'
+            width={32}
+            height={32}
+            src={pfpImg}
+            unoptimized
+            loader={({ src }) => src}
+          />
           <div className='ml-1.5 text-xs leading-tight'>
             {/* display name */}
             <span className='text-slate-500 font-bold block '>
@@ -49,10 +58,14 @@ const CastCard = ({
           </div>
         </div>
         {/* warpcast icon */}
-        <img
+        <Image
           src='https://play-lh.googleusercontent.com/cRcdfJ01plmO9AhusWRZ1uyrjcYbbMMiyqTakPEHatoNVEzxtFt-78GJ7IZX-1cd2Vz2'
-          alt=''
+          alt='warpcast'
+          height={24}
+          width={24}
+          unoptimized
           className='w-6 h-6 rounded-sm'
+          loader={({ src }) => src}
         />
       </div>
       <div className='max-w-full w-full flex items-start justify-center'>

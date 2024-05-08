@@ -39,11 +39,11 @@ const handleRequest = frames(async (ctx) => {
 
   const profileData = await getUserData(fname ?? name);
   const txnCount = await getTxnCount(
-    profileData.Socials.Social[0].userAssociatedAddresses[1]
+    profileData?.Socials?.Social?.[0]?.userAssociatedAddresses[1]
   );
 
   let date = new Date();
-  if (profileData.Wallet.tokenTransfers[0]) {
+  if (profileData?.Wallet?.tokenTransfers?.[0]) {
     date = new Date(profileData.Wallet.tokenTransfers[0].blockTimestamp);
   }
 
@@ -99,7 +99,7 @@ const handleRequest = frames(async (ctx) => {
                   objectFit: "cover",
                 }}
                 tw='h-12 w-12 rounded-full '
-                src={profileData.Socials.Social[0].profileImage}
+                src={profileData?.Socials?.Social[0]?.profileImage}
               />
               <div
                 style={{
@@ -170,7 +170,7 @@ const handleRequest = frames(async (ctx) => {
               }}
               tw=' justify-start items-start w-full'
             >
-              {activeChannels.length === 0 ? (
+              {activeChannels?.length === 0 ? (
                 <span tw=' text-[10px] md:text-xs  text-primary-grey font-normal max-w-[100px] text-center '>
                   This user is not active in any channels
                 </span>
@@ -184,7 +184,7 @@ const handleRequest = frames(async (ctx) => {
                     gap: 16,
                   }}
                 >
-                  {activeChannels.map(
+                  {activeChannels?.map(
                     ({ name, imageUrl }: TActiveChannels, id: number) => (
                       <div
                         style={{

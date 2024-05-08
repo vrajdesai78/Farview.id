@@ -113,6 +113,8 @@ export default function Home() {
                         width={64}
                         height={64}
                         alt=''
+                        loader={({ src }) => src}
+                        unoptimized
                         className='max-w-16 max-h-16 rounded-full object-cover'
                       />
                       <span className='text-base font-normal text-primary-violet'>

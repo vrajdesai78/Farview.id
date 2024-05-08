@@ -2,6 +2,7 @@ import React from "react";
 import Grid from "./Grid/Grid";
 import ShortenName from "../../utils/nameShortner";
 import { TokenBalances } from "@/types/types";
+import Image from "next/image";
 
 const ReachOut = ({ TokenBalance }: TokenBalances) => {
   return (
@@ -23,9 +24,13 @@ const ReachOut = ({ TokenBalance }: TokenBalances) => {
                       className='flex flex-col items-center justify-start gap-2.5'
                       key={id}
                     >
-                      <img
+                      <Image
                         src={`/images/${token.symbol}.png`}
-                        alt=''
+                        alt='token'
+                        height={64}
+                        width={64}
+                        loader={({ src }) => src}
+                        unoptimized
                         className='sm:w-16 w-12 sm:h-16 h-12 rounded-full'
                       />
                       <span className=' text-[10px] md:text-xs  text-primary-grey font-normal'>
