@@ -34,7 +34,7 @@ const handleRequest = frames(async (ctx) => {
         ctx.message.requesterFid.toString()
       );
       name = data.Socials.Social[0].profileName;
-\    }
+    }
   }
 
   const profileData = await getUserData(fname ?? name);
