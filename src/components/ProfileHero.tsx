@@ -31,7 +31,7 @@ const ProfileHero = ({
         unoptimized
         className="w-16 h-16 rounded-full object-cover"
       />
-      <div className="flex items-center justify-center w-full gap-1">
+      <div className="flex items-center justify-center w-full gap-1 sm:flex-row flex-col">
         {/* display name */}
         <h1 className=" text-lg sm:text-xl md:text-2xl font-semibold text-[#030816] ">
           {display_name}
