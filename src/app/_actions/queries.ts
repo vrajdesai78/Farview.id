@@ -39,7 +39,7 @@ export const getUserData = async (fname: string) => {
       }
     }
     FarcasterChannelParticipants(
-      input: {filter: {participant: {_eq: "fc_fname:vrajdesai"}}, blockchain: ALL, limit: 3, order: {lastActionTimestamp: DESC}}
+      input: {filter: {participant: {_eq: "fc_fname:${fname}"}}, blockchain: ALL, limit: 3, order: {lastActionTimestamp: DESC}}
     ) {
       FarcasterChannelParticipant {
         channelName
