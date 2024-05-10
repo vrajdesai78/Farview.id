@@ -37,22 +37,22 @@ export default function Home() {
   ];
 
   return (
-    <div className='py-12 px-6 bg-[#F8FAFC] w-full flex flex-col items-center justify-start '>
+    <div className="py-12 px-6 bg-[#F8FAFC] w-full flex flex-col items-center sm:gap-4 md:gap-0 gap-10 justify-start ">
       <Navbar />
-      <main className='w-full h-[80vh] flex items-center justify-center flex-col py-12 px-6'>
-        <div className='w-full flex flex-col items-center justify-start gap-6 max-w-[1200px]'>
-          <div className='flex flex-col items-center justify-center gap-6'>
-            <div className='flex flex-col items-center justify-center gap-2 w-full max-w-xl'>
-              <span className='text-[2rem] md:text-[2rem] lg:text-[2.60rem] text-black font-semibold flex flex-col items-center justify-start gap-0.5 text-center'>
+      <main className="w-full h-[80vh] flex items-center justify-center flex-col  py-12 px-6">
+        <div className="w-full flex flex-col items-center justify-start gap-6 max-w-[1200px]">
+          <div className="flex flex-col items-center justify-center gap-6">
+            <div className="flex flex-col items-center justify-center gap-2 w-full max-w-xl">
+              <span className="text-[1.5rem] sm:text-[2rem] lg:text-[2.60rem] text-black font-semibold flex flex-col items-center justify-start gap-0.5 text-center">
                 Your personal page to show everything you do on
-                <span className=' text-primary-violet'>Farcaster.</span>
+                <span className=" text-primary-violet">Farcaster.</span>
               </span>
             </div>
 
-            <div className='flex items-center justify-center gap-3 mt-4 w-full'>
+            <div className="flex items-center justify-center gap-3 mt-4 w-full">
               {/* search input */}
               <div
-                className='max-w-sm flex gap-2 items-center border-[#E3E8EF] border bg-[#E3E8EF] px-5 py-3 md:px-8 md:py-6 rounded-full'
+                className="sm:max-w-sm max-w-full w-full flex gap-2 items-center border-[#E3E8EF] border bg-[#E3E8EF] px-2 sm:px-5 py-3 md:px-8 md:py-6 rounded-full"
                 style={
                   {
                     // boxShadow: "2px 2px 5px 1px rgba(0,0,0,.5)",
@@ -63,14 +63,14 @@ export default function Home() {
                   src={"/images/search.svg"}
                   width={16}
                   height={16}
-                  alt=''
-                  className='max-w-4 max-h-4'
+                  alt=""
+                  className="max-w-4 max-h-4"
                 />
 
                 <input
-                  type='text'
-                  placeholder='Search username'
-                  className='focus:outline-none bg-[#E3E8EF] '
+                  type="text"
+                  placeholder="Search username"
+                  className="focus:outline-none bg-[#E3E8EF] "
                   value={fcName}
                   onChange={handleInputChange}
                   onKeyDown={(e) => {
@@ -83,20 +83,20 @@ export default function Home() {
                     src={"/images/rightArrow.svg"}
                     width={24}
                     height={24}
-                    alt=''
-                    className='max-w-6 max-h-6'
+                    alt=""
+                    className="max-w-6 max-h-6"
                   />
                 </button>
               </div>
             </div>
 
             {/* OG PROFILES */}
-            <div className='flex flex-col items-center justify-center gap-4 w-full'>
-              <span className='text-base font-normal text-[#677489]'>
+            <div className="flex flex-col items-center justify-center gap-4 w-full">
+              <span className="text-base font-normal text-[#677489]">
                 or view some OG profiles
               </span>
 
-              <div className='w-full flex items-center justify-center gap-8 flex-wrap'>
+              <div className="w-full flex items-center justify-center gap-8 flex-wrap">
                 {ogProfiles.map(
                   (
                     { pfp, username }: { pfp: string; username: string },
@@ -104,20 +104,20 @@ export default function Home() {
                   ) => (
                     <Link
                       href={`/${username}`}
-                      target='_blank'
-                      className='flex items-center justify-start gap-1 flex-col'
+                      target="_blank"
+                      className="flex items-center justify-start gap-1 flex-col"
                       key={id}
                     >
                       <Image
                         src={pfp}
                         width={64}
                         height={64}
-                        alt=''
+                        alt=""
                         loader={({ src }) => src}
                         unoptimized
-                        className='max-w-16 max-h-16 rounded-full object-cover'
+                        className="max-w-16 max-h-16 rounded-full object-cover"
                       />
-                      <span className='text-base font-normal text-primary-violet'>
+                      <span className="text-base font-normal text-primary-violet">
                         {username}
                       </span>
                     </Link>
