@@ -1,9 +1,7 @@
 import { Button } from "frames.js/next";
 import { createFrames } from "frames.js/next";
 import {
-  fetchActiveChannels,
   getFarcasterDetails,
-  getFollowingFollowers,
   getTxnCount,
   getUserData,
 } from "../_actions/queries";
@@ -64,12 +62,16 @@ const handleRequest = frames(async (ctx) => {
     },
   ];
 
-  const activeChannels = await fetchActiveChannels(
-    profileData.Socials.Social[0].userId
-  );
+  const activeChannels =
+    profileData?.FarcasterChannelParticipants?.FarcasterChannelParticipant?.map(
+      ({ channelName, channel }: any) => ({
+        name: channelName,
+        imageUrl: channel.imageUrl,
+      })
+    );
 
-  const { followers: follower_count, followings: following_count } =
-    await getFollowingFollowers(fname ?? name);
+  const follower_count = profileData?.Socials?.Social[0]?.followerCount;
+  const following_count = profileData?.Socials?.Social[0]?.followingCount;
 
   return {
     image: (
@@ -112,7 +114,7 @@ const handleRequest = frames(async (ctx) => {
                   style={{
                     gap: "6px",
                   }}
-                  tw='flex   font-semibold text-sm'
+                  tw='flex font-semibold text-sm'
                 >
                   <span>
                     Followers:{" "}
@@ -168,7 +170,7 @@ const handleRequest = frames(async (ctx) => {
                 flexWrap: "wrap",
                 display: "flex",
               }}
-              tw=' justify-start items-start w-full'
+              tw='justify-start items-start w-full'
             >
               {activeChannels?.length === 0 ? (
                 <span tw=' text-[10px] md:text-xs  text-primary-grey font-normal max-w-[100px] text-center '>
