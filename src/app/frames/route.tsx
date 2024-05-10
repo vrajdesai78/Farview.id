@@ -9,6 +9,11 @@ import { getFormattedDate } from "@/lib/utils";
 import { TActiveChannels } from "@/types/types";
 import ShortenName from "../../../utils/nameShortner";
 import { farcasterHubContext } from "frames.js/middleware";
+import {
+  formatScore,
+  getOrdinalIndicator,
+  getTopRank,
+} from "../../../utils/getScore";
 
 const frames = createFrames({
   middleware: [
@@ -40,6 +45,15 @@ const handleRequest = frames(async (ctx) => {
     profileData?.Socials?.Social?.[0]?.userAssociatedAddresses[1]
   );
 
+  const score =
+    profileData?.Socials?.Social[0]?.socialCapital?.socialCapitalScoreRaw;
+
+  const rank = await getTopRank(
+    Number(profileData?.Socials?.Social[0]?.socialCapital?.socialCapitalScore)
+  );
+
+  console.log("rank", rank);
+
   let date = new Date();
   if (profileData?.Wallet?.tokenTransfers?.[0]) {
     date = new Date(profileData.Wallet.tokenTransfers[0].blockTimestamp);
@@ -70,9 +84,6 @@ const handleRequest = frames(async (ctx) => {
         url: `https://warpcast.com/~/channel/${channelId}`,
       })
     );
-
-  const follower_count = profileData?.Socials?.Social[0]?.followerCount;
-  const following_count = profileData?.Socials?.Social[0]?.followingCount;
 
   return {
     image: (
@@ -118,16 +129,10 @@ const handleRequest = frames(async (ctx) => {
                   tw='flex font-semibold text-sm'
                 >
                   <span>
-                    Followers:{" "}
-                    {follower_count >= 1000
-                      ? `${Number(follower_count / 1000).toFixed(2)}k`
-                      : follower_count}
-                  </span>
-                  <span>
-                    Following:{" "}
-                    {following_count >= 1000
-                      ? `${Number(following_count / 1000).toFixed(2)}k`
-                      : following_count}
+                    Social Score: {formatScore(Number(score))}
+                    {rank
+                      ? ` (Rank: ${getOrdinalIndicator(rank)})`
+                      : `${Number(score) >= 1 ? " (Top 500)" : ""}`}
                   </span>
                 </div>
               </div>

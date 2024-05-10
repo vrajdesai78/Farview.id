@@ -19,6 +19,10 @@ export const getUserData = async (fname: string) => {
         profileName
         profileDisplayName
         userId
+        socialCapital {
+          socialCapitalScoreRaw
+          socialCapitalScore
+        }
       }
     }
     FarcasterChannels(
@@ -88,6 +92,10 @@ export const getUserData = async (fname: string) => {
             profileName: string;
             profileDisplayName: string;
             userId: string;
+            socialCapital: {
+              socialCapitalScoreRaw: string;
+              socialCapitalScore: string;
+            };
           }
         ];
       };
