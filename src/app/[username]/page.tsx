@@ -6,7 +6,6 @@ import {
   getUserData,
   getTxnCount,
   fetchTopFollowers,
-  getFollowingFollowers,
   getFarcasterName,
   addUser,
 } from "../_actions/queries";
@@ -53,23 +52,23 @@ const Page = async ({ params }: { params: { username: string } }) => {
   try {
     const profileData = await getUserData(params.username);
 
-    const [
-      nfts,
-      activeChannels,
-      topFollowers,
-      topCasts,
-      txnCount,
-      followingFollowers,
-      addUserForAnalytics,
-    ] = await Promise.all([
-      getTopNFTs(profileData.Socials.Social[0].userAssociatedAddresses[1]),
-      fetchActiveChannels(profileData.Socials.Social[0].userId),
-      fetchTopFollowers(profileData.Socials.Social[0].userId),
-      fetchTopCasts(profileData.Socials.Social[0].userId),
-      getTxnCount(profileData.Socials.Social[0].userAssociatedAddresses[1]),
-      getFollowingFollowers(profileData.Socials.Social[0].profileName),
-      addUser(profileData.Socials.Social[0].profileName),
-    ]);
+    const [nfts, topFollowers, topCasts, txnCount, addUserForAnalytics] =
+      await Promise.all([
+        getTopNFTs(profileData.Socials.Social[0].userAssociatedAddresses[1]),
+        fetchTopFollowers(profileData.Socials.Social[0].userId),
+        fetchTopCasts(profileData.Socials.Social[0].userId),
+        getTxnCount(profileData.Socials.Social[0].userAssociatedAddresses[1]),
+        addUser(profileData.Socials.Social[0].profileName),
+      ]);
+
+    const activeChannels =
+      profileData?.FarcasterChannelParticipants?.FarcasterChannelParticipant?.map(
+        ({ channelId, channel }: any) => ({
+          name: channelId as string,
+          imageUrl: channel.imageUrl as string,
+          url: `https://warpcast.com/~/channel/${channelId}`,
+        })
+      );
 
     let date = new Date();
     if (profileData.Wallet.tokenTransfers[0]) {
@@ -83,8 +82,8 @@ const Page = async ({ params }: { params: { username: string } }) => {
         userData={{
           bio: profileData.Socials.Social[0].profileBio,
           pfp_url: profileData.Socials.Social[0].profileImage,
-          follower_count: followingFollowers.followers,
-          following_count: followingFollowers.followings,
+          follower_count: profileData.Socials.Social[0].followerCount,
+          following_count: profileData.Socials.Social[0].followingCount,
           username: profileData.Socials.Social[0].profileName,
           display_name: profileData.Socials.Social[0].profileDisplayName,
           firstTxn: formattedDateWithSuffix,

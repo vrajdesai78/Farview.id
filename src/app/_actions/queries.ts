@@ -43,6 +43,7 @@ export const getUserData = async (fname: string) => {
     ) {
       FarcasterChannelParticipant {
         channelName
+        channelId
         channel {
           imageUrl
         }
@@ -110,6 +111,7 @@ export const getUserData = async (fname: string) => {
       FarcasterChannelParticipants: {
         FarcasterChannelParticipant: [
           {
+            channelId: string;
             channelName: string;
             channel: {
               imageUrl: string;

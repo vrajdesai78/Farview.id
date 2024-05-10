@@ -64,9 +64,10 @@ const handleRequest = frames(async (ctx) => {
 
   const activeChannels =
     profileData?.FarcasterChannelParticipants?.FarcasterChannelParticipant?.map(
-      ({ channelName, channel }: any) => ({
-        name: channelName,
-        imageUrl: channel.imageUrl,
+      ({ channelId, channel }: any) => ({
+        name: channelId as string,
+        imageUrl: channel.imageUrl as string,
+        url: `https://warpcast.com/~/channel/${channelId}`,
       })
     );
 
