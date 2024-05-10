@@ -52,8 +52,6 @@ const handleRequest = frames(async (ctx) => {
     Number(profileData?.Socials?.Social[0]?.socialCapital?.socialCapitalScore)
   );
 
-  console.log("rank", rank);
-
   let date = new Date();
   if (profileData?.Wallet?.tokenTransfers?.[0]) {
     date = new Date(profileData.Wallet.tokenTransfers[0].blockTimestamp);
@@ -132,7 +130,14 @@ const handleRequest = frames(async (ctx) => {
                     Social Score: {formatScore(Number(score))}
                     {rank
                       ? ` (Rank: ${getOrdinalIndicator(rank)})`
-                      : `${Number(score) >= 1 ? " (Top 500)" : ""}`}
+                      : `${
+                          Number(
+                            profileData?.Socials?.Social[0]?.socialCapital
+                              ?.socialCapitalScore
+                          ) >= 1
+                            ? " (Top 500)"
+                            : ""
+                        }`}
                   </span>
                 </div>
               </div>

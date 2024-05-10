@@ -2,7 +2,6 @@ import { allScore } from "./SCS";
 
 export const getTopRank = async (score: number) => {
   const index = allScore.data.Socials.Social.findIndex((user: any) => {
-    console.log("check", user.socialCapital.socialCapitalScore, score);
     return user.socialCapital.socialCapitalScore === score;
   });
 
