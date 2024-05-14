@@ -94,7 +94,7 @@ const Page = async ({ params }: { params: { username: string } }) => {
       />
     );
   } catch (error) {
-    redirect("/");
+    redirect("/error");
   }
 };
 

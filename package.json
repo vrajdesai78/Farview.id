@@ -16,6 +16,7 @@
     "@vercel/analytics": "^1.2.2",
     "clsx": "^2.1.1",
     "frames.js": "^0.15.2",
+    "lottie-react": "^2.4.0",
     "next": "14.2.3",
     "react": "^18",
     "react-dom": "^18",
