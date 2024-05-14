@@ -1,6 +1,7 @@
 import { Button } from "frames.js/next";
 import { createFrames } from "frames.js/next";
 import {
+  fetchActiveChannels,
   getFarcasterDetails,
   getTxnCount,
   getUserData,
@@ -74,15 +75,9 @@ const handleRequest = frames(async (ctx) => {
     },
   ];
 
-  const activeChannels =
-    profileData?.FarcasterChannelParticipants?.FarcasterChannelParticipant?.map(
-      ({ channelId, channel }: any) => ({
-        name: channelId as string,
-        imageUrl: channel.imageUrl as string,
-        url: `https://warpcast.com/~/channel/${channelId}`,
-      })
-    );
-
+  const activeChannels = await fetchActiveChannels(
+    profileData.Socials.Social[0].userId
+  );
   return {
     image: (
       <div

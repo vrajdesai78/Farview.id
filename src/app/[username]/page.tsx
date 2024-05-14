@@ -61,14 +61,9 @@ const Page = async ({ params }: { params: { username: string } }) => {
         addUser(profileData.Socials.Social[0].profileName),
       ]);
 
-    const activeChannels =
-      profileData?.FarcasterChannelParticipants?.FarcasterChannelParticipant?.map(
-        ({ channelId, channel }: any) => ({
-          name: channelId as string,
-          imageUrl: channel.imageUrl as string,
-          url: `https://warpcast.com/~/channel/${channelId}`,
-        })
-      );
+    const activeChannels = await fetchActiveChannels(
+      profileData.Socials.Social[0].userId
+    );
 
     let date = new Date();
     if (profileData.Wallet.tokenTransfers[0]) {
