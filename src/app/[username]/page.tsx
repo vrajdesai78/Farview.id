@@ -51,7 +51,7 @@ export async function generateMetadata({
 const Page = async ({ params }: { params: { username: string } }) => {
   try {
     const profileData = await getUserData(params.username);
-
+    console.log("profile", profileData);
     const [nfts, topFollowers, topCasts, txnCount, addUserForAnalytics] =
       await Promise.all([
         getTopNFTs(profileData.Socials.Social[0].userAssociatedAddresses[1]),

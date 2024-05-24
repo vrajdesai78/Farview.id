@@ -25,15 +25,6 @@ export const getUserData = async (fname: string) => {
         }
       }
     }
-    FarcasterChannels(
-      input: {blockchain: ALL, filter: {hostIdentity: {_eq: "fc_fname:${fname}"}}, order: {followerCount: DESC}, limit: 3}
-    ) {
-      FarcasterChannel {
-        imageUrl
-        url
-        channelId
-      }
-    }
     Wallet(
       input: {blockchain: base, identity: "fc_fname:${fname}"}
     ) {
@@ -78,6 +69,8 @@ export const getUserData = async (fname: string) => {
     body: JSON.stringify({ query }),
   });
 
+  console.log("resp", resp.status);
+
   const { data } = (await resp.json()) as {
     data: {
       Socials: {
@@ -96,15 +89,6 @@ export const getUserData = async (fname: string) => {
               socialCapitalScoreRaw: string;
               socialCapitalScore: string;
             };
-          }
-        ];
-      };
-      FarcasterChannels: {
-        FarcasterChannel: [
-          {
-            imageUrl: string;
-            url: string;
-            channelId: string;
           }
         ];
       };
@@ -143,7 +127,6 @@ export const getUserData = async (fname: string) => {
       };
     };
   };
-
   return data;
 };
 
