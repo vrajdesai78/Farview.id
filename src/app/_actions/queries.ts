@@ -1,8 +1,13 @@
 "use server";
 
 import { TCast } from "@/types/types";
-import { CovalentClient } from "@covalenthq/client-sdk";
+import {
+  GoogleGenerativeAI,
+  HarmCategory,
+  HarmBlockThreshold,
+} from "@google/generative-ai";
 import { SupabaseClient } from "@supabase/supabase-js";
+import { Mobula } from "mobula-sdk";
 
 export const getUserData = async (fname: string) => {
   const query = `query MyQuery {
@@ -68,8 +73,6 @@ export const getUserData = async (fname: string) => {
     },
     body: JSON.stringify({ query }),
   });
-
-  console.log("resp", resp.status);
 
   const { data } = (await resp.json()) as {
     data: {
@@ -238,18 +241,6 @@ export const fetchTopCasts = async (fid: string) => {
   } as TCast;
 };
 
-export const getTxnCount = async (address: string) => {
-  const client = new CovalentClient(process.env.COVALENT_API_KEY!);
-  const resp = await client.TransactionService.getTransactionSummary(
-    "base-mainnet",
-    address
-  );
-  if (resp.data && resp.data.items && resp.data.items.length > 0) {
-    return resp.data.items[0].total_count;
-  }
-  return null;
-};
-
 export const getFarcasterName = async (fname: string) => {
   const apiResponse = await fetch(
     `https://api.neynar.com/v2/farcaster/user/search?q=${fname}&limit=1`,
@@ -262,6 +253,9 @@ export const getFarcasterName = async (fname: string) => {
   );
 
   const { result } = await apiResponse.json();
+
+  console.log("result", await apiResponse.json());
+
   return {
     name: result.users[0]?.display_name,
     pfp: result.users[0].pfp_url,
@@ -335,4 +329,72 @@ export const getFarcasterDetails = async (fid: string) => {
   };
 
   return data;
+};
+
+export const getWalletWorth = async (address: string) => {
+  const sdk = new Mobula({
+    apiKeyAuth: process.env.MOBULA_API_KEY!,
+  });
+
+  const resp = await sdk.fetchWalletHistoryBalance({
+    blockchains: "base",
+    wallet: address,
+  });
+
+  if (resp.statusCode == 200) {
+    return resp.walletHistoryResponse?.data?.balanceUsd?.toFixed(2);
+  }
+
+  return null;
+};
+
+export const getTxnCount = async (address: string) => {
+  const resp = await fetch(
+    `https://api.mobula.io/api/1/wallet/transactions?wallet=${address}&blockchains=base`
+  );
+
+  const respJson = await resp.json();
+
+  return respJson?.pagination?.total;
+};
+
+interface getRoastProps {
+  followers: number;
+  following: number;
+  bio: string;
+  txnCount: number;
+  walletWorth: string;
+}
+
+export const getRoast = async ({
+  followers,
+  following,
+  bio,
+  txnCount,
+  walletWorth,
+}: getRoastProps) => {
+  const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+
+  const model = genAI.getGenerativeModel({
+    model: "gemini-1.5-flash",
+  });
+
+  const generationConfig = {
+    temperature: 1,
+    topP: 0.95,
+    topK: 64,
+    maxOutputTokens: 2048,
+    responseMimeType: "text/plain",
+  };
+
+  const chatSession = model.startChat({
+    generationConfig,
+    history: [],
+  });
+
+  const result = await chatSession.sendMessage(
+    `Roast this user with the Farcaster profile under 80 words: Bio: ${bio} Followers: ${followers} Following: ${following} Wallet worth: ${walletWorth} USD. Make it sarcastic around the wallet worth, humorous about the follower count, and funny about the bio.`
+  );
+
+  return result.response.text();
 };
