@@ -20,6 +20,7 @@ const handleRequest = frames(async (ctx) => {
     buttons: [
       <Button
         action='post'
+        key={1}
         target={`${process.env.NEXT_PUBLIC_BASE_URL}/roast/loading`}
       >
         Roast Me

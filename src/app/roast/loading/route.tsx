@@ -44,6 +44,7 @@ const handleRequest = frames(async (ctx) => {
     buttons: [
       <Button
         action='post'
+        key={0}
         target={`${process.env.NEXT_PUBLIC_BASE_URL}/roast/getRoast?fname=${
           fname ?? name
         }&img=${profileData.Socials.Social[0].profileImage}&followers=${

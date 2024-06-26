@@ -1,13 +1,8 @@
 "use server";
 
 import { TCast } from "@/types/types";
-import {
-  GoogleGenerativeAI,
-  HarmCategory,
-  HarmBlockThreshold,
-} from "@google/generative-ai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { SupabaseClient } from "@supabase/supabase-js";
-import { Mobula } from "mobula-sdk";
 
 export const getUserData = async (fname: string) => {
   const query = `query MyQuery {
@@ -332,17 +327,14 @@ export const getFarcasterDetails = async (fid: string) => {
 };
 
 export const getWalletWorth = async (address: string) => {
-  const sdk = new Mobula({
-    apiKeyAuth: process.env.MOBULA_API_KEY!,
-  });
+  const resp = await fetch(
+    `https://api.mobula.io/api/1/wallet/portfolio?wallet=${address}&blockchains=base`
+  );
 
-  const resp = await sdk.fetchWalletHistoryBalance({
-    blockchains: "base",
-    wallet: address,
-  });
+  const respJson = await resp.json();
 
-  if (resp.statusCode == 200) {
-    return resp.walletHistoryResponse?.data?.balanceUsd?.toFixed(2);
+  if (respJson?.data?.total_wallet_balance) {
+    return respJson?.data?.total_wallet_balance
   }
 
   return null;
