@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Hero from "./Hero";
 import StatBox from "./StatBox";
 import CastCard from "../castCard";
@@ -44,15 +44,6 @@ const ProfileContainer = ({
 }: ProfileContainerProps) => {
   const [tab, setTab] = useState("nft");
 
-  console.log("nfts", nfts);
-  console.log("tokenBalances", tokenBalances);
-  console.log("tags", tags);
-  console.log("socials", socials);
-  console.log("userInfo", userInfo);
-  console.log("activeChannels", activeChannels);
-  console.log("topFollowers", topFollowers);
-  console.log("stats", stats);
-
   const handleSwitchTab = (val: string) => {
     setTab(val);
   };
@@ -89,7 +80,7 @@ const ProfileContainer = ({
             likesCount={topCasts[0].likes_count}
             recastCount={topCasts[0].recasts_count}
             url={topCasts[0].url}
-            repliesCount={10}
+            repliesCount={topCasts[0].replies_count}
             key={"pinned cast"}
             channel={topCasts[0].channel}
           />

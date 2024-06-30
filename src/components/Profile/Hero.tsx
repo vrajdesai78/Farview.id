@@ -12,11 +12,11 @@ interface HeroProps {
 
 const Hero = ({ userInfo, socials, tags }: HeroProps) => {
   return (
-    <div className='w-full flex lg:justify-between justify-start items-center md:!flex-row !flex-col '>
+    <div className='w-full flex lg:justify-between justify-start items-center md:!flex-row !flex-col'>
       {/* pfp info*/}
-      <div className='flex-start gap-6 !items-start lg:w-1/2 w-full'>
+      <div className='flex flex-col md:!flex md:!flex-row flex-start gap-6 !items-start lg:w-1/2 w-full'>
         {/* pfp img */}
-        <div className='flex-center relative w-20 h-16 rounded-full '>
+        <div className='flex-center relative w-20 h-20 md:h-16 rounded-full '>
           {/* profile img */}
           <Image
             // src={pfp_url}
@@ -27,8 +27,6 @@ const Hero = ({ userInfo, socials, tags }: HeroProps) => {
             height={64}
             className='w-full h-full object-cover rounded-full'
           />
-
-          {/* edit option */}
         </div>
 
         <div className='flex items-start justify-start w-full flex-col gap-3 '>
@@ -37,7 +35,7 @@ const Hero = ({ userInfo, socials, tags }: HeroProps) => {
               {userInfo.name}
             </h1>
             {/* username */}
-            <span className='text-primary-grey font-normal text-xs sm:text-sm md:text-base '>
+            <span className='text-slate-500 font-normal text-lg sm:text-sm'>
               @{userInfo.username}
             </span>
           </div>
@@ -72,7 +70,7 @@ const Hero = ({ userInfo, socials, tags }: HeroProps) => {
         </div>
       </div>
 
-      <div className='flex-col-between !items-start lg:gap-0 gap-6 md:!items-end h-[141px] w-2/5'>
+      <div className='flex-col-between lg:gap-0 gap-6 items-center mt-6 md:!items-end md:h-[141px] w-full md:w-2/5'>
         {/* socials */}
         <div className='md:w-[156px] w-full flex-start !justify-start gap-5 md:!justify-between'>
           {socials.map((social: TSocials, index) => {
@@ -117,7 +115,7 @@ const Hero = ({ userInfo, socials, tags }: HeroProps) => {
                       ? "#F4F1FD"
                       : "#FFF2EE",
                 }}
-                className={`text-center max-w-[8rem] px-2 py-1 rounded-[360px] border text-sm font-normal text-ellipsis text-nowrap w-full overflow-hidden`}
+                className={`text-center px-2 py-1 rounded-[360px] border text-sm font-normal text-ellipsis text-nowrap w-full overflow-hidden md:max-w-[8rem]`}
               >
                 {tag}
               </div>

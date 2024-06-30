@@ -19,6 +19,7 @@ export interface TCast {
   url: string;
   replies_count: number;
   channel?: string;
+  image?: string;
 }
 
 export interface TokenBalances {

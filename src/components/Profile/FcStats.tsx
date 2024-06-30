@@ -52,7 +52,7 @@ const FcStats = ({ activeChannels, topFollowers }: FcStatsProps) => {
                 <ActiveCasterContainer
                   key={index}
                   icon={imageUrl}
-                  title={`/${name}`}
+                  title={`/${name}ssldkfjsdklfjskldjfsdklfj`}
                   isMain={false}
                   isRight={index === 1}
                 />

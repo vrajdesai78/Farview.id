@@ -239,8 +239,8 @@ export const fetchTopCasts = async (fid: string) => {
       recasts_count: topCast.reactions.recasts_count,
       timestamp: topCast.timestamp,
       url: `https://warpcast.com/${topCast.author.username}/${topCast.hash}`,
-      replies_count: topCast.reactions?.replies?.count ?? 0,
-      channel: topCast.reactions.channel?.name,
+      replies_count: topCast.replies?.count ?? 0,
+      channel: topCast.channel?.id,
     } as TCast;
   }) as TCast[];
 
@@ -445,4 +445,121 @@ export const findTags = async (
   }
 
   return tags;
+};
+
+interface addUserDetailsProps {
+  fname: string;
+  github?: string;
+  linkedin?: string;
+  twitter?: string;
+  telegram?: string;
+  instagram?: string;
+  cast?: string;
+}
+
+export const addUserDetails = async ({
+  fname,
+  github,
+  linkedin,
+  twitter,
+  telegram,
+  instagram,
+  cast,
+}: addUserDetailsProps) => {
+  try {
+    const supabaseUrl = process.env.SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_KEY;
+
+    if (!supabaseUrl || !supabaseKey)
+      throw new Error("Connection to SUPABASE Database failed", {
+        cause: "Missing SUPABASE_URL or SUPABASE_KEY",
+      });
+
+    const client = new SupabaseClient(supabaseUrl!, supabaseKey!);
+
+    const { data } = await client.from("User").select("*").eq("fname", fname);
+
+    console.log("data", data);
+
+    const user = data?.[0];
+
+    console.log("user", user);
+
+    if (user) {
+      await client
+        .from("User")
+        .update({
+          github,
+          linkedin,
+          twitter,
+          telegram,
+          instagram,
+          cast,
+        })
+        .eq("fname", fname);
+    } else {
+      await client.from("User").insert({
+        fname,
+        github,
+        linkedin,
+        twitter,
+        telegram,
+        instagram,
+        cast,
+      });
+    }
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const getUserDetails = async (fname: string) => {
+  try {
+    const supabaseUrl = process.env.SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_KEY;
+
+    if (!supabaseUrl || !supabaseKey)
+      throw new Error("Connection to SUPABASE Database failed", {
+        cause: "Missing SUPABASE_URL or SUPABASE_KEY",
+      });
+
+    const client = new SupabaseClient(supabaseUrl!, supabaseKey!);
+
+    const { data } = await client.from("User").select("*").eq("fname", fname);
+
+    return data?.[0];
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const fetchCastFromUrl = async (url: string) => {
+  const fetchUrl = `https://api.neynar.com/v2/farcaster/cast?identifier=${url}&type=url&viewer_fid=3`;
+
+  console.log("fetchUrl", fetchUrl);
+
+  const apiResponse = await fetch(fetchUrl, {
+    method: "GET",
+    headers: {
+      api_key: process.env.NEYNAR_API_KEY!,
+    },
+  });
+
+  const { cast, message } = await apiResponse.json();
+
+  if (!cast) {
+    return {
+      message,
+    };
+  }
+
+  return {
+    text: cast.text,
+    likes_count: cast.reactions.likes_count,
+    recasts_count: cast.reactions.recasts_count,
+    timestamp: cast.timestamp,
+    url: `https://warpcast.com/${cast.author.username}/${cast.hash}`,
+    replies_count: cast.reactions?.replies?.count ?? 0,
+    channel: cast.channel?.name,
+  } as TCast;
 };

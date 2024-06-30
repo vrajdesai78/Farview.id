@@ -17,7 +17,7 @@ const ActiveCasterContainer = ({
 }) => {
   return (
     <div
-      className={`p-4 flex-start gap-3 ${
+      className={`p-4 flex-start gap-3 min-h-20 ${
         isMain
           ? "w-full  border-b border-[#E5E5E5] rounded-t-2xl"
           : !isRight
@@ -37,7 +37,7 @@ const ActiveCasterContainer = ({
       />
 
       <div className='flex-col-start !items-start gap-0.5 w-full sm:text-nowrap'>
-        <span className='text-[#262626] font-medium text-sm sm:text-base'>
+        <span className='text-[#262626] font-medium text-sm sm:text-base text-ellipsis text-nowrap w-4/5 overflow-hidden'>
           {title}
         </span>
         {text && (

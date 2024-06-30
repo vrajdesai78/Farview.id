@@ -13,6 +13,7 @@
     "@airstack/node": "^0.0.7",
     "@covalenthq/client-sdk": "^1.0.2",
     "@google/generative-ai": "^0.13.0",
+    "@privy-io/react-auth": "^1.73.0",
     "@supabase/supabase-js": "^2.43.1",
     "@vercel/analytics": "^1.2.2",
     "clsx": "^2.1.1",
