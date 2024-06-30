@@ -13,7 +13,7 @@ const StatBox = ({
     isIcon
 }: StatProps) => {
     return (
-        <div className='flex-col-start !items-start px-4 py-2 gap-1 lg:min-w-[190px] border border-[#E5E5E5] rounded-lg md:w-[calc(100%/4-8px)]'>
+        <div className='flex-col-start !items-start px-4 py-2 gap-1 lg:min-w-[190px] border border-[#E5E5E5] w-full rounded-lg sm:w-[calc(100%/2-8px)] md:w-[calc(100%/4-8px)]'>
             <span className="text-primary-grey font-normal text-xs sm:text-sm  ">
                 {title}
             </span>

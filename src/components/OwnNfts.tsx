@@ -31,7 +31,7 @@ const OwnNfts: FC<OwnNFTsProps> = ({ nfts }) => {
         <>
           {nfts?.map((nft: TNFTs, id: number) => (
             <Link
-              className='flex flex-col items-start justify-start gap-2'
+              className='flex flex-col items-start justify-start gap-2 w-full sm:w-[calc(100%/2-28px)] lg:w-[calc(100%/4-28px)] '
               key={id}
               href={nft?.nftUrl}
               target='_blank'
