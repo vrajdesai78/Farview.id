@@ -58,7 +58,7 @@ const handleRequest = frames(async (ctx) => {
     date = new Date(profileData.Wallet.tokenTransfers[0].blockTimestamp);
   }
 
-  const { formattedDateWithSuffix, diffDays } = getFormattedDate(date);
+  const { formattedDateWithSuffix } = getFormattedDate(date);
 
   const tags = [
     {
@@ -70,7 +70,7 @@ const handleRequest = frames(async (ctx) => {
       icon: "🥇",
     },
     {
-      title: `${diffDays ?? 0} D since First Base txn`,
+      title: `${0} D since First Base txn`,
       icon: "⌛️",
     },
   ];

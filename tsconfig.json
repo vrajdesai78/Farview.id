@@ -32,7 +32,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-  ],
+, "src/app/global-error.tsx"  ],
   "exclude": [
     "node_modules"
   ]

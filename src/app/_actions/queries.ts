@@ -163,20 +163,24 @@ export const fetchTopFollowers = async (fid: string) => {
   const data = await apiResponse.json();
 
   const followers: {
-    name: string;
-    pfp: string;
+    title: string;
+    icon: string;
+    val: number;
   }[] = data.top_relevant_followers_hydrated?.map((user: any) => {
     return {
-      name: user.user.username,
-      pfp: user.user.pfp_url,
+      title: user.user.username,
+      icon: user.user.pfp_url,
+      val: user.user.follower_count,
     };
   });
+
+  console.log("followers", followers);
   return followers;
 };
 
 export const getTopNFTs = async (address: string) => {
   const nftResponse = await fetch(
-    `https://api.simplehash.com/api/v0/nfts/owners_v2?chains=base&wallet_addresses=${address}&order_by=floor_price__desc&limit=10`,
+    `https://api.simplehash.com/api/v0/nfts/owners_v2?chains=base&wallet_addresses=${address}&order_by=floor_price__desc&limit=5`,
     {
       method: "GET",
       headers: {
@@ -202,7 +206,7 @@ export const getTopNFTs = async (address: string) => {
         nftUrl: nft.collection.marketplace_pages[0].nft_url,
       });
 
-      if (nfts.length === 3) {
+      if (nfts.length === 6) {
         break;
       }
     }
@@ -226,14 +230,21 @@ export const fetchTopCasts = async (fid: string) => {
       message,
     };
   }
-  const topCast = casts[0];
-  return {
-    text: topCast.text,
-    likes_count: topCast.reactions.likes_count,
-    recasts_count: topCast.reactions.recasts_count,
-    timestamp: topCast.timestamp,
-    url: `https://warpcast.com/${topCast.author.username}/${topCast.hash}`,
-  } as TCast;
+  const topCasts = casts.slice(0, 3);
+
+  const topCastsArr = topCasts.map((topCast: any) => {
+    return {
+      text: topCast.text,
+      likes_count: topCast.reactions.likes_count,
+      recasts_count: topCast.reactions.recasts_count,
+      timestamp: topCast.timestamp,
+      url: `https://warpcast.com/${topCast.author.username}/${topCast.hash}`,
+      replies_count: topCast.reactions?.replies?.count ?? 0,
+      channel: topCast.reactions.channel?.name,
+    } as TCast;
+  }) as TCast[];
+
+  return topCastsArr;
 };
 
 export const getFarcasterName = async (fname: string) => {
@@ -291,6 +302,29 @@ export const addUser = async (fname: string) => {
   }
 };
 
+export const getVisits = async (fname: string) => {
+  try {
+    const supabaseUrl = process.env.SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_KEY;
+
+    if (!supabaseUrl || !supabaseKey)
+      throw new Error("Connection to SUPABASE Database failed", {
+        cause: "Missing SUPABASE_URL or SUPABASE_KEY",
+      });
+
+    const client = new SupabaseClient(supabaseUrl!, supabaseKey!);
+
+    const { data } = await client
+      .from("Analytics")
+      .select("*")
+      .eq("fname", fname);
+
+    return data?.[0].visits;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 export const getFarcasterDetails = async (fid: string) => {
   const query = `query MyQuery {
     Socials(
@@ -334,7 +368,7 @@ export const getWalletWorth = async (address: string) => {
   const respJson = await resp.json();
 
   if (respJson?.data?.total_wallet_balance) {
-    return respJson?.data?.total_wallet_balance
+    return respJson?.data?.total_wallet_balance;
   }
 
   return null;
@@ -389,4 +423,26 @@ export const getRoast = async ({
   );
 
   return result.response.text();
+};
+
+export const findTags = async (
+  walletWorth: number,
+  txnCount: number,
+  fid: number
+) => {
+  const tags = [];
+
+  if (walletWorth >= 1500) {
+    tags.push("Crypto OG");
+  }
+
+  if (txnCount >= 200) {
+    tags.push("Based");
+  }
+
+  if (fid <= 5000) {
+    tags.push("FC OG");
+  }
+
+  return tags;
 };

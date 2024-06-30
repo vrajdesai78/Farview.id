@@ -14,9 +14,9 @@ const TopFollowers: FC<TopFollowersProps> = ({ topFollowers }) => {
       <div className='flex-col justify-start items-center lg:items-start gap-6 inline-flex w-full h-full'>
         {topFollowers.map((channel: TTopFollowers, id: number) => (
           <TopChannel
-            channelIcon={channel.pfp}
-            channelName={`@${ShortenName(channel.name, 8)}`}
-            channelUrl={`https://warpcast.com/${channel.name}`}
+            channelIcon={channel.icon}
+            channelName={`@${ShortenName(channel.title, 8)}`}
+            channelUrl={`https://warpcast.com/${channel.title}`}
             key={id}
           />
         ))}

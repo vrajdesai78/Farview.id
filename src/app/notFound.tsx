@@ -1,4 +1,4 @@
-"use client"; // Error components must be Client Components
+"use client";
 
 import Lottie from "lottie-react";
 import { useEffect } from "react";
@@ -11,9 +11,9 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
-  useEffect(() => {
-    console.error(error);
-  }, [error]);
+  // useEffect(() => {
+  //   console.error(error);
+  // }, [error]);
 
   return (
     <div className='w-full min-h-screen flex items-center justify-start flex-col gap-10 py-20 px-3  bg-[#F8FAFC]'>
