@@ -1,6 +1,6 @@
 "use server";
 
-import { TCast } from "@/types/types";
+import { TCast, TUserDetail } from "@/types/types";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { SupabaseClient } from "@supabase/supabase-js";
 
@@ -174,7 +174,6 @@ export const fetchTopFollowers = async (fid: string) => {
     };
   });
 
-  console.log("followers", followers);
   return followers;
 };
 
@@ -259,8 +258,6 @@ export const getFarcasterName = async (fname: string) => {
   );
 
   const { result } = await apiResponse.json();
-
-  console.log("result", await apiResponse.json());
 
   return {
     name: result.users[0]?.display_name,
@@ -388,7 +385,6 @@ interface getRoastProps {
   followers: number;
   following: number;
   bio: string;
-  txnCount: number;
   walletWorth: string;
 }
 
@@ -396,7 +392,6 @@ export const getRoast = async ({
   followers,
   following,
   bio,
-  txnCount,
   walletWorth,
 }: getRoastProps) => {
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
@@ -447,16 +442,6 @@ export const findTags = async (
   return tags;
 };
 
-interface addUserDetailsProps {
-  fname: string;
-  github?: string;
-  linkedin?: string;
-  twitter?: string;
-  telegram?: string;
-  instagram?: string;
-  cast?: string;
-}
-
 export const addUserDetails = async ({
   fname,
   github,
@@ -465,7 +450,15 @@ export const addUserDetails = async ({
   telegram,
   instagram,
   cast,
-}: addUserDetailsProps) => {
+}: {
+  fname: string;
+  github?: string;
+  linkedin?: string;
+  twitter?: string;
+  telegram?: string;
+  instagram?: string;
+  cast?: string;
+}) => {
   try {
     const supabaseUrl = process.env.SUPABASE_URL;
     const supabaseKey = process.env.SUPABASE_KEY;
@@ -479,11 +472,7 @@ export const addUserDetails = async ({
 
     const { data } = await client.from("User").select("*").eq("fname", fname);
 
-    console.log("data", data);
-
     const user = data?.[0];
-
-    console.log("user", user);
 
     if (user) {
       await client
@@ -536,8 +525,6 @@ export const getUserDetails = async (fname: string) => {
 export const fetchCastFromUrl = async (url: string) => {
   const fetchUrl = `https://api.neynar.com/v2/farcaster/cast?identifier=${url}&type=url&viewer_fid=3`;
 
-  console.log("fetchUrl", fetchUrl);
-
   const apiResponse = await fetch(fetchUrl, {
     method: "GET",
     headers: {
@@ -559,7 +546,7 @@ export const fetchCastFromUrl = async (url: string) => {
     recasts_count: cast.reactions.recasts_count,
     timestamp: cast.timestamp,
     url: `https://warpcast.com/${cast.author.username}/${cast.hash}`,
-    replies_count: cast.reactions?.replies?.count ?? 0,
+    replies_count: cast.replies?.count ?? 0,
     channel: cast.channel?.name,
   } as TCast;
 };

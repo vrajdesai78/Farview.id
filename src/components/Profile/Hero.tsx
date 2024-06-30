@@ -1,8 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import ShortenName from "../../../utils/nameShortner";
 import { TSocials, TUserInfo } from "@/types/types";
+import { FaInstagram, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
+import { IoLogoGithub } from "react-icons/io";
+import { BiLogoTelegram } from "react-icons/bi";
 
 interface HeroProps {
   userInfo: TUserInfo;
@@ -72,21 +74,20 @@ const Hero = ({ userInfo, socials, tags }: HeroProps) => {
 
       <div className='flex-col-between lg:gap-0 gap-6 items-center mt-6 md:!items-end md:h-[141px] w-full md:w-2/5'>
         {/* socials */}
-        <div className='md:w-[156px] w-full flex-start !justify-start gap-5 md:!justify-between'>
-          {socials.map((social: TSocials, index) => {
-            return (
-              <Link href={social.link} key={index}>
-                <Image
-                  // src={pfp_url}
-                  src={social.img}
-                  alt='pfp'
-                  width={24}
-                  height={24}
-                  className='w-6 h-6'
-                />
-              </Link>
-            );
-          })}
+        <div className='md:w-[156px] w-full flex-start !justify-start gap-5 md:!justify-end'>
+          {socials
+            .filter(({ link }) => link)
+            .map((social: TSocials, index) => {
+              return (
+                <Link href={social.link ?? ""} key={index} target='_blank'>
+                  {social.type === "github" && <IoLogoGithub />}
+                  {social.type === "twitter" && <FaXTwitter />}
+                  {social.type === "telegram" && <BiLogoTelegram />}
+                  {social.type === "linkedin" && <FaLinkedinIn />}
+                  {social.type === "instagram" && <FaInstagram />}
+                </Link>
+              );
+            })}
         </div>
 
         {/* Achievement */}

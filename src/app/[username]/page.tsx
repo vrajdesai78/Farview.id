@@ -22,6 +22,7 @@ import Image from "next/image";
 import ProfileContainer from "@/components/Profile/ProfileContainer";
 import { PrivyClient } from "@privy-io/react-auth";
 import NavButton from "@/components/Profile/NavButton";
+import PageContainer from "@/components/PageContainer";
 
 // export async function generateMetadata({
 //   params,
@@ -59,21 +60,6 @@ import NavButton from "@/components/Profile/NavButton";
 //   };
 // }
 
-const socials = [
-  {
-    img: "/images/x.svg",
-    link: "",
-  },
-  {
-    img: "/images/reddit.svg",
-    link: "",
-  },
-  {
-    img: "/images/yt.svg",
-    link: "",
-  },
-];
-
 const tags = ["FC OG", "Based", "Crypto OG"];
 
 const Page = async ({ params }: { params: { username: string } }) => {
@@ -103,16 +89,11 @@ const Page = async ({ params }: { params: { username: string } }) => {
       profileData.Socials.Social[0].userId
     );
 
-    const cast = await fetchCastFromUrl(
-      "https://warpcast.com/vrajdesai/0xb632b8b3"
-    );
+    let cast = null;
 
-    console.log("cast", cast);
-
-    await addUserDetails({
-      fname: params.username,
-      linkedin: "https://www.linkedin.com/in/vrajdesai78",
-    });
+    if (userData?.cast) {
+      cast = await fetchCastFromUrl(userData.cast);
+    }
 
     const tags = await findTags(
       networth,
@@ -130,59 +111,73 @@ const Page = async ({ params }: { params: { username: string } }) => {
     const filteredNfts = nfts.filter((nft) => nft.imageUrl && nft.name);
 
     return (
-      <div className='flex-center w-full min-h-screen !items-start pt-[92px] bg-[#FAFAFA] relative'>
-        <div className='w-full min-h-[322px] absolute top-0 right-0 z-10'>
-          <NavButton />
-          <Image
-            src={"/images/banner.png"}
-            alt='pfp'
-            width={1440}
-            height={322}
-            className='!w-full !h-[322px] object-cover'
-          />
-        </div>
-        <div className='w-full max-w-[869px] relative z-30'>
-          <ProfileContainer
-            stats={[
-              {
-                title: "Networth (Base)",
-                val: networth.toFixed(2) + " USD",
-                isIcon: false,
-              },
-              {
-                title: "Txns on Base",
-                val: txnCount,
-                isIcon: false,
-              },
-              {
-                title: "First txn on Base",
-                val: formattedDateWithSuffix,
-                isIcon: false,
-              },
-              {
-                title: "Profile Visits",
-                val: visits,
-                isIcon: false,
-              },
-            ]}
-            nfts={filteredNfts}
-            tokenBalances={profileData.TokenBalances.TokenBalance}
-            userInfo={{
-              bio: profileData.Socials.Social[0].profileBio,
-              follower_count: profileData.Socials.Social[0].followerCount,
-              following_count: profileData.Socials.Social[0].followingCount,
-              name: profileData.Socials.Social[0].profileName,
-              pfp: profileData.Socials.Social[0].profileImage,
-              username: params.username,
-            }}
-            socials={socials}
-            tags={tags}
-            activeChannels={activeChannels}
-            topFollowers={topFollowers}
-            topCasts={topCasts as TCast[]}
-          />
-        </div>
-      </div>
+      <PageContainer
+        stats={[
+          {
+            title: "Networth (Base)",
+            val: networth.toFixed(2) + " USD",
+            isIcon: false,
+          },
+          {
+            title: "Txns on Base",
+            val: txnCount,
+            isIcon: false,
+          },
+          {
+            title: "First txn on Base",
+            val: formattedDateWithSuffix,
+            isIcon: false,
+          },
+          {
+            title: "Profile Visits",
+            val: visits,
+            isIcon: false,
+          },
+        ]}
+        nfts={filteredNfts}
+        tokenBalances={profileData.TokenBalances.TokenBalance}
+        userInfo={{
+          bio: profileData.Socials.Social[0].profileBio,
+          follower_count: profileData.Socials.Social[0].followerCount,
+          following_count: profileData.Socials.Social[0].followingCount,
+          name: profileData.Socials.Social[0].profileDisplayName,
+          pfp: profileData.Socials.Social[0].profileImage,
+          username: params.username,
+        }}
+        fid={profileData.Socials.Social[0].userId}
+        socials={[
+          {
+            type: "github",
+            link: userData.github,
+          },
+          {
+            type: "linkedin",
+            link: userData.linkedin,
+          },
+          {
+            type: "twitter",
+            link: userData.twitter,
+          },
+          {
+            type: "telegram",
+            link: userData.telegram,
+          },
+          {
+            type: "instagram",
+            link: userData.instagram,
+          },
+        ]}
+        tags={tags}
+        activeChannels={activeChannels}
+        topFollowers={topFollowers}
+        topCasts={
+          [
+            cast ?? (topCasts as TCast[])?.[0],
+            cast ? (topCasts as TCast[])?.[0] : (topCasts as TCast[])?.[1],
+          ] as TCast[]
+        }
+        userData={userData}
+      />
     );
   } catch (e) {
     console.log(e);

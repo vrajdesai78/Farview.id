@@ -8,8 +8,6 @@ interface FcStatsProps {
 }
 
 const FcStats = ({ activeChannels, topFollowers }: FcStatsProps) => {
-  console.log("topFollowers", topFollowers);
-
   const followersWithMaxCount = topFollowers.reduce(
     (topFollower, currentFollower) => {
       return currentFollower.val > topFollower.val
@@ -52,7 +50,7 @@ const FcStats = ({ activeChannels, topFollowers }: FcStatsProps) => {
                 <ActiveCasterContainer
                   key={index}
                   icon={imageUrl}
-                  title={`/${name}ssldkfjsdklfjskldjfsdklfj`}
+                  title={`/${name}`}
                   isMain={false}
                   isRight={index === 1}
                 />

@@ -9,8 +9,6 @@ interface TopChannelsProps {
 }
 
 const TopChannels: FC<TopChannelsProps> = ({ topChannels }) => {
-  console.log("topChannels", topChannels);
-
   return (
     <Grid heading='Active Caster'>
       <div className='flex-col justify-start items-center lg:items-start gap-6 inline-flex w-full'>

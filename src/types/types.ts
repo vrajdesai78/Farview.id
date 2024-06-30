@@ -45,7 +45,7 @@ export interface TTokenBalances {
 }
 
 export interface TSocials {
-  img: string;
+  type: 'github' | 'linkedin' | 'twitter' | 'telegram' | 'instagram';
   link: string;
 }
 
@@ -62,4 +62,13 @@ export interface TTopFollowers {
   title: string;
   icon: string;
   val: number;
+}
+
+export interface TUserDetail {
+  github?: string;
+  linkedin?: string;
+  twitter?: string;
+  telegram?: string;
+  instagram?: string;
+  cast?: string;
 }

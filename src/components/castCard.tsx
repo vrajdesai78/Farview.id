@@ -47,8 +47,6 @@ const CastCard = ({
     },
   ];
 
-  console.log("image", img);
-
   return (
     // <div className=" rounded-xl flex items-center w-full justify-center">
     <Link
