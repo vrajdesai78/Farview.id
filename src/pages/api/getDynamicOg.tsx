@@ -46,7 +46,7 @@ export default async function GET(request: NextRequest) {
       date = new Date(profileData.Wallet.tokenTransfers[0].blockTimestamp);
     }
 
-    const { formattedDateWithSuffix, diffDays } = getFormattedDate(date);
+    const { formattedDateWithSuffix } = getFormattedDate(date);
 
     const tags = [
       {
@@ -58,7 +58,7 @@ export default async function GET(request: NextRequest) {
         icon: "🥇",
       },
       {
-        title: `${diffDays} D since First Base txn`,
+        title: `${0} D since First Base txn`,
         icon: "⌛️",
       },
     ];

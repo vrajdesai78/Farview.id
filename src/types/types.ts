@@ -10,11 +10,6 @@ export interface TActiveChannels {
   imageUrl: string;
 }
 
-export interface TTopFollowers {
-  name: string;
-  pfp: string;
-}
-
 export interface TCast {
   text: string;
   likes_count: number;
@@ -22,6 +17,8 @@ export interface TCast {
   timestamp: string;
   message?: string;
   url: string;
+  replies_count: number;
+  channel?: string;
 }
 
 export interface TokenBalances {
@@ -31,4 +28,37 @@ export interface TokenBalances {
     };
     formattedAmount: string;
   }[];
+}
+
+export interface TStats {
+  title: string;
+  val: string;
+  isIcon: boolean;
+}
+
+export interface TTokenBalances {
+  token: {
+    symbol: string;
+  };
+  formattedAmount: string;
+}
+
+export interface TSocials {
+  img: string;
+  link: string;
+}
+
+export interface TUserInfo {
+  name: string;
+  pfp: string;
+  username: string;
+  bio: string;
+  following_count: number;
+  follower_count: number;
+}
+
+export interface TTopFollowers {
+  title: string;
+  icon: string;
+  val: number;
 }

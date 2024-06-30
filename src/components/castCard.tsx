@@ -7,7 +7,6 @@ import Image from "next/image";
 interface cardProps {
   // pfpImg: string;
   // username: string;
-  // displayName: string;
   castText: string;
   // timestamp: string;
   likesCount: number;
@@ -15,22 +14,22 @@ interface cardProps {
   recastCount: number;
   url: string;
   img?: string;
+  channel?: string;
 }
 
 const CastCard = ({
   // pfpImg,
   // username,
-  // displayName,
   castText,
   // timestamp,
   likesCount,
   recastCount,
   repliesCount,
   url,
-  img
+  img,
+  channel,
 }: cardProps) => {
   // const formattedTime = getFormattedTime(timestamp);
-
 
   const reactions = [
     {
@@ -46,7 +45,10 @@ const CastCard = ({
       icon: "/images/recast.svg",
       count: recastCount,
     },
-  ]
+  ];
+
+  console.log("image", img);
+
   return (
     // <div className=" rounded-xl flex items-center w-full justify-center">
     <Link
@@ -54,7 +56,8 @@ const CastCard = ({
       href={url}
       target='_blank'
       style={{
-        boxShadow: "0px 0px 0px 1px rgba(16, 24, 40, 0.06), 0px 4px 8px -2px rgba(16, 24, 40, 0.10), 0px 2px 4px -2px rgba(16, 24, 40, 0.06)",
+        boxShadow:
+          "0px 0px 0px 1px rgba(16, 24, 40, 0.06), 0px 4px 8px -2px rgba(16, 24, 40, 0.10), 0px 2px 4px -2px rgba(16, 24, 40, 0.06)",
       }}
     >
       {/* <div className='flex justify-between w-full'> */}
@@ -95,16 +98,18 @@ const CastCard = ({
           width={24}
           className='w-6 h-6 rounded-sm'
         />
-
       </div>
 
       {/* cast img if exists */}
-      {
-        img &&
-        <div className="w-full h-[181px] rounded-xl">
-          <img src={img} className="w-full h-full object-cover rounded-xl" alt="" />
+      {img && (
+        <div className='w-full h-[181px] rounded-xl'>
+          <img
+            src={img}
+            className='w-full h-full object-cover rounded-xl'
+            alt=''
+          />
         </div>
-      }
+      )}
 
       <div className='w-full flex-between'>
         {/* time of cast */}
@@ -114,11 +119,9 @@ const CastCard = ({
 
         {/* reactions */}
         <div className='text-primary-grey flex-start gap-4'>
-
-          {reactions.map((reaction) => {
-
+          {reactions.map((reaction, idx) => {
             return (
-              <div className='flex-center gap-1.5'>
+              <div className='flex-center gap-1.5' key={idx}>
                 <Image
                   src={reaction.icon}
                   alt='rxtn'
@@ -127,16 +130,17 @@ const CastCard = ({
                   className='w-5 h-5'
                 />
                 <span className=' text-sm font-normal'>{reaction.count}</span>
-
               </div>
-            )
+            );
           })}
-
         </div>
 
         {/* cast parent channel if exists or Home */}
-        <span className=' text-sm font-normal text-primary-grey'>{'/replyguys'}</span>
-
+        {channel && (
+          <span className=' text-sm font-normal text-primary-grey'>
+            {`/${channel}`}
+          </span>
+        )}
       </div>
     </Link>
     // </div>

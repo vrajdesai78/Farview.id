@@ -8,7 +8,6 @@ export function cn(...inputs: ClassValue[]) {
 export const getFormattedDate = (date: Date) => {
   const today = new Date();
   const diffTime = Math.abs(today.getTime() - date.getTime());
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   const options = {
     year: "2-digit" as const,
     month: "short" as const,
@@ -25,6 +24,5 @@ export const getFormattedDate = (date: Date) => {
   );
   return {
     formattedDateWithSuffix,
-    diffDays,
   };
 };
