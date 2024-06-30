@@ -13,7 +13,7 @@ const StatBox = ({
     isIcon
 }: StatProps) => {
     return (
-        <div className='flex-col-start !items-start px-4 py-2 gap-1 min-w-[190px] '>
+        <div className='flex-col-start !items-start px-4 py-2 gap-1 lg:min-w-[190px] border border-[#E5E5E5] rounded-lg md:w-[calc(100%/4-8px)]'>
             <span className="text-primary-grey font-normal text-xs sm:text-sm  ">
                 {title}
             </span>
@@ -28,11 +28,9 @@ const StatBox = ({
                         // src={pfp_url}
                         src={'/images/redirectArrow.svg'}
                         alt="pfp"
-                        width={64}
-                        height={64}
-                        loader={({ src }) => src}
-                        unoptimized
-                        className="w-full h-full object-cover"
+                        width={20}
+                        height={20}
+                        className="w-5 h-5 object-cover"
                     />
                 }
 

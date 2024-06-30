@@ -5,27 +5,31 @@ import Link from "next/link";
 import Image from "next/image";
 
 interface cardProps {
-  pfpImg: string;
-  username: string;
-  displayName: string;
+  // pfpImg: string;
+  // username: string;
+  // displayName: string;
   castText: string;
-  timestamp: string;
+  // timestamp: string;
   likesCount: number;
+  repliesCount: number;
   recastCount: number;
   url: string;
+  img?: string;
 }
 
 const CastCard = ({
-  pfpImg,
-  username,
-  displayName,
+  // pfpImg,
+  // username,
+  // displayName,
   castText,
-  timestamp,
+  // timestamp,
   likesCount,
   recastCount,
+  repliesCount,
   url,
+  img
 }: cardProps) => {
-  const formattedTime = getFormattedTime(timestamp);
+  // const formattedTime = getFormattedTime(timestamp);
 
 
   const reactions = [
@@ -36,7 +40,7 @@ const CastCard = ({
     {
       icon: "/images/replies.svg",
       //  NOTE ADD REPLIES COUNT BELOW DYNAMICALLY
-      count: 43,
+      count: repliesCount,
     },
     {
       icon: "/images/recast.svg",
@@ -46,7 +50,7 @@ const CastCard = ({
   return (
     // <div className=" rounded-xl flex items-center w-full justify-center">
     <Link
-      className='p-5 rounded-2xl bg-white border h-[200px] border-[#DEDEDE] w-full max-w-xl flex-col-start gap-4'
+      className='p-5 rounded-2xl bg-white border  border-[#DEDEDE] w-full  flex-col-start gap-4'
       href={url}
       target='_blank'
       style={{
@@ -79,22 +83,28 @@ const CastCard = ({
 
       {/* </div> */}
       <div className='max-w-full w-full flex-between !items-start'>
-        <p className='text-slate-800 block text-xs w-[calc(100%-40px)] mt-1 max-w-[calc(100%-40px)] whitespace-break-spaces overflow-hidden'>
-          {ShortenName(castText, 80)}
+        <p className='text-[#262626] block h-[90px] max-h-[90px] text-base font-medium w-[calc(100%-40px)] max-w-[calc(100%-40px)] whitespace-break-spaces overflow-hidden'>
+          {ShortenName(castText, 100)}
         </p>
 
         {/* warpcast icon */}
-        <Image
+        <img
           src='https://play-lh.googleusercontent.com/cRcdfJ01plmO9AhusWRZ1uyrjcYbbMMiyqTakPEHatoNVEzxtFt-78GJ7IZX-1cd2Vz2'
           alt='warpcast'
           height={24}
           width={24}
-          unoptimized
           className='w-6 h-6 rounded-sm'
-          loader={({ src }) => src}
         />
 
       </div>
+
+      {/* cast img if exists */}
+      {
+        img &&
+        <div className="w-full h-[181px] rounded-xl">
+          <img src={img} className="w-full h-full object-cover rounded-xl" alt="" />
+        </div>
+      }
 
       <div className='w-full flex-between'>
         {/* time of cast */}
