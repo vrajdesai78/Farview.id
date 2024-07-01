@@ -48,6 +48,14 @@ export default function Home() {
       pfp: "/images/jaeckPFP.svg",
       username: "jacek",
     },
+    {
+      pfp: "/images/jaeckPFP.svg",
+      username: "saxenasaheb.eth",
+    },
+    {
+      pfp: "/images/jaeckPFP.svg",
+      username: "bhadoriya",
+    },
   ];
   useEffect(() => {
     const fetchOgs = async () => {
@@ -69,9 +77,9 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="pt-8 px-6 bg-[#F8FAFC] w-full flex flex-col items-center sm:gap-4 md:gap-16 gap-10 justify-start ">
+    <div className="pt-8 px-6 bg-[#F8FAFC] w-full min-h-screen flex flex-col items-center sm:gap-4 md:gap-16 gap-10 justify-start ">
       <Navbar />
-      <main className="w-full h-[80vh] flex items-center justify-start flex-col px-6">
+      <main className="w-full min-h-[80vh] flex items-center justify-start flex-col px-6">
         <div className="w-full flex flex-col items-center justify-start gap-6 max-w-[1200px]">
           <div className="flex flex-col items-center justify-center gap-8">
             <div className="flex items-center justify-center gap-1 w-full max-w-2xl">
@@ -158,14 +166,14 @@ export default function Home() {
                           </h1>
 
                           <p className='text-primary-grey font-normal text-base text-start max-w-full sm:max-w-[205px] '>
-                            {og.profileBio}
+                            {og.profileBio.slice(0,30)+ '...'}
                           </p>
                         </div>
                       </div>
 
                       {/* follower count */}
                       <div className='flex-start w-full  gap-4'>
-                        <span className='text-lg text-primary-grey font-normal'>
+                        <span className='text-sm text-primary-grey font-normal'>
                           Followers
                           <span className='text-primary-violet font-semibold ml-1.5'>
                             {og.followerCount >= 1000
@@ -175,7 +183,7 @@ export default function Home() {
                         </span>
 
                         {/* following count */}
-                        <span className='text-lg text-primary-grey font-normal'>
+                        <span className='text-sm text-primary-grey font-normal'>
                           Following
                           <span className='text-primary-violet font-semibold ml-1.5'>
                             {og.followingCount >= 1000
