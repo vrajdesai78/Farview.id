@@ -17,6 +17,8 @@ import { getFormattedDate } from "@/lib/utils";
 import { TCast } from "@/types/types";
 import PageContainer from "@/components/PageContainer";
 
+export const runtime = "edge";
+
 const Page = async ({ params }: { params: { username: string } }) => {
   try {
     const profileData = await getFCDetails(params.username);
