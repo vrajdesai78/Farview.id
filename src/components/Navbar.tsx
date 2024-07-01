@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -7,17 +9,13 @@ const Navbar = () => {
   const pathname = usePathname();
   return (
     <div
-      className={`w-full flex items-center px-6 max-w-[1200px] ${pathname !== "/" ? "justify-between" : "justify-center"
-        }`}
+      className={`w-full flex items-center px-6 max-w-[1200px] ${
+        pathname !== "/" ? "justify-between" : "justify-center"
+      }`}
     >
       {/* Farview */}
       <Link href={"/"} className='text-2xl font-semibold text-[#030816]'>
-        <Image
-          src={'/images/eye.svg'}
-          alt=""
-          width={64}
-          height={24}
-        />
+        <Image src={"/images/eye.svg"} alt='' width={64} height={24} />
       </Link>
 
       {/* share */}
