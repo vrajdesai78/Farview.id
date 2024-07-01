@@ -5,66 +5,21 @@ import {
   getUserData,
   getTxnCount,
   fetchTopFollowers,
-  getFarcasterName,
   addUser,
   getWalletWorth,
   getVisits,
   findTags,
-  addUserDetails,
   getUserDetails,
   fetchCastFromUrl,
+  getFCDetails,
 } from "../_actions/queries";
 import { getFormattedDate } from "@/lib/utils";
-import { TCast, TokenBalances } from "@/types/types";
-import { redirect } from "next/navigation";
-import { Metadata } from "next";
-import Image from "next/image";
-import ProfileContainer from "@/components/Profile/ProfileContainer";
-import { PrivyClient } from "@privy-io/react-auth";
-import NavButton from "@/components/Profile/NavButton";
+import { TCast } from "@/types/types";
 import PageContainer from "@/components/PageContainer";
-
-// export async function generateMetadata({
-//   params,
-// }: {
-//   params: { username: string };
-// }): Promise<Metadata> {
-//   const { name, pfp } = await getFarcasterName(params.username);
-//   console.log("name", name);
-//   console.log("pfp", pfp);
-//   return {
-//     title: `${name}'s Profile`,
-//     description: `Check out ${name}'s profile on Farview!`,
-//     openGraph: {
-//       images: [
-//         {
-//           url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/getDynamicOg?fname=${params.username}`,
-//         },
-//       ],
-//     },
-//     icons: [
-//       {
-//         rel: "icon",
-//         url: pfp,
-//       },
-//       {
-//         rel: "favicon",
-//         url: pfp,
-//       },
-//     ],
-//     other: {
-//       "fc:frame": "vNext",
-//       "fc:frame:image": `${process.env.NEXT_PUBLIC_BASE_URL}/api/getDynamicOg?fname=${params.username}`,
-//       "fc:frame:image:aspect_ratio": "1:1",
-//     },
-//   };
-// }
-
-const tags = ["FC OG", "Based", "Crypto OG"];
 
 const Page = async ({ params }: { params: { username: string } }) => {
   try {
-    const profileData = await getUserData(params.username);
+    const profileData = await getFCDetails(params.username);
     const [
       nfts,
       topFollowers,
@@ -74,20 +29,20 @@ const Page = async ({ params }: { params: { username: string } }) => {
       networth,
       visits,
       userData,
+      airstackData,
     ] = await Promise.all([
-      getTopNFTs(profileData.Socials.Social[0].userAssociatedAddresses[1]),
-      fetchTopFollowers(profileData.Socials.Social[0].userId),
-      fetchTopCasts(profileData.Socials.Social[0].userId),
-      getTxnCount(profileData.Socials.Social[0].userAssociatedAddresses[1]),
-      addUser(profileData.Socials.Social[0].profileName),
-      getWalletWorth(profileData.Socials.Social[0].userAssociatedAddresses[1]),
+      getTopNFTs(profileData?.address),
+      fetchTopFollowers(profileData?.fid),
+      fetchTopCasts(profileData?.fid),
+      getTxnCount(profileData?.address),
+      addUser(params.username),
+      getWalletWorth(profileData?.address),
       getVisits(params.username),
       getUserDetails(params.username),
+      getUserData(params.username),
     ]);
 
-    const activeChannels = await fetchActiveChannels(
-      profileData.Socials.Social[0].userId
-    );
+    const activeChannels = await fetchActiveChannels(profileData?.fid);
 
     let cast = null;
 
@@ -95,15 +50,11 @@ const Page = async ({ params }: { params: { username: string } }) => {
       cast = await fetchCastFromUrl(userData.cast);
     }
 
-    const tags = await findTags(
-      networth,
-      txnCount,
-      Number(profileData.Socials.Social[0].userId)
-    );
+    const tags = await findTags(networth, txnCount, Number(profileData?.fid));
 
     let date = new Date();
-    if (profileData.Wallet.tokenTransfers[0]) {
-      date = new Date(profileData.Wallet.tokenTransfers[0].blockTimestamp);
+    if (airstackData.Wallet.tokenTransfers[0]) {
+      date = new Date(airstackData.Wallet.tokenTransfers[0].blockTimestamp);
     }
 
     const { formattedDateWithSuffix } = getFormattedDate(date);
@@ -135,36 +86,36 @@ const Page = async ({ params }: { params: { username: string } }) => {
           },
         ]}
         nfts={filteredNfts}
-        tokenBalances={profileData.TokenBalances.TokenBalance}
+        tokenBalances={airstackData.TokenBalances.TokenBalance}
         userInfo={{
-          bio: profileData.Socials.Social[0].profileBio,
-          follower_count: profileData.Socials.Social[0].followerCount,
-          following_count: profileData.Socials.Social[0].followingCount,
-          name: profileData.Socials.Social[0].profileDisplayName,
-          pfp: profileData.Socials.Social[0].profileImage,
+          bio: profileData.bio,
+          follower_count: profileData.followers,
+          following_count: profileData.following,
+          name: profileData.name,
+          pfp: profileData.pfp,
           username: params.username,
         }}
-        fid={profileData.Socials.Social[0].userId}
+        fid={profileData.fid}
         socials={[
           {
             type: "github",
-            link: userData.github,
+            link: userData?.github,
           },
           {
             type: "linkedin",
-            link: userData.linkedin,
+            link: userData?.linkedin,
           },
           {
             type: "twitter",
-            link: userData.twitter,
+            link: userData?.twitter,
           },
           {
             type: "telegram",
-            link: userData.telegram,
+            link: userData?.telegram,
           },
           {
             type: "instagram",
-            link: userData.instagram,
+            link: userData?.instagram,
           },
         ]}
         tags={tags}

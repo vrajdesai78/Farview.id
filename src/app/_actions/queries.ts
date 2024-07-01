@@ -178,6 +178,8 @@ export const fetchTopFollowers = async (fid: string) => {
 };
 
 export const getTopNFTs = async (address: string) => {
+  if (!address) return [];
+
   const nftResponse = await fetch(
     `https://api.simplehash.com/api/v0/nfts/owners_v2?chains=base&wallet_addresses=${address}&order_by=floor_price__desc&limit=5`,
     {
@@ -246,7 +248,7 @@ export const fetchTopCasts = async (fid: string) => {
   return topCastsArr;
 };
 
-export const getFarcasterName = async (fname: string) => {
+export const getFCDetails = async (fname: string) => {
   const apiResponse = await fetch(
     `https://api.neynar.com/v2/farcaster/user/search?q=${fname}&limit=1`,
     {
@@ -262,7 +264,11 @@ export const getFarcasterName = async (fname: string) => {
   return {
     name: result.users[0]?.display_name,
     pfp: result.users[0].pfp_url,
-    address: result.users[0].verified_addresses.eth_addresses[0],
+    address: result.users[0].verified_addresses?.eth_addresses[0],
+    bio: result.users[0].profile?.bio?.text,
+    followers: result.users[0].follower_count,
+    following: result.users[0].following_count,
+    fid: result.users[0].fid,
   };
 };
 
@@ -358,6 +364,8 @@ export const getFarcasterDetails = async (fid: string) => {
 };
 
 export const getWalletWorth = async (address: string) => {
+  if (!address) return null;
+
   const resp = await fetch(
     `https://api.mobula.io/api/1/wallet/portfolio?wallet=${address}&blockchains=base`
   );
@@ -372,6 +380,8 @@ export const getWalletWorth = async (address: string) => {
 };
 
 export const getTxnCount = async (address: string) => {
+  if (!address) return 0;
+
   const resp = await fetch(
     `https://api.mobula.io/api/1/wallet/transactions?wallet=${address}&blockchains=base`
   );

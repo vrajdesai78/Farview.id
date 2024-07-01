@@ -1,3 +1,6 @@
+"use client";
+
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
@@ -12,7 +15,7 @@ const Navbar = () => {
     >
       {/* Farview */}
       <Link href={"/"} className='text-2xl font-semibold text-[#030816]'>
-        Farview.id
+        <Image src={"/images/eye.svg"} alt='' width={64} height={24} />
       </Link>
 
       {/* share */}

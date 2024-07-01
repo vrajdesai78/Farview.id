@@ -3,7 +3,6 @@ import { createFrames } from "frames.js/next";
 import { farcasterHubContext } from "frames.js/middleware";
 import {
   getFarcasterDetails,
-  getTxnCount,
   getUserData,
   getWalletWorth,
 } from "@/app/_actions/queries";
