@@ -37,7 +37,7 @@ const Modal = ({ closeModal, open, userData }: ModalProps) => {
                   </div>
                   <Input
                     type=''
-                    value={formData.cast ?? ""}
+                    value={formData?.cast ?? ""}
                     handleChange={(e: any) =>
                       setFormData({ ...formData, cast: e.target.value })
                     }
@@ -56,7 +56,7 @@ const Modal = ({ closeModal, open, userData }: ModalProps) => {
                     </h3>
                     <Input
                       type=''
-                      value={formData.github ?? ""}
+                      value={formData?.github ?? ""}
                       handleChange={(e: any) =>
                         setFormData({ ...formData, github: e.target.value })
                       }
@@ -67,7 +67,7 @@ const Modal = ({ closeModal, open, userData }: ModalProps) => {
                     </h3>
                     <Input
                       type=''
-                      value={formData.twitter ?? ""}
+                      value={formData?.twitter ?? ""}
                       handleChange={(e: any) =>
                         setFormData({ ...formData, twitter: e.target.value })
                       }
@@ -78,7 +78,7 @@ const Modal = ({ closeModal, open, userData }: ModalProps) => {
                     </h3>
                     <Input
                       type=''
-                      value={formData.telegram ?? ""}
+                      value={formData?.telegram ?? ""}
                       handleChange={(e: any) =>
                         setFormData({ ...formData, telegram: e.target.value })
                       }
@@ -89,7 +89,7 @@ const Modal = ({ closeModal, open, userData }: ModalProps) => {
                     </h3>
                     <Input
                       type=''
-                      value={formData.linkedin ?? ""}
+                      value={formData?.linkedin ?? ""}
                       handleChange={(e: any) =>
                         setFormData({ ...formData, linkedin: e.target.value })
                       }
@@ -100,7 +100,7 @@ const Modal = ({ closeModal, open, userData }: ModalProps) => {
                     </h3>
                     <Input
                       type=''
-                      value={formData.instagram ?? ""}
+                      value={formData?.instagram ?? ""}
                       handleChange={(e: any) =>
                         setFormData({ ...formData, instagram: e.target.value })
                       }
