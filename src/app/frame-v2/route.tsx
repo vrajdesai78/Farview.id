@@ -1,11 +1,21 @@
 import { Button } from "frames.js/next";
 import { createFrames } from "frames.js/next";
-import { getRoast } from "../_actions/queries";
+import {
+  addUser,
+  fetchTopFollowers,
+  getFCDetails,
+  getFarcasterDetails,
+  getTxnCount,
+  getUserData,
+  getWalletWorth,
+} from "../_actions/queries";
 import { farcasterHubContext } from "frames.js/middleware";
 import { getFontBuffer } from "../../../utils/getFontBuffer";
 import { RegukarB64 } from "../../../utils/RegularB64";
 import { SemiboldB64 } from "../../../utils/SemiBoldB64";
 import { BoldB64 } from "../../../utils/Bold";
+import { getFormattedDate } from "@/lib/utils";
+import { formatScore } from "../../../utils/getScore";
 
 const frames = createFrames({
   middleware: [
@@ -37,9 +47,9 @@ const ActiveCasterContainer = ({
 }) => {
   return (
     <div
-    style={{
-      gap: "12px"
-    }}
+      style={{
+        gap: "12px",
+      }}
       tw={`p-3 flex items-center justify-start min-h-12 ${
         isMain
           ? "w-full  border-b border-[#E5E5E5] rounded-t-2xl"
@@ -56,17 +66,15 @@ const ActiveCasterContainer = ({
       <img
         src={icon}
         tw={`${isMain ? "w-8 h-8" : "w-6 h-6"} rounded-full`}
-        alt=""
+        alt=''
       />
 
-      <div tw="flex flex-col justify-start !items-start gap-0.5 w-full text-nowrap">
-        <span tw="text-[#262626] font-medium text-sm text-ellipsis text-nowrap w-4/5 overflow-hidden">
-          {title}
+      <div tw='flex flex-col justify-start !items-start gap-0.5 w-full text-nowrap'>
+        <span tw='text-[#262626] font-medium text-sm text-ellipsis text-nowrap w-4/5 overflow-hidden'>
+          {title.length > 8 ? `${title.slice(0, 8)}...` : title}
         </span>
         {text && (
-          <span tw="text-[#737373] font-normal text-[10px]">
-            {text}
-          </span>
+          <span tw='text-[#737373] font-normal text-[10px]'>{text}</span>
         )}
       </div>
     </div>
@@ -76,85 +84,73 @@ const handleRequest = frames(async (ctx) => {
   const { searchParams } = new URL(ctx.url);
 
   const fname = searchParams.get("fname");
-  const img = searchParams.get("img") ?? "";
-  const followers = Number(searchParams.get("followers")) ?? 0;
-  const following = Number(searchParams.get("following")) ?? 0;
-  const bio = searchParams.get("bio") ?? "";
-  const walletWorth = searchParams.get("walletWorth") ?? "";
 
-  // const roast = await getRoast({
-  //   followers: followers,
-  //   following: following,
-  //   walletWorth: walletWorth,
-  //   bio: bio,
-  // });
+  let name = "";
+  if (!fname) {
+    if (ctx.message && ctx.message.requesterFid) {
+      const data = await getFarcasterDetails(
+        ctx.message.requesterFid.toString()
+      );
+      name = data.Socials.Social[0].profileName;
+    }
+  }
 
-  // console.log("roast", roast);
+  const profileData = await getFCDetails(fname ?? name);
+
+  const [topFollowers, txnCount, userAdd, networth, airstackData] =
+    await Promise.all([
+      fetchTopFollowers(profileData?.fid),
+      getTxnCount(profileData?.address),
+      addUser(fname ?? name),
+      getWalletWorth(profileData?.address),
+      getUserData(fname ?? name),
+    ]);
+
+  let date = new Date();
+  if (airstackData.Wallet.tokenTransfers[0]) {
+    date = new Date(airstackData?.Wallet?.tokenTransfers[0]?.blockTimestamp);
+  }
+
+  const { formattedDateWithSuffix } = getFormattedDate(date);
 
   const stats = [
     {
       title: "Net Worth",
-      val: "$9139",
-      isIcon: true,
+      val: `$${networth.toFixed(2)}`,
+      isIcon: false,
     },
     {
       title: "Txns on Base",
-      val: "$9139",
+      val: txnCount,
       isIcon: false,
     },
     {
       title: "First txn on Base",
-      val: "29th Jul '23",
-      isIcon: true,
+      val: formattedDateWithSuffix,
+      isIcon: false,
     },
     {
-      title: "Profile Visit",
-      val: "234",
+      title: "Social Score",
+      val: formatScore(
+        Number(
+          airstackData.Socials.Social[0].socialCapital.socialCapitalScoreRaw
+        )
+      ),
       isIcon: false,
     },
   ];
-
-  const topChannels = [
-    {
-      title: "Base",
-      val: 69,
-      icon: "https://imgs.search.brave.com/KAUvQU4h8oCmQSTkKutb_ZPurlcKie5ebBOujP18OX8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdHls/ZXMucmVkZGl0bWVk/aWEuY29tL3Q1Xzkx/MDQyMy9zdHlsZXMv/Y29tbXVuaXR5SWNv/bl9hZGx1OThtYXk1/Z2IxLnBuZw",
-    },
-    {
-      title: "Base",
-      val: 9,
-      icon: "https://imgs.search.brave.com/KAUvQU4h8oCmQSTkKutb_ZPurlcKie5ebBOujP18OX8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdHls/ZXMucmVkZGl0bWVk/aWEuY29tL3Q1Xzkx/MDQyMy9zdHlsZXMv/Y29tbXVuaXR5SWNv/bl9hZGx1OThtYXk1/Z2IxLnBuZw",
-    },
-    {
-      title: "Base",
-      val: 39,
-      icon: "https://imgs.search.brave.com/KAUvQU4h8oCmQSTkKutb_ZPurlcKie5ebBOujP18OX8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdHls/ZXMucmVkZGl0bWVk/aWEuY29tL3Q1Xzkx/MDQyMy9zdHlsZXMv/Y29tbXVuaXR5SWNv/bl9hZGx1OThtYXk1/Z2IxLnBuZw",
-    },
-  ];
-
-  const channelWithMaxCasts = topChannels.reduce(
-    (maxChannel, currentChannel) => {
-      return currentChannel.val > maxChannel.val ? currentChannel : maxChannel;
-    },
-    topChannels[0]
-  );
-
-  const secondaryMainChannels = topChannels.filter(
-    (channel) => channel !== channelWithMaxCasts
-  );
 
   return {
     image: (
       <div
         style={{
-          // background: `white`,
           background: `url("https://i.ibb.co/Ksvtf8X/frame-bg.png")`,
           backgroundSize: "570px 320px",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
           display: "flex",
         }}
-        tw="flex  items-center justify-between p-6  w-full h-full"
+        tw='flex items-center justify-between p-6 w-full h-full'
       >
         <div
           style={{
@@ -162,14 +158,19 @@ const handleRequest = frames(async (ctx) => {
             backdropFilter: "blur(20px)",
             gap: "20px",
           }}
-          tw="flex flex-col max-w-[40%] items-start justify-between h-[270px]"
+          tw='flex flex-col max-w-[30%] items-start justify-between'
         >
-          <div tw="flex flex-col items-start justify-start gap-0.5">
-            <span tw="text-[#814C9F] font-normal text-xs">
+          <div tw='flex flex-col items-start justify-start gap-0.5'>
+            <span tw='text-[#814C9F] font-normal text-xs'>
               POWERED BY
               <br />
             </span>
-            <span style={{fontFamily: "Rubik Bold"}} tw="text-lg text-[#814C9F] font-bold">FARVIEW</span>
+            <span
+              style={{ fontFamily: "Rubik Bold" }}
+              tw='text-lg text-[#814C9F] font-bold'
+            >
+              FARVIEW
+            </span>
           </div>
 
           <div
@@ -177,38 +178,36 @@ const handleRequest = frames(async (ctx) => {
               display: "flex",
               gap: "6px",
             }}
-            tw=" w-full max-w-full flex flex-col items-start gap-4"
+            tw=' w-full max-w-full flex flex-col items-start gap-4'
           >
             <img
-              loading="lazy"
+              loading='lazy'
               style={{
                 objectFit: "cover",
                 boxShadow: "0px 1.271px 5.082px 0px rgba(0, 0, 0, 0.25)",
               }}
-              src={
-                "https://imgs.search.brave.com/a3QeFpqjPdGlIy9ORd_xIOaARAxQinORUSRpMYN7aqg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93YWxs/cGFwZXJzLmNvbS9p/bWFnZXMvZmVhdHVy/ZWQvcGZwLXBpY3R1/cmVzLXBoNnF4dnox/NHA0dXZqMmouanBn"
-              }
-              tw="w-20 h-20 rounded-[8px] "
+              src={profileData.pfp}
+              tw='w-20 h-20 rounded-[8px] '
             />
             <div
               style={{
                 display: "flex",
                 gap: "2px",
               }}
-              tw=" w-full max-w-full flex flex-col items-start gap-2"
+              tw=' w-full max-w-full flex flex-col items-start gap-2'
             >
               <span
                 style={{
                   fontFamily: "Rubik SemiBold",
                   margin: 0,
                 }}
-                tw="text-xl font-semibold text-black"
+                tw='text-xl font-semibold text-black'
               >
-                Kushal Singh
+                {profileData.name}
               </span>
               <span
                 style={{ fontFamily: "Rubik SemiBold", margin: 0 }}
-                tw="text-sm font-semibold text-[#737373]"
+                tw='text-sm font-semibold text-[#737373]'
               >
                 @kushxl
               </span>
@@ -216,10 +215,11 @@ const handleRequest = frames(async (ctx) => {
                 style={{
                   margin: 0,
                 }}
-                tw="text-[#737373] font-normal text-sm text-start max-w-full "
+                tw='text-[#737373] font-normal text-sm text-start max-w-full '
               >
-                {""}
-                Product & Web Designer Work→ https://kuxshl.in/
+                {profileData.bio.length > 45
+                  ? `${profileData.bio.slice(0, 45)}.`
+                  : `${profileData.bio}`}
               </p>
 
               <div
@@ -227,23 +227,25 @@ const handleRequest = frames(async (ctx) => {
                   display: "flex",
                   gap: "16px",
                 }}
-                tw="flex items-center justify-start w-full  gap-4"
+                tw='flex items-center justify-start w-full  gap-4'
               >
-                <span tw="text-sm text-[#737373] font-normal">
+                <span tw='text-sm text-[#737373] font-normal'>
                   Followers
-                  <span tw="text-[#7F56D9] font-semibold ml-1.5">
-                    {/* {userInfo.follower_count >= 1000
-                      ? `${Number(userInfo.follower_count / 
-                      1000).toFixed(2)}k`
-                      : userInfo.follower_count} */}
-                    12k
+                  <span tw='text-[#7F56D9] font-semibold ml-1'>
+                    {profileData.followers >= 1000
+                      ? `${Number(profileData.followers / 1000).toFixed(2)}k`
+                      : profileData.followers}
                   </span>
                 </span>
 
                 {/* following count */}
-                <span tw="text-sm text-[#737373] font-normal">
+                <span tw='text-sm text-[#737373] font-normal ml-5'>
                   Following
-                  <span tw="text-[#7F56D9] font-semibold ml-1.5">1k</span>
+                  <span tw='text-[#7F56D9] font-semibold ml-1'>
+                    {profileData.following >= 1000
+                      ? `${Number(profileData.following / 1000).toFixed(2)}k`
+                      : profileData.following}
+                  </span>
                 </span>
               </div>
             </div>
@@ -255,14 +257,14 @@ const handleRequest = frames(async (ctx) => {
             display: "flex",
             gap: "20px",
           }}
-          tw="flex-col flex items-center justify-start gap-10 w-[50%] "
+          tw='flex-col flex items-center justify-start gap-10 w-[50%] '
         >
           <div
             style={{
               display: "flex",
               gap: "8px",
             }}
-            tw="w-full flex items-center justify-between gap-2 flex-wrap "
+            tw='w-full flex items-center justify-between gap-2 flex-wrap '
           >
             {stats.map(({ title, isIcon, val }) => {
               return (
@@ -272,9 +274,9 @@ const handleRequest = frames(async (ctx) => {
                     display: "flex",
                     gap: "4px",
                   }}
-                  tw="flex flex-col justify-start bg-white !items-start px-2 py-2 gap-1 border h-16 border-[#E5E5E5] rounded-lg w-[120px] h-auto"
+                  tw='flex flex-col justify-start bg-white !items-start px-2 py-2 gap-1 border h-16 border-[#E5E5E5] rounded-lg w-[120px] h-auto'
                 >
-                  <span tw="text-[#737373] font-normal text-xs sm:text-sm  ">
+                  <span tw='text-[#737373] font-normal text-xs sm:text-sm  '>
                     {title}
                   </span>
 
@@ -283,9 +285,9 @@ const handleRequest = frames(async (ctx) => {
                       display: "flex",
                       gap: "4px",
                     }}
-                    tw="flex items-center justify-start gap-1"
+                    tw='flex items-center justify-start gap-1'
                   >
-                    <span tw="text-[#171717] font-medium text-sm sm:text-base">
+                    <span tw='text-[#171717] font-medium text-sm sm:text-base'>
                       {val}
                     </span>
                   </div>
@@ -299,13 +301,13 @@ const handleRequest = frames(async (ctx) => {
               display: "flex",
               gap: "4px",
             }}
-            tw="flex flex-col justify-start w-full !items-start gap-2"
+            tw='flex flex-col justify-start w-full !items-start gap-2'
           >
-            <span tw="text-[#737373] text-sm font-semibold uppercase">
+            <span tw='text-[#737373] text-sm font-semibold uppercase'>
               active caster
             </span>
             <div
-              tw="flex flex-col justify-start w-full bg-white rounded-2xl"
+              tw='flex flex-col justify-start w-full bg-white rounded-2xl'
               style={{
                 display: "flex",
                 boxShadow:
@@ -313,10 +315,14 @@ const handleRequest = frames(async (ctx) => {
               }}
             >
               <ActiveCasterContainer
-                text={`Posted ${channelWithMaxCasts.val} Casts`}
+                text={`Posted ${
+                  topFollowers[0].val >= 1000
+                    ? `${Number(topFollowers[0].val / 1000).toFixed(2)}k`
+                    : topFollowers[0].val.toFixed(2)
+                } Followers`}
                 key={"main channel"}
-                icon={channelWithMaxCasts.icon}
-                title={`/${channelWithMaxCasts.title}`}
+                icon={topFollowers[0].icon}
+                title={`/${topFollowers[0].title}`}
                 isMain={true}
               />
 
@@ -324,12 +330,16 @@ const handleRequest = frames(async (ctx) => {
                 style={{
                   display: "flex",
                 }}
-                tw="flex items-center justify-between w-full"
+                tw='flex items-center justify-between w-full'
               >
-                {secondaryMainChannels.map(({ icon, title, val }, index) => {
+                {topFollowers.slice(1, 3).map(({ icon, title, val }, index) => {
                   return (
                     <ActiveCasterContainer
-                      text={val > 1 ? `${val} Casts` : `${val} cast`}
+                      text={
+                        val >= 1000
+                          ? `${Number(val / 1000).toFixed(2)}k`
+                          : val.toFixed(2)
+                      }
                       key={index}
                       icon={icon}
                       title={`/${title}`}
@@ -346,7 +356,7 @@ const handleRequest = frames(async (ctx) => {
     ),
     buttons: [
       <Button
-        action="link"
+        action='link'
         target={`https://farview.id/${fname}`}
         key={"profile"}
       >
@@ -354,7 +364,7 @@ const handleRequest = frames(async (ctx) => {
       </Button>,
       fname ? (
         <Button
-          action="link"
+          action='link'
           target={`hhttps://warpcast.com/~/channel/farview`}
           key={"myframe"}
         >
@@ -362,9 +372,9 @@ const handleRequest = frames(async (ctx) => {
         </Button>
       ) : (
         <Button
-          action="link"
+          action='link'
           key={"share"}
-          target={`https://warpcast.com/~/compose?embeds[]=${process.env.NEXT_PUBLIC_BASE_URL}/roast/getRoast?fname=${fname}&roast=&img=${img}`}
+          target={`https://warpcast.com/~/compose?embeds[]=${process.env.NEXT_PUBLIC_BASE_URL}/roast/getRoast?fname=${fname}&roast=&img=${profileData.pfp}`}
         >
           Share your roast
         </Button>

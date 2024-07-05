@@ -1,6 +1,6 @@
 "use server";
 
-import { TCast, TUserDetail } from "@/types/types";
+import { TCast } from "@/types/types";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { SupabaseClient } from "@supabase/supabase-js";
 
