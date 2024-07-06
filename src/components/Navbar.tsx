@@ -23,7 +23,7 @@ const Navbar = () => {
         <div className='w-24 h-11 px-6 py-3 bg-white rounded-full border border-slate-200 justify-center items-center gap-2.5 inline-flex'>
           <Link
             className='text-center text-slate-500 text-base font-normal tracking-tight'
-            href={`https://warpcast.com/~/compose?embeds[]=https://www.farview.id/frames?fname=${pathname?.slice(
+            href={`https://warpcast.com/~/compose?embeds[]=https://www.farview.id/frame-v2?fname=${pathname?.slice(
               1
             )}`}
             target='_blank'

@@ -151,7 +151,7 @@ const handleRequest = frames(async (ctx) => {
       fname ? (
         <Button
           action='post'
-          target={`${process.env.NEXT_PUBLIC_BASE_URL}/frames`}
+          target={`${process.env.NEXT_PUBLIC_BASE_URL}/frame-v2`}
           key={"myframe"}
         >
           See My Frame
@@ -160,7 +160,7 @@ const handleRequest = frames(async (ctx) => {
         <Button
           action='link'
           key={"share"}
-          target={`https://warpcast.com/~/compose?embeds[]=https://www.farview.id/frames?fname=${name}`}
+          target={`https://warpcast.com/~/compose?embeds[]=https://www.farview.id/frame-v2?fname=${name}`}
         >
           Share on Warpcast
         </Button>

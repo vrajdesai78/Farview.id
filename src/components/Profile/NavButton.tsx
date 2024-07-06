@@ -44,7 +44,7 @@ const NavButton = ({ openModal, fid }: NavButtonProps) => {
         className='rounded-r-full bg-violet-600 hover:bg-violet-500 p-2 text-white'
         onClick={() =>
           window.open(
-            `https://warpcast.com/~/compose?embeds[]=https://www.farview.id/frames?fname=${pathname?.slice(
+            `https://warpcast.com/~/compose?embeds[]=https://www.farview.id/frame-v2?fname=${pathname?.slice(
               1
             )}`,
             "_blank"

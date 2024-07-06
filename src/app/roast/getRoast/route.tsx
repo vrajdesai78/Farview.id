@@ -30,10 +30,10 @@ const handleRequest = frames(async (ctx) => {
   const walletWorth = searchParams.get("walletWorth") ?? "";
 
   const roast = await getRoast({
-    followers: followers,
-    following: following,
-    walletWorth: walletWorth,
-    bio: bio,
+    walletWorth,
+    followers,
+    following,
+    bio,
   });
 
   console.log("roast", roast);
@@ -99,15 +99,15 @@ const handleRequest = frames(async (ctx) => {
     buttons: [
       <Button
         action='link'
-        target={`https://farview.id/${fname}`}
+        target={`https://farview.id/${fname ?? name}`}
         key={"profile"}
       >
         View Full Profile
       </Button>,
       fname ? (
         <Button
-          action='link'
-          target={`hhttps://warpcast.com/~/channel/farview`}
+          action='post'
+          target={`${process.env.NEXT_PUBLIC_BASE_URL}/frames`}
           key={"myframe"}
         >
           Follow Farview
@@ -116,7 +116,7 @@ const handleRequest = frames(async (ctx) => {
         <Button
           action='link'
           key={"share"}
-          target={`https://warpcast.com/~/compose?embeds[]=${process.env.NEXT_PUBLIC_BASE_URL}/roast/getRoast?fname=${fname}&roast=${roast}&img=${img}`}
+          target={`https://warpcast.com/~/compose?embeds[]=https://www.farview.id/frames?fname=${fname}`}
         >
           Share your roast
         </Button>
