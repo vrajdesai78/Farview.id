@@ -365,7 +365,7 @@ const handleRequest = frames(async (ctx) => {
       fname ? (
         <Button
           action="link"
-          target={`hhttps://warpcast.com/~/channel/farview`}
+          target={`https://warpcast.com/~/channel/farview`}
           key={"myframe"}
         >
           Follow Farview
