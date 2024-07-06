@@ -66,15 +66,15 @@ const ActiveCasterContainer = ({
       <img
         src={icon}
         tw={`${isMain ? "w-8 h-8" : "w-6 h-6"} rounded-full`}
-        alt=''
+        alt=""
       />
 
-      <div tw='flex flex-col justify-start !items-start gap-0.5 w-full text-nowrap'>
-        <span tw='text-[#262626] font-medium text-sm text-ellipsis text-nowrap w-4/5 overflow-hidden'>
+      <div tw="flex flex-col justify-start !items-start gap-0.5 w-full text-nowrap">
+        <span tw="text-[#262626] font-medium text-sm text-ellipsis text-nowrap w-4/5 overflow-hidden">
           {title.length > 8 ? `${title.slice(0, 8)}...` : title}
         </span>
         {text && (
-          <span tw='text-[#737373] font-normal text-[10px]'>{text}</span>
+          <span tw="text-[#737373] font-normal text-[10px]">{text}</span>
         )}
       </div>
     </div>
@@ -116,12 +116,12 @@ const handleRequest = frames(async (ctx) => {
   const stats = [
     {
       title: "Net Worth",
-      val: `$${networth.toFixed(2)}`,
+      val: `$${networth?.toFixed(2) ?? "Not found"}`,
       isIcon: false,
     },
     {
       title: "Txns on Base",
-      val: txnCount,
+      val: txnCount?? "Not found",
       isIcon: false,
     },
     {
@@ -150,7 +150,7 @@ const handleRequest = frames(async (ctx) => {
           backgroundPosition: "center",
           display: "flex",
         }}
-        tw='flex items-center justify-between p-6 w-full h-full'
+        tw="flex items-center justify-between p-6 w-full h-full"
       >
         <div
           style={{
@@ -158,16 +158,16 @@ const handleRequest = frames(async (ctx) => {
             backdropFilter: "blur(20px)",
             gap: "20px",
           }}
-          tw='flex flex-col max-w-[30%] items-start justify-between'
+          tw="flex flex-col max-w-[40%] items-start justify-between"
         >
-          <div tw='flex flex-col items-start justify-start gap-0.5'>
-            <span tw='text-[#814C9F] font-normal text-xs'>
+          <div tw="flex flex-col items-start justify-start gap-0.5">
+            <span tw="text-[#814C9F] font-normal text-xs">
               POWERED BY
               <br />
             </span>
             <span
               style={{ fontFamily: "Rubik Bold" }}
-              tw='text-lg text-[#814C9F] font-bold'
+              tw="text-lg text-[#814C9F] font-bold"
             >
               FARVIEW
             </span>
@@ -178,47 +178,47 @@ const handleRequest = frames(async (ctx) => {
               display: "flex",
               gap: "6px",
             }}
-            tw=' w-full max-w-full flex flex-col items-start gap-4'
+            tw=" w-full max-w-full flex flex-col items-start gap-4"
           >
             <img
-              loading='lazy'
+              loading="lazy"
               style={{
                 objectFit: "cover",
                 boxShadow: "0px 1.271px 5.082px 0px rgba(0, 0, 0, 0.25)",
               }}
               src={profileData.pfp}
-              tw='w-20 h-20 rounded-[8px] '
+              tw="w-20 h-20 rounded-[8px] "
             />
             <div
               style={{
                 display: "flex",
                 gap: "2px",
               }}
-              tw=' w-full max-w-full flex flex-col items-start gap-2'
+              tw=" w-full max-w-full flex flex-col items-start gap-2"
             >
               <span
                 style={{
                   fontFamily: "Rubik SemiBold",
                   margin: 0,
                 }}
-                tw='text-xl font-semibold text-black'
+                tw="text-lg font-semibold text-black"
               >
                 {profileData.name}
               </span>
               <span
                 style={{ fontFamily: "Rubik SemiBold", margin: 0 }}
-                tw='text-sm font-semibold text-[#737373]'
+                tw="text-sm font-semibold text-[#737373]"
               >
-                @kushxl
+                @{profileData.username}
               </span>
               <p
                 style={{
                   margin: 0,
                 }}
-                tw='text-[#737373] font-normal text-sm text-start max-w-full '
+                tw="text-[#737373] font-normal text-sm text-start max-w-full "
               >
-                {profileData.bio.length > 45
-                  ? `${profileData.bio.slice(0, 45)}.`
+                {profileData.bio.length > 25
+                  ? `${profileData.bio.slice(0, 25) + "..."}.`
                   : `${profileData.bio}`}
               </p>
 
@@ -227,11 +227,11 @@ const handleRequest = frames(async (ctx) => {
                   display: "flex",
                   gap: "16px",
                 }}
-                tw='flex items-center justify-start w-full  gap-4'
+                tw="flex items-center justify-start w-full  gap-4"
               >
-                <span tw='text-sm text-[#737373] font-normal'>
+                <span tw="text-sm text-[#737373] font-normal">
                   Followers
-                  <span tw='text-[#7F56D9] font-semibold ml-1'>
+                  <span tw="text-[#7F56D9] font-semibold ml-1">
                     {profileData.followers >= 1000
                       ? `${Number(profileData.followers / 1000).toFixed(2)}k`
                       : profileData.followers}
@@ -239,9 +239,9 @@ const handleRequest = frames(async (ctx) => {
                 </span>
 
                 {/* following count */}
-                <span tw='text-sm text-[#737373] font-normal ml-5'>
+                <span tw="text-sm text-[#737373] font-normal ml-5">
                   Following
-                  <span tw='text-[#7F56D9] font-semibold ml-1'>
+                  <span tw="text-[#7F56D9] font-semibold ml-1">
                     {profileData.following >= 1000
                       ? `${Number(profileData.following / 1000).toFixed(2)}k`
                       : profileData.following}
@@ -257,14 +257,14 @@ const handleRequest = frames(async (ctx) => {
             display: "flex",
             gap: "20px",
           }}
-          tw='flex-col flex items-center justify-start gap-10 w-[50%] '
+          tw="flex-col flex items-center justify-start gap-10 w-[50%] "
         >
           <div
             style={{
               display: "flex",
               gap: "8px",
             }}
-            tw='w-full flex items-center justify-between gap-2 flex-wrap '
+            tw="w-full flex items-center justify-between gap-2 flex-wrap "
           >
             {stats.map(({ title, isIcon, val }) => {
               return (
@@ -274,9 +274,9 @@ const handleRequest = frames(async (ctx) => {
                     display: "flex",
                     gap: "4px",
                   }}
-                  tw='flex flex-col justify-start bg-white !items-start px-2 py-2 gap-1 border h-16 border-[#E5E5E5] rounded-lg w-[120px] h-auto'
+                  tw="flex flex-col justify-start bg-white !items-start px-2 py-2 gap-1 border h-16 border-[#E5E5E5] rounded-lg w-[120px] h-auto"
                 >
-                  <span tw='text-[#737373] font-normal text-xs sm:text-sm  '>
+                  <span tw="text-[#737373] font-normal text-xs sm:text-sm  ">
                     {title}
                   </span>
 
@@ -285,9 +285,9 @@ const handleRequest = frames(async (ctx) => {
                       display: "flex",
                       gap: "4px",
                     }}
-                    tw='flex items-center justify-start gap-1'
+                    tw="flex items-center justify-start gap-1"
                   >
-                    <span tw='text-[#171717] font-medium text-sm sm:text-base'>
+                    <span tw="text-[#171717] font-medium text-sm sm:text-base">
                       {val}
                     </span>
                   </div>
@@ -301,13 +301,13 @@ const handleRequest = frames(async (ctx) => {
               display: "flex",
               gap: "4px",
             }}
-            tw='flex flex-col justify-start w-full !items-start gap-2'
+            tw="flex flex-col justify-start w-full !items-start gap-2"
           >
-            <span tw='text-[#737373] text-sm font-semibold uppercase'>
+            <span tw="text-[#737373] text-sm font-semibold uppercase">
               active caster
             </span>
             <div
-              tw='flex flex-col justify-start w-full bg-white rounded-2xl'
+              tw="flex flex-col justify-start w-full bg-white rounded-2xl"
               style={{
                 display: "flex",
                 boxShadow:
@@ -330,7 +330,7 @@ const handleRequest = frames(async (ctx) => {
                 style={{
                   display: "flex",
                 }}
-                tw='flex items-center justify-between w-full'
+                tw="flex items-center justify-between w-full"
               >
                 {topFollowers.slice(1, 3).map(({ icon, title, val }, index) => {
                   return (
@@ -356,7 +356,7 @@ const handleRequest = frames(async (ctx) => {
     ),
     buttons: [
       <Button
-        action='link'
+        action="link"
         target={`https://farview.id/${fname}`}
         key={"profile"}
       >
@@ -364,7 +364,7 @@ const handleRequest = frames(async (ctx) => {
       </Button>,
       fname ? (
         <Button
-          action='link'
+          action="link"
           target={`hhttps://warpcast.com/~/channel/farview`}
           key={"myframe"}
         >
@@ -372,7 +372,7 @@ const handleRequest = frames(async (ctx) => {
         </Button>
       ) : (
         <Button
-          action='link'
+          action="link"
           key={"share"}
           target={`https://warpcast.com/~/compose?embeds[]=${process.env.NEXT_PUBLIC_BASE_URL}/roast/getRoast?fname=${fname}&roast=&img=${profileData.pfp}`}
         >

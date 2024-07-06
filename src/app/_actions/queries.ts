@@ -269,6 +269,7 @@ export const getFCDetails = async (fname: string) => {
     followers: result.users[0].follower_count,
     following: result.users[0].following_count,
     fid: result.users[0].fid,
+    username: result.users[0].username
   };
 };
 
