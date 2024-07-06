@@ -304,7 +304,7 @@ const handleRequest = frames(async (ctx) => {
             tw="flex flex-col justify-start w-full !items-start gap-2"
           >
             <span tw="text-[#737373] text-sm font-semibold uppercase">
-              active caster
+              TOP followers
             </span>
             <div
               tw="flex flex-col justify-start w-full bg-white rounded-2xl"
@@ -315,7 +315,7 @@ const handleRequest = frames(async (ctx) => {
               }}
             >
               <ActiveCasterContainer
-                text={`Posted ${
+                text={`${
                   topFollowers[0].val >= 1000
                     ? `${Number(topFollowers[0].val / 1000).toFixed(2)}k`
                     : topFollowers[0].val.toFixed(2)
