@@ -3,6 +3,7 @@
 import { TCast } from "@/types/types";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { SupabaseClient } from "@supabase/supabase-js";
+import { CovalentClient } from "@covalenthq/client-sdk";
 
 export const getUserData = async (fname: string) => {
   const query = `query MyQuery {
@@ -10,15 +11,6 @@ export const getUserData = async (fname: string) => {
       input: {filter: {dappName: {_eq: farcaster}, identity: {_eq: "fc_fname:${fname}"}}, blockchain: ethereum}
     ) {
       Social {
-        userCreatedAtBlockTimestamp
-        userAssociatedAddresses
-        profileBio
-        profileImage
-        followerCount
-        followingCount
-        profileName
-        profileDisplayName
-        userId
         socialCapital {
           socialCapitalScoreRaw
           socialCapitalScore
@@ -31,17 +23,6 @@ export const getUserData = async (fname: string) => {
       tokenTransfers(input: {order: {blockTimestamp: ASC}, limit: 1}) {
         transactionHash
         blockTimestamp
-      }
-    }
-    FarcasterChannelParticipants(
-      input: {filter: {participant: {_eq: "fc_fname:${fname}"}}, blockchain: ALL, limit: 3, order: {lastActionTimestamp: DESC}}
-    ) {
-      FarcasterChannelParticipant {
-        channelName
-        channelId
-        channel {
-          imageUrl
-        }
       }
     }
     TokenBalances(
@@ -74,15 +55,6 @@ export const getUserData = async (fname: string) => {
       Socials: {
         Social: [
           {
-            userCreatedAtBlockTimestamp: string;
-            userAssociatedAddresses: string[];
-            profileBio: string;
-            profileImage: string;
-            followerCount: number;
-            followingCount: number;
-            profileName: string;
-            profileDisplayName: string;
-            userId: string;
             socialCapital: {
               socialCapitalScoreRaw: string;
               socialCapitalScore: string;
@@ -95,17 +67,6 @@ export const getUserData = async (fname: string) => {
           {
             transactionHash: string;
             blockTimestamp: string;
-          }
-        ];
-      };
-      FarcasterChannelParticipants: {
-        FarcasterChannelParticipant: [
-          {
-            channelId: string;
-            channelName: string;
-            channel: {
-              imageUrl: string;
-            };
           }
         ];
       };
@@ -269,7 +230,7 @@ export const getFCDetails = async (fname: string) => {
     followers: result.users[0].follower_count,
     following: result.users[0].following_count,
     fid: result.users[0].fid,
-    username: result.users[0].username
+    username: result.users[0].username,
   };
 };
 
@@ -365,31 +326,37 @@ export const getFarcasterDetails = async (fid: string) => {
 };
 
 export const getWalletWorth = async (address: string) => {
-  if (!address) return null;
+  if (!address) return 0;
 
-  const resp = await fetch(
-    `https://api.mobula.io/api/1/wallet/portfolio?wallet=${address}&blockchains=base`
+  const client = new CovalentClient(process.env.COVALENT_API_KEY!);
+
+  const response = await client.BalanceService.getTokenBalancesForWalletAddress(
+    "base-mainnet",
+    address
   );
 
-  const respJson = await resp.json();
-
-  if (respJson?.data?.total_wallet_balance) {
-    return respJson?.data?.total_wallet_balance;
+  let portfolio = 0;
+  for (const item of response.data.items) {
+    if (item.quote > 0) {
+      portfolio += item.quote;
+    } else {
+      break;
+    }
   }
-
-  return null;
+  return portfolio;
 };
 
 export const getTxnCount = async (address: string) => {
   if (!address) return 0;
 
-  const resp = await fetch(
-    `https://api.mobula.io/api/1/wallet/transactions?wallet=${address}&blockchains=base`
+  const client = new CovalentClient(process.env.COVALENT_API_KEY!);
+
+  const response = await client.TransactionService.getTransactionSummary(
+    "base-mainnet",
+    address
   );
 
-  const respJson = await resp.json();
-
-  return respJson?.pagination?.total;
+  return response.data.items[0]?.total_count;
 };
 
 interface getRoastProps {

@@ -2,6 +2,7 @@ import { Button } from "frames.js/next";
 import { createFrames } from "frames.js/next";
 import {
   fetchTopFollowers,
+  getFCDetails,
   getFarcasterDetails,
   getTxnCount,
   getUserData,
@@ -41,21 +42,20 @@ const handleRequest = frames(async (ctx) => {
     }
   }
 
-  const profileData = await getUserData(fname ?? name);
-  const txnCount = await getTxnCount(
-    profileData?.Socials?.Social?.[0]?.userAssociatedAddresses[1]
-  );
+  const profileData = await getFCDetails(fname ?? name);
+  const airstackData = await getUserData(fname ?? name);
+  const txnCount = await getTxnCount(profileData?.address);
 
   const score =
-    profileData?.Socials?.Social[0]?.socialCapital?.socialCapitalScoreRaw;
+    airstackData?.Socials?.Social[0]?.socialCapital?.socialCapitalScoreRaw;
 
   const rank = await getTopRank(
-    Number(profileData?.Socials?.Social[0]?.socialCapital?.socialCapitalScore)
+    Number(airstackData?.Socials?.Social[0]?.socialCapital?.socialCapitalScore)
   );
 
   let date = new Date();
-  if (profileData?.Wallet?.tokenTransfers?.[0]) {
-    date = new Date(profileData.Wallet.tokenTransfers[0].blockTimestamp);
+  if (airstackData?.Wallet?.tokenTransfers?.[0]) {
+    date = new Date(airstackData.Wallet.tokenTransfers[0].blockTimestamp);
   }
 
   const { formattedDateWithSuffix, diffDays } = getFormattedDate(date);
@@ -75,9 +75,7 @@ const handleRequest = frames(async (ctx) => {
     },
   ];
 
-  const topFollowers = await fetchTopFollowers(
-    profileData?.Socials?.Social[0]?.userId
-  );
+  const topFollowers = await fetchTopFollowers(profileData.fid);
   return {
     image: (
       <div
@@ -106,7 +104,7 @@ const handleRequest = frames(async (ctx) => {
                   objectFit: "cover",
                 }}
                 tw='h-12 w-12 rounded-full '
-                src={profileData?.Socials?.Social[0]?.profileImage}
+                src={profileData.pfp}
               />
               <div
                 style={{
@@ -127,7 +125,7 @@ const handleRequest = frames(async (ctx) => {
                       ? ` (Rank: ${getOrdinalIndicator(rank)})`
                       : `${
                           Number(
-                            profileData?.Socials?.Social[0]?.socialCapital
+                            airstackData?.Socials?.Social[0]?.socialCapital
                               ?.socialCapitalScore
                           ) >= 1
                             ? " (Top 500)"
