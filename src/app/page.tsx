@@ -1,7 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Image from "next/image";
 import Link from "next/link";
-import { getUserData } from "./_actions/queries";
+import { getFCDetails, getUserData } from "./_actions/queries";
 import SearchInput from "@/components/SearchInput";
 
 const ogProfiles = [
@@ -33,21 +33,19 @@ const ogProfiles = [
 
 export default async function Home() {
   const newDataPromises = ogProfiles.map(async (og) => {
-    const fetchOgData = await getUserData(og.username);
-    return fetchOgData.Socials.Social[0];
+    const fetchOgData = await getFCDetails(og.username);
+    return fetchOgData;
   });
 
   const data = (await Promise.all(newDataPromises)) as {
-    userCreatedAtBlockTimestamp: string;
-    userAssociatedAddresses: string[];
-    profileBio: string;
-    profileImage: string;
-    followerCount: number;
-    followingCount: number;
-    profileName: string;
-    profileDisplayName: string;
-    userId: string;
-    socialCapital: any;
+    name: string;
+    pfp: string;
+    address: string | undefined;
+    bio: string;
+    followers: number;
+    following: number;
+    fid: string;
+    username: string;
   }[];
 
   console.log(data);
@@ -77,7 +75,7 @@ export default async function Home() {
                 {data.map((og, id) => {
                   return (
                     <Link
-                      href={`/${og.profileName}`}
+                      href={`/${og.username}`}
                       target='_blank'
                       className='flex items-center justify-start gap-4 p-5 flex-col max-w-full sm:max-w-[350px]  rounded-3xl bg-white border border-[#E5E5E5]'
                       key={id}
@@ -88,7 +86,7 @@ export default async function Home() {
                           {/* profile img */}
                           <Image
                             // src={pfp_url}
-                            src={og.profileImage}
+                            src={og.pfp}
                             alt='pfp'
                             width={48}
                             height={48}
@@ -99,11 +97,11 @@ export default async function Home() {
 
                         <div className='flex items-start justify-start w-full flex-col gap-1.5 '>
                           <h1 className=' text-lg font-medium text-[#000] '>
-                            {og.profileDisplayName}
+                            {og.name}
                           </h1>
 
                           <p className='text-primary-grey font-normal text-base text-start max-w-full sm:max-w-[205px] '>
-                            {og.profileBio.slice(0, 30) + "..."}
+                            {og.bio.slice(0, 30) + "..."}
                           </p>
                         </div>
                       </div>
@@ -113,9 +111,9 @@ export default async function Home() {
                         <span className='text-sm text-primary-grey font-normal'>
                           Followers
                           <span className='text-primary-violet font-semibold ml-1.5'>
-                            {og.followerCount >= 1000
-                              ? `${Number(og.followerCount / 1000).toFixed(2)}k`
-                              : og.followerCount}
+                            {og.followers >= 1000
+                              ? `${Number(og.followers / 1000).toFixed(2)}k`
+                              : og.followers}
                           </span>
                         </span>
 
@@ -123,11 +121,9 @@ export default async function Home() {
                         <span className='text-sm text-primary-grey font-normal'>
                           Following
                           <span className='text-primary-violet font-semibold ml-1.5'>
-                            {og.followingCount >= 1000
-                              ? `${Number(og.followingCount / 1000).toFixed(
-                                  2
-                                )}k`
-                              : og.followingCount}
+                            {og.following >= 1000
+                              ? `${Number(og.following / 1000).toFixed(2)}k`
+                              : og.following}
                           </span>
                         </span>
                       </div>

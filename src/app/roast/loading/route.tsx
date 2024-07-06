@@ -2,6 +2,7 @@ import { Button } from "frames.js/next";
 import { createFrames } from "frames.js/next";
 import { farcasterHubContext } from "frames.js/middleware";
 import {
+  getFCDetails,
   getFarcasterDetails,
   getUserData,
   getWalletWorth,
@@ -32,9 +33,9 @@ const handleRequest = frames(async (ctx) => {
     }
   }
 
-  const profileData = await getUserData(fname ?? name);
+  const profileData = await getFCDetails(fname ?? name);
 
-  const wallet = profileData.Socials.Social[0].userAssociatedAddresses[1];
+  const wallet = profileData?.address;
 
   const walletWorth = (await getWalletWorth(wallet)) ?? "0";
 
@@ -46,10 +47,10 @@ const handleRequest = frames(async (ctx) => {
         key={0}
         target={`${process.env.NEXT_PUBLIC_BASE_URL}/roast/getRoast?fname=${
           fname ?? name
-        }&img=${profileData.Socials.Social[0].profileImage}&followers=${
-          profileData.Socials.Social[0].followerCount
-        }&following=${profileData.Socials.Social[0].followingCount}&bio=${
-          profileData.Socials.Social[0].profileBio
+        }&img=${profileData?.pfp}&followers=${
+          profileData?.followers
+        }&following=${profileData?.following}&bio=${
+          profileData?.bio
         }&walletWorth=${walletWorth}`}
       >
         Get your roast
