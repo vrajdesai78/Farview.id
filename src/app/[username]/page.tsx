@@ -16,10 +16,13 @@ import {
 import { getFormattedDate } from "@/lib/utils";
 import { TCast } from "@/types/types";
 import PageContainer from "@/components/PageContainer";
+import { revalidatePath } from "next/cache";
 
 export const runtime = "edge";
 
 const Page = async ({ params }: { params: { username: string } }) => {
+  revalidatePath("/[username]", "page");
+
   try {
     const profileData = await getFCDetails(params.username);
     const [

@@ -4,6 +4,7 @@ import { TCast } from "@/types/types";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { CovalentClient } from "@covalenthq/client-sdk";
+import { revalidatePath } from "next/cache";
 
 export const getUserData = async (fname: string) => {
   const query = `query MyQuery {
@@ -262,6 +263,8 @@ export const addUser = async (fname: string) => {
         visits: 1,
       });
     }
+
+    revalidatePath(`/[username]`, "page");
   } catch (e) {
     console.error(e);
   }

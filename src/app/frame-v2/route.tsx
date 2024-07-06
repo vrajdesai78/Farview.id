@@ -37,6 +37,7 @@ const ActiveCasterContainer = ({
   isMain,
   isRight,
   url,
+  trim,
 }: {
   title: string;
   icon: string;
@@ -44,6 +45,7 @@ const ActiveCasterContainer = ({
   isMain?: boolean;
   isRight?: boolean;
   url?: string;
+  trim?: boolean;
 }) => {
   return (
     <div
@@ -71,7 +73,7 @@ const ActiveCasterContainer = ({
 
       <div tw='flex flex-col justify-start !items-start gap-0.5 w-full text-nowrap'>
         <span tw='text-[#262626] font-medium text-sm text-ellipsis text-nowrap w-4/5 overflow-hidden'>
-          {title.length > 8 ? `${title.slice(0, 8)}...` : title}
+          {trim && title.length > 8 ? `${title.slice(0, 8)}...` : title}
         </span>
         {text && (
           <span tw='text-[#737373] font-normal text-[10px]'>{text}</span>
@@ -322,6 +324,7 @@ const handleRequest = frames(async (ctx) => {
                 icon={topFollowers[0].icon}
                 title={`/${topFollowers[0].title}`}
                 isMain={true}
+                trim={false}
               />
 
               <div
@@ -343,6 +346,7 @@ const handleRequest = frames(async (ctx) => {
                       title={`/${title}`}
                       isMain={false}
                       isRight={index === 1}
+                      trim={true}
                     />
                   );
                 })}
